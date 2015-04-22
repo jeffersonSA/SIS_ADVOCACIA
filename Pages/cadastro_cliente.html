@@ -1,0 +1,219 @@
+<!DOCTYPE>
+<html>
+	<head>
+		<title></title>
+
+		<!--META -->
+		<meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=8;FF=3;OtherUA=4" >
+        <meta name="viewport" content="width=device-width, user-scalable=no">
+		<!-- SCRIPTS -->
+		<script type="text/javascript" src="../Content/js/bootstrap.js"> 		</script>
+		<script type="text/javascript" src="../Content/js/bootstrap.min.js"> 	</script>
+		<!-- CSS -->
+		<link rel="stylesheet" media="screen" href="../Content/css/bootstrap.css" />
+		<link rel="stylesheet" media="screen" href="../Content/css/bootstrap.min.css" />
+		<link rel="stylesheet" media="screen" href="../Content/css/bootstrap-responsive.css" />
+		<link rel="stylesheet" media="screen" href="../Content/css/bootstrap-responsive.min.css" />
+
+		<style type="text/css">
+			.container{
+
+			}
+
+			 
+		</style>
+	</head>
+
+<body>
+	<div class="container"  style="margin-top:100px">
+		<div class="row" style="width:100%;" >
+			<div class="col-md-5" style="width:100%">
+				<form class="form-horizontal">
+					<div class="form-group" >
+						<label class="col-sm-6  control-label">Tipo de cadastro:</label>
+						<div class="btn-group" data-toggle="buttons">
+							<label class="btn btn-primary">
+						    	<input type="radio" name="options" id="option2" autocomplete="off"> Juridica
+						  	</label>
+					  		<label class="btn btn-primary">
+					    		<input type="radio" name="options" id="option3" autocomplete="off"> Física
+					  		</label>
+						</div>
+					</div>
+					
+					<!-- PANEL PESSOA FÍSICA -->
+					<div class="panel panel-warning">
+						<div class="panel-heading">Física</div>
+						<div class="panel-body">
+						  	<div class="form-group" >
+								<label class="col-sm-2  control-label">Nome do cliente:</label>
+							    <div class="col-sm-6" >
+							    	<input type="input" class="form-control" id="txtClient" placeholder="Nome do cliente">
+							    </div>
+							    <label class="col-sm-2 control-label label-data" >Data de nascimento:</label>
+							    <div class="col-sm-2">
+							    	<input type="Data" class="form-control" id="txtClient" placeholder="dd/mm/aaaa">
+							    </div>
+							</div>
+							<div class="form-group" >
+								<label class="col-sm-2  control-label">Sexo:</label>
+							    <div class="col-sm-2">
+							    	<select class="form-control">
+							    		<option>Masculino</option>
+							    		<option>Feminino</option>
+							    	</select>
+							    </div>
+							</div>
+					  	</div>
+					</div><!-- END PANEL PESSOA FÍSICA -->
+
+					<div class="panel panel-warning">
+						<div class="panel-heading">Dados básicos</div>
+						<div class="panel-body">
+							<div class="form-group" >
+								<label class="col-sm-2  control-label">CPF:</label>
+							    <div class="col-sm-2">
+							    	<input type="Data" class="form-control" id="txtClient" placeholder="CPF">
+							    </div>
+							</div>
+							<div class="form-group" >
+								<label class="col-sm-2 control-label">RG:</label>
+							    <div class="col-sm-2">
+							    	<input type="Data" class="form-control" id="txtClient" placeholder="RG">
+							    </div>
+							    <label class="col-sm-2 control-label" >Data emissão RG:</label>
+							    <div class="col-sm-2" >
+							    	<input type="Data" class="form-control" id="txtClient" placeholder="dd/mm/aaaa">
+							    </div>
+							    <label class="col-sm-2 control-label">Local emissão RG:</label>
+							    <div class="col-sm-1" style="width:9%">
+							    	<select class="form-control">
+							    		<option>AC</option>
+							    		<option>AL</option>
+							    		<option>AM</option>
+							    		<option>BA</option>
+							    		<option>CE</option>
+							    		<option>DF</option>
+							    		<option>ES</option>
+							    		<option>GO</option>
+							    		<option>MA</option>
+							    		<option>MT</option>
+							    		<option>MS</option>
+							    		<option>MG</option>
+							    		<option>PA</option>
+							    		<option>PB</option>
+							    		<option>PR</option>
+							    		<option>PE</option>
+							    		<option>PI</option>
+							    		<option>RJ</option>
+							    		<option>RN</option>
+							    		<option>RS</option>
+							    		<option>RO</option>
+							    		<option>RR</option>
+							    		<option>SC</option>
+							    		<option>SP</option>
+							    		<option>SE</option>
+							    		<option>TO</option>
+							    	</select>
+							    </div>
+							</div>
+							<div class="form-group" >
+								<label class="col-sm-2 control-label">Número CTPS:</label>
+							    <div class="col-sm-2">
+							    	<input type="Data" class="form-control" id="txtClient" placeholder="CTPS">
+							    </div>
+							    <label class="col-sm-2 control-label">Série:</label>
+							    <div class="col-sm-1" >
+							    	<input type="Data" class="form-control" id="txtClient" placeholder="Série">
+							    </div>
+							     <label class="col-sm-3 control-label">Emissão CTPS:</label>
+							    <div class="col-sm-2" >
+							    	<input type="Data" class="form-control" id="txtClient" placeholder="dd/mm/aaaa">
+							    </div>
+							</div>
+							<div class="form-group" >
+								<label class="col-sm-2 control-label">CNH:</label>
+							    <div class="col-sm-2">
+							    	<input type="Data" class="form-control" id="txtClient" placeholder="CNH">
+							    </div>
+							    <label class="col-sm-2 control-label">Categoria:</label>
+							    <div class="col-sm-2" >
+							    	<input type="Data" class="form-control" id="txtClient" placeholder="Categoria">
+							    </div>
+							</div>
+						</div>
+					</div>
+					<div class="panel panel-warning">
+						<div class="panel-heading">Endereço</div>
+						<div class="panel-body">
+					    	<div class="form-group" >
+						<label class="col-sm-2 control-label">Rua:</label>
+					    <div class="col-sm-6">
+					    	<input type="Data" class="form-control" id="txtClient" placeholder="Rua">
+					    </div>
+					    <label class="col-sm-2 control-label">Número:</label>
+					    <div class="col-sm-1" style="width:9%" >
+					    	<input type="Data" class="form-control" id="txtClient" placeholder="">
+					    </div>
+					</div>
+					<div class="form-group" >
+						<label class="col-sm-2 control-label">Bairro:</label>
+					    <div class="col-sm-3">
+					    	<input type="Data" class="form-control" id="txtClient" placeholder="Bairro">
+					    </div>
+					    <label class="col-sm-1 control-label">Cidade:</label>
+					    <div class="col-sm-3" >
+					    	<input type="Data" class="form-control" id="txtClient" placeholder="Cidade">
+					    </div>
+					    <label class="col-sm-1 control-label">Endereço:</label>
+					   <div class="col-sm-1" style="width:9%">
+					    	<select class="form-control">
+					    		<option>AC</option>
+					    		<option>AL</option>
+					    		<option>AM</option>
+					    		<option>BA</option>
+					    		<option>CE</option>
+					    		<option>DF</option>
+					    		<option>ES</option>
+					    		<option>GO</option>
+					    		<option>MA</option>
+					    		<option>MT</option>
+					    		<option>MS</option>
+					    		<option>MG</option>
+					    		<option>PA</option>
+					    		<option>PB</option>
+					    		<option>PR</option>
+					    		<option>PE</option>
+					    		<option>PI</option>
+					    		<option>RJ</option>
+					    		<option>RN</option>
+					    		<option>RS</option>
+					    		<option>RO</option>
+					    		<option>RR</option>
+					    		<option>SC</option>
+					    		<option>SP</option>
+					    		<option>SE</option>
+					    		<option>TO</option>
+					    	</select>
+					    </div>
+					</div>
+					<div class="form-group" >
+						<label class="col-sm-2 control-label">Complemento:</label>
+					    <div class="col-sm-3">
+					    	<input type="Data" class="form-control" id="txtClient" placeholder="Complemento">
+					    </div>
+					    <label class="col-sm-1 control-label">CEP:</label>
+					    <div class="col-sm-2">
+					    	<input type="Data" class="form-control" id="txtClient" placeholder="CEP">
+					    </div>
+					</div>
+					  	</div>
+					</div>
+					
+				</form>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
