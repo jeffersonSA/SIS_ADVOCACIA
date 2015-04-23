@@ -26,21 +26,24 @@
 			<div class="col-md-5" style="width:100%">
 				<!-- FORM -->
 				<form class="form-horizontal">
-					
-					<div class="form-group" >
-						<label class="col-sm-2  control-label">Tipo de cadastro:</label>
-						<div class="btn-group" data-toggle="buttons">
-						  	<label class="btn btn-primary active" id="rdnFisica">
-						    	<input type="radio" name="options" autocomplete="off" checked> Física
-						  	</label>
-						  	<label class="btn btn-primary" id="rdnJuridica">
-						    	<input type="radio" name="options"  autocomplete="off"> Jurídica
-						  	</label>
+					<div class="panel panel-warning" style="height:10%;"  >
+						<div class="panel-body">
+							<div class="form-group" >
+								<label class="col-sm-2  control-label">Tipo de cadastro:</label>
+								<div class="btn-group" data-toggle="buttons">
+								  	<label class="btn btn-primary active" id="rdnFisica">
+								    	<input type="radio" name="options" autocomplete="off" checked> Física
+								  	</label>
+								  	<label class="btn btn-primary" id="rdnJuridica">
+								    	<input type="radio" name="options"  autocomplete="off"> Jurídica
+								  	</label>
+								</div>
+							</div>
 						</div>
 					</div>
 					
 					<!-- PANEL PESSOA FÍSICA -->
-					<div class="panel panel-info " id="pnlFisica">
+					<div class="panel panel-warning " id="pnlFisica">
 						<div class="panel-heading"><b>FÍSICA</b></div>
 						<div class="panel-body">
 						  	<div class="form-group" >
@@ -65,7 +68,7 @@
 					  	</div>
 					</div><!-- END PANEL PESSOA FÍSICA -->
 					<!-- PANEL PESSOA JURIDICA -->
-					<div class="panel panel-info rdb-disable" id="pnlJuridica">
+					<div class="panel panel-warning rdb-disable" id="pnlJuridica">
 						<div class="panel-heading"><b>JURÍDICA</b></div>
 						<div class="panel-body">
 						  	<div class="form-group" >
@@ -93,7 +96,7 @@
 					</div><!-- END PANEL PESSOA JURIDICA -->
 
 					<!-- PANEL DADOS BÁSICOS -->
-					<div class="panel panel-info">
+					<div class="panel panel-warning">
 						<div class="panel-heading"><b>DADOS BÁISICOS</b></div>
 						<div class="panel-body">
 							<div class="form-group" >
@@ -172,9 +175,20 @@
 					</div>	<!-- END PANEL DADOS BÁSICOS -->
 
 					<!-- PANEL ENDEREÇO -->
-					<div class="panel panel-info">
+					<div class="panel panel-warning">
 						<div class="panel-heading"><b>ENDEREÇO</b></div>
 						<div class="panel-body">
+							<div class="form-group">
+								<label class="col-sm-2 control-label">CEP:</label>
+							    <div class="col-sm-2">
+							    	<input type="Data" class="form-control" id="txtCEP" placeholder="CEP">
+							    </div>
+							    <div class="col-xs-1">
+									<button type="button" class="btn btn-default  ">
+										<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar
+									</button>
+								</div>
+							</div>
 					    	<div class="form-group" >
 								<label class="col-sm-2 control-label">Rua:</label>
 							    <div class="col-sm-6">
@@ -232,25 +246,18 @@
 							    <div class="col-sm-3">
 							    	<input type="Data" class="form-control" id="txtComplemento" placeholder="Complemento">
 							    </div>
-							    <label class="col-sm-1 control-label">CEP:</label>
-							    <div class="col-sm-2">
-							    	<input type="Data" class="form-control" id="txtCEP" placeholder="CEP">
-							    </div>
 							</div>
 					  	</div>
 					</div><!-- END PANEL ENDEREÇO -->
-					<div class="panel panel-info"  >
+					<div class="panel panel-warning" style="height:10%;"   >
 						<div class="panel-body ">
 							<div class="form-group">
-								<div class="row">
-									<div class="col-sm-9"/>
-									<div class="col-sm-9"/>
-									<div class="col-sm-2">
-										<button type="button" class="btn btn-default  ">
-											<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Salvar
-										</button>
-									</div>
-								</div>	
+								<div class="col-xs-10">&nbsp</div>
+								<div class="col-xs-1">
+									<button type="button" class="btn btn-default  ">
+										<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Salvar
+									</button>
+								</div>
 							</div>
 						</div>
 					</div>
