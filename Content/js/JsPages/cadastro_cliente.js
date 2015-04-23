@@ -12,6 +12,8 @@ $(document).ready(function()
 				{
 					$("#pnlJuridica").fadeIn('slow');
 				});
+			$("#pnlDatadosBasicos").fadeOut('slow');
+			$("#pnlDependentes").fadeOut('slow');
 
 		});
 	/*
@@ -22,6 +24,8 @@ $(document).ready(function()
 			$("#pnlJuridica").fadeOut('slow',function()
 				{
 					$("#pnlFisica").fadeIn('slow');
+					git $("#pnlDatadosBasicos").fadeIn('slow');
+					$("#pnlDependentes").fadeIn('slow');
 				});
 		});
 });
