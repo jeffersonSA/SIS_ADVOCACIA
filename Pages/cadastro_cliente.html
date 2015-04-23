@@ -44,7 +44,7 @@
 						<div class="panel-heading">Física</div>
 						<div class="panel-body">
 						  	<div class="form-group" >
-								<label class="col-sm-2  control-label">Nome do cliente:</label>
+								<label class="col-sm-2  control-label col-sm-offset-0 ">Nome do cliente:</label>
 							    <div class="col-sm-6" >
 							    	<input type="input" class="form-control" id="txtClient" placeholder="Nome do cliente">
 							    </div>
@@ -83,7 +83,8 @@
 							    <div class="col-sm-2">
 							    	<input type="Data" class="form-control" id="txtCNPJ" placeholder="CNPJ">
 							    </div>
-							    <label class="col-sm-4  control-label">Inscrição estadual:</label>
+							    <div class="col-sm-2" ></div>
+							    <label class="col-md-2 control-label" >Inscrição estadual:</label>
 							    <div class="col-sm-2">
 							    	<input type="Data" class="form-control" id="txtInscEstadual" placeholder="Inscrição estadual">
 							    </div>
@@ -151,7 +152,8 @@
 							    <div class="col-sm-1" >
 							    	<input type="Data" class="form-control" id="txtSerie" placeholder="Série">
 							    </div>
-							     <label class="col-sm-3 control-label">Emissão CTPS:</label>
+							    <div class="col-sm-1" ></div>
+							     <label class="col-sm-2 control-label">Emissão CTPS:</label>
 							    <div class="col-sm-2" >
 							    	<input type="Data" class="form-control" id="txtDtEmissaoCTPS" placeholder="dd/mm/aaaa">
 							    </div>
@@ -171,14 +173,15 @@
 
 					<!-- PANEL ENDEREÇO -->
 					<div class="panel panel-warning">
-						<div class="panel-heading">Endereço</div>
+						<div class="panel-heading"><b>ENDEREÇO</b></div>
 						<div class="panel-body">
 					    	<div class="form-group" >
 								<label class="col-sm-2 control-label">Rua:</label>
 							    <div class="col-sm-6">
 							    	<input type="Data" class="form-control" id="txtRua" placeholder="Rua">
 							    </div>
-							    <label class="col-sm-2 control-label">Número:</label>
+							    <div class="col-sm-1"></div>
+							    <label class="col-sm-1 control-label">Número:</label>
 							    <div class="col-sm-1" style="width:9%" >
 							    	<input type="Data" class="form-control" id="txtNumero" placeholder="">
 							    </div>
@@ -192,7 +195,7 @@
 							    <div class="col-sm-3" >
 							    	<input type="Data" class="form-control" id="txtCidade" placeholder="Cidade">
 							    </div>
-							    <label class="col-sm-1 control-label">Endereço:</label>
+							    <label class="col-sm-1 control-label">Estado:</label>
 							   	<div class="col-sm-1" style="width:9%">
 							    	<select class="form-control">
 							    		<option>AC</option>
@@ -236,7 +239,21 @@
 							</div>
 					  	</div>
 					</div><!-- END PANEL ENDEREÇO -->
-					
+					<div class="panel panel-warning"  >
+						<div class="panel-body ">
+							<div class="form-group">
+								<div class="row">
+									<div class="col-sm-9"/>
+									<div class="col-sm-9"/>
+									<div class="col-sm-2">
+										<button type="button" class="btn btn-default  ">
+											<span class="glyphicon glyphicon-floppy-save" aria-hidden="true"></span> Salvar
+										</button>
+									</div>
+								</div>	
+							</div>
+						</div>
+					</div>
 				</form><!-- END FORM -->
 			</div>
 		</div>

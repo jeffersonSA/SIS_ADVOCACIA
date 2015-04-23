@@ -1,6 +1,7 @@
 $(document).ready(function()
 {
 	
+	$("#pnlJuridica").css('display',"none");
 	/*
 	* Ativa cadastro para pessoa juridica
 	*/
@@ -13,7 +14,6 @@ $(document).ready(function()
 				});
 
 		});
-
 	/*
 	* Ativa cadastro para pessoa física
 	*/
@@ -24,5 +24,4 @@ $(document).ready(function()
 					$("#pnlFisica").fadeIn('slow');
 				});
 		});
-
 });

@@ -3,7 +3,8 @@
 	display: block;
 }
 
-.rdb-disable
+.form-horizontal .control-label
 {
-	display: none;
+	text-align: left;
+	position: relative;
 }
