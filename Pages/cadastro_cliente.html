@@ -26,7 +26,7 @@
 			<div class="col-md-12 col-sm-offset-1" >
 				<!-- FORM -->
 				<form class="form-horizontal">
-					<div class="panel panel-warning" style="height:10%;"  >
+					<div class="panel panel-primary" style="height:10%;"  >
 						<div class="panel-body">
 							<div class="form-group" >
 								<label class="col-sm-2  control-label">Tipo de cadastro:</label>
@@ -43,7 +43,7 @@
 					</div>
 					
 					<!-- PANEL PESSOA FÍSICA -->
-					<div class="panel panel-warning " id="pnlFisica">
+					<div class="panel panel-primary " id="pnlFisica">
 						<div class="panel-heading"><b>FÍSICA</b></div>
 						<div class="panel-body">
 						  	<div class="form-group" >
@@ -68,7 +68,7 @@
 					  	</div>
 					</div><!-- END PANEL PESSOA FÍSICA -->
 					<!-- PANEL PESSOA JURIDICA -->
-					<div class="panel panel-warning rdb-disable" id="pnlJuridica">
+					<div class="panel panel-primary rdb-disable" id="pnlJuridica">
 						<div class="panel-heading"><b>JURÍDICA</b></div>
 						<div class="panel-body">
 						  	<div class="form-group" >
@@ -96,8 +96,8 @@
 					</div><!-- END PANEL PESSOA JURIDICA -->
 
 					<!-- PANEL DADOS BÁSICOS -->
-					<div class="panel panel-warning" id="pnlDatadosBasicos">
-						<div class="panel-heading"><b>DADOS BÁISICOS</b></div>
+					<div class="panel panel-primary" id="pnlDatadosBasicos">
+						<div class="panel-heading"><b>DADOS BÁSICOS</b></div>
 						<div class="panel-body">
 							<div class="form-group" >
 								<label class="col-sm-2  control-label">CPF:</label>
@@ -175,7 +175,7 @@
 					</div>	<!-- END PANEL DADOS BÁSICOS -->
 
 					<!-- PANEL ENDEREÇO -->
-					<div class="panel panel-warning">
+					<div class="panel panel-primary">
 						<div class="panel-heading"><b>ENDEREÇO</b></div>
 						<div class="panel-body">
 							<div class="form-group">
@@ -250,7 +250,7 @@
 					  	</div>
 					</div><!-- END PANEL ENDEREÇO -->
 					<!-- PANEL DEPENDENTES -->
-					<div class="panel panel-warning" id="pnlDependentes">
+					<div class="panel panel-primary" id="pnlDependentes">
 						<div class="panel-heading"><b>DEPENDENTES</b></div>
 						<div class="panel-body ">
 							<div class="form-group">
@@ -276,14 +276,17 @@
 							    <label class="col-sm-2 control-label">Parentesco:</label>
 							    <div class="col-sm-2" >
 							    	<select class="form-control">
-							    		
+							    		<option>Filho(a)</option>
 							    	</select>
 							    </div>
 							</div>
 							<div class="form-group">
 								<div class="col-sm-2">&nbsp</div>
 								<div class="col-sm-1">
-										<button type="button" class="btn btn-default btn-responsive" >
+										<button id="btnAddDependent" type="button" class="btn btn-default btn-responsive" >
+											<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar
+										</button>
+										<button id="btnEditDependent" type="button" class="btn btn-default" >
 											<span class="glyphicon glyphicon-plus" aria-hidden="true"></span> Adicionar
 										</button>
 								</div>
@@ -291,33 +294,21 @@
 							<div class="form-group">
 								<table class="table table-striped">
 									<thead>
-										<tr>
+										<tr >
 											<th style="width:90%">Nome</th>
-											<th>Remover</th>
+											<th >Editar</th>
+											<th >Remover</th>
 										</tr>
 										
 									</thead>
-									<tbody>
-										<tr>
-											<td>adfasdfasdfd</td>
-											<td>adfasdfasdfd</td>
-										</tr>
-										<tr>
-											<td>adfasdfasdfd</td>
-											<td>adfasdfasdfd</td>
-										</tr>
-										<tr>
-											<td>adfasdfasdfd</td>
-											<td>adfasdfasdfd</td>
-										</tr>
-
+									<tbody id="tbItens">
 									</tbody>
 								</table>
 							</div>
 						</div>
 					</div><!-- END DEPENDENTES -->
 					<!-- PANEL SALVAR -->
-					<div class="panel panel-warning" style="height:10%;"   >
+					<div class="panel panel-primary" style="height:10%;"   >
 						<div class="panel-body ">
 							<div class="form-group">
 								<div class="col-sm-2">&nbsp</div>

@@ -9,3 +9,17 @@
 	position: relative;
 }
 
+.visibleColumn
+{
+	display: none;
+}
+
+#btnEditDependent
+{
+	display: none;
+}
+
+#btnAddDependent
+{
+
+}
