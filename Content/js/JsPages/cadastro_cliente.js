@@ -36,9 +36,9 @@ $(document).ready(function()
 		
 		var item = "<tr>"+
 		"<td>"+$("#txtNomeDependente").val()+"</td>"+
-		"<td class='visibleColumn'>"+$("#txtDtNascimentoDependente").val()+"</td>"+
-		"<td class='visibleColumn'>"+$("#txtRGDependente").val()+"</td>"+
-		"<td class='visibleColumn'>"+$("#txtCPFDependente").val()+"</td>"+
+		"<td align='center'>"+$("#txtDtNascimentoDependente").val()+"</td>"+
+		"<td align='center'>"+$("#txtRGDependente").val()+"</td>"+
+		"<td align='center'>"+$("#txtCPFDependente").val()+"</td>"+
 		"<td align='center'>"+
 				"<button type='button' class='btn btn-default btn-responsive' onClick='editDependente(event)' >"+
 					"<span class='glyphicon glyphicon-edit' aria-hidden='true'></span>"+
@@ -54,17 +54,49 @@ $(document).ready(function()
 		$("#tbItens").append($(item).fadeIn('slow'));
 
 	});
+
+	$("#btnEditDependent").click(function()
+		{
+
+			_nomeDependente[0].textContent = $("#txtNomeDependente").val();
+			_dtNascDependente[0].textContent = $("#txtDtNascimentoDependente").val();
+			_rgDependente[0].textContent = $("#txtRGDependente").val();
+			_cpfDependente[0].textContent = $("#txtCPFDependente").val();
+
+			$("#btnEditDependent").fadeOut('slow',function(){
+				$("#btnAddDependent").fadeIn('slow');
+			});
+
+			_parent.fadeIn('slow');
+		});
 });
+
+var _parent;
+var _nomeDependente;
+var _dtNascDependente;
+var _rgDependente;
+var _cpfDependente;
 
 /*
 *  Envia as informações do dependente para os textsbox para serem editadas
 */
 function editDependente(evt)
 {
-	var parent = $(evt.currentTarget).parent().parent();
-	var nome = 
+	 _parent = $(evt.currentTarget).parent().parent();
 
-	$("#txtNomeDependente")[0].value= parent.children("td:nth-child(1)")[0].textContent;
+	 _nomeDependente = _parent.children("td:nth-child(1)");
+	 _dtNascDependente = _parent.children("td:nth-child(2)");
+	 _rgDependente = _parent.children("td:nth-child(3)");
+	 _cpfDependente = _parent.children("td:nth-child(4)");
+
+	$("#txtNomeDependente")[0].value = _nomeDependente[0].textContent;
+	$("#txtDtNascimentoDependente")[0].value = _dtNascDependente[0].textContent;
+	$("#txtRGDependente")[0].value = _rgDependente[0].textContent;
+	$("#txtCPFDependente")[0].value = _cpfDependente[0].textContent;
+
+	$("#btnAddDependent").fadeOut('slow',function(){
+		$("#btnEditDependent").fadeIn('slow');
+	});
 }
 
 /*
@@ -72,5 +104,7 @@ function editDependente(evt)
 */
 function removeDependente(evt)
 {
-	
+	$(evt.currentTarget).parent().parent().fadeOut('slow',function(){
+		$(this).remove();
+	});
 }
