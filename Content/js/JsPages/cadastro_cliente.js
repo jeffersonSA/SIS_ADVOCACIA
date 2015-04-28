@@ -1,33 +1,34 @@
 $(document).ready(function()
 {
 	
-	$("#pnlJuridica").css('display',"none");
+	configInit();
+	
 	/*
 	* Ativa cadastro para pessoa juridica
 	*/
 	$("#rdnJuridica").click(function()
+	{
+
+		$("#pnlFisica").fadeOut('slow',function()
 		{
-
-			$("#pnlFisica").fadeOut('slow',function()
-				{
-					$("#pnlJuridica").fadeIn('slow');
-				});
-			$("#pnlDatadosBasicos").fadeOut('slow');
-			$("#pnlDependentes").fadeOut('slow');
-
+			$("#pnlJuridica").fadeIn('slow');
 		});
+		$("#pnlDatadosBasicos").fadeOut('slow');
+		$("#pnlDependentes").fadeOut('slow');
+
+	});
 	/*
 	* Ativa cadastro para pessoa física
 	*/
 	$("#rdnFisica").click(function()
+	{
+		$("#pnlJuridica").fadeOut('slow',function()
 		{
-			$("#pnlJuridica").fadeOut('slow',function()
-				{
-					$("#pnlFisica").fadeIn('slow');
-					$("#pnlDatadosBasicos").fadeIn('slow');
-					$("#pnlDependentes").fadeIn('slow');
-				});
+				$("#pnlFisica").fadeIn('slow');
+				$("#pnlDatadosBasicos").fadeIn('slow');
+				$("#pnlDependentes").fadeIn('slow');
 		});
+	});
 
 	/*
 	* Adiciona dependente na tabela
@@ -55,20 +56,41 @@ $(document).ready(function()
 
 	});
 
+	/*
+	* Salva o dependente editado na grid
+	*/
 	$("#btnEditDependent").click(function()
-		{
+	{
 
-			_nomeDependente[0].textContent = $("#txtNomeDependente").val();
-			_dtNascDependente[0].textContent = $("#txtDtNascimentoDependente").val();
-			_rgDependente[0].textContent = $("#txtRGDependente").val();
-			_cpfDependente[0].textContent = $("#txtCPFDependente").val();
+		_nomeDependente[0].textContent = $("#txtNomeDependente").val();
+		_dtNascDependente[0].textContent = $("#txtDtNascimentoDependente").val();
+		_rgDependente[0].textContent = $("#txtRGDependente").val();
+		_cpfDependente[0].textContent = $("#txtCPFDependente").val();
 
-			$("#btnEditDependent").fadeOut('slow',function(){
-				$("#btnAddDependent").fadeIn('slow');
-			});
-
-			_parent.fadeIn('slow');
+		$("#btnEditDependent").fadeOut('slow',function(){
+			$("#btnAddDependent").fadeIn('slow');
 		});
+
+		_parent.fadeIn('slow');
+	});
+
+	/*
+	* Habilita a visualização dos campos para cadastrar os dependentes
+	*/
+	$("#rdnSimDependente").click(function()
+	{
+		$("#pnlBodyDependente").slideDown();
+	});
+
+	/*
+	* Desabilita a visualização dos campos de cadastro de dependente
+	*/
+	$("#rdnNaoDependente").click(function()
+	{
+	
+		$("#pnlBodyDependente").slideUp();
+
+	});
 });
 
 var _parent;
@@ -107,4 +129,27 @@ function removeDependente(evt)
 	$(evt.currentTarget).parent().parent().fadeOut('slow',function(){
 		$(this).remove();
 	});
+}
+
+function configInit()
+{
+	aplyMasks();
+	$("#pnlJuridica").css('display',"none");
+	$("#pnlBodyDependente").css('display','none');
+
+}
+
+/*
+*  Aplica mascas para os campos do formulário
+*/
+function aplyMasks()
+{
+	$("#txtRG").mask("99.999.999-*");
+	$("#txtCPF").mask("999.999.999-99");
+	$("#txtCEP").mask("9999-999");
+	$("#txtTel1").mask("(99)9999-9999");
+	$("#txtTe2").mask("(99)9999-9999");
+	$("#txtCel").mask("(99)99999-9999");
+	$("#txtRGDependente").mask("99.999.999-*");
+	$("#txtCPFDependente").mask("999.999.999-99");
 }
