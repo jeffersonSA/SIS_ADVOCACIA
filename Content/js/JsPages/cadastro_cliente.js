@@ -91,6 +91,48 @@ $(document).ready(function()
 		$("#pnlBodyDependente").slideUp();
 
 	});
+
+	/*
+	* Busca o endereço pelo cep no webservice dos correios
+	*/
+	$("#btnSeachCEP").click(function()
+	{
+		var url = 'http://cep.correiocontrol.com.br/'+$("#txtCEP").val().replace("-","")+'.json'
+		$.getJSON(url,function(json)
+		{
+			$("#txtRua").val(json.logradouro);
+			$("#txtBairro").val(json.bairro);
+			$("#txtCidade").val(json.localidade);
+			$("#slcEstadoEnd").val(json.uf);
+		}).fail(function()
+		{
+			
+				var easing, e, pos;
+				
+				
+				pos= $(window).scrollTop();
+		        
+		        $("body").css({
+		          "margin-top": -pos+"px",
+		          "overflow-y": "scroll", 
+		        });
+
+		        $(window).scrollTop(0);
+		        
+		        $("body").css("transition", "all 1s ease");
+		        $("body").css("margin-top", "0");
+		        $("body").on("webkitTransitionEnd transitionend msTransitionEnd oTransitionEnd", function()
+		        {
+		          $("body").css("transition", "none");
+		        });
+				
+				$("#alertInfo").fadeIn('slow',function()
+				{
+					$("#lblMessage").val('CEP inexistente');
+				});
+
+		});
+	});
 });
 
 var _parent;
@@ -136,6 +178,7 @@ function configInit()
 	aplyMasks();
 	$("#pnlJuridica").css('display',"none");
 	$("#pnlBodyDependente").css('display','none');
+	$("#alertInfo").css('display','none');
 
 }
 
@@ -146,7 +189,7 @@ function aplyMasks()
 {
 	$("#txtRG").mask("99.999.999-*");
 	$("#txtCPF").mask("999.999.999-99");
-	$("#txtCEP").mask("9999-999");
+	$("#txtCEP").mask("99999-999");
 	$("#txtTel1").mask("(99)9999-9999");
 	$("#txtTe2").mask("(99)9999-9999");
 	$("#txtCel").mask("(99)99999-9999");

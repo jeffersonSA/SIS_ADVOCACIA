@@ -18,8 +18,14 @@
 				<!-- CSS -->
 				<link rel="stylesheet" media="screen" href="../Content/css/CssPages/cadastro_cliente.css" />
 
+				<div class="alert alert-danger" role="alert" id="alertInfo">
+				  	<span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span>
+					<span class="sr-only">Erro:</span>
+  					<label id="lblMessage"></label>
+				</div>
+
 				<!-- FORM -->
-				<form class="form-horizontal" id="frmCadCliente">
+				<form class="form-horizontal" id="frmCadCliente" required="false">
 					<div class="form-group" >
 						<div class="col-sm-4"></div>
 						<label class="control-label">TIPO DE CADASTRO:</label>
@@ -199,7 +205,7 @@
 							    	<input type="input" class="form-control" id="txtCEP" placeholder="CEP" required>
 							    </div>
 							    <div class="col-xs-1">
-									<button type="button" class="btn btn-default  ">
+									<button type="button" class="btn btn-default" id="btnSeachCEP">
 										<span class="glyphicon glyphicon-search" aria-hidden="true"></span> Buscar
 									</button>
 								</div>
@@ -226,7 +232,7 @@
 							    </div>
 							    <label class="col-sm-1 control-label">Estado:</label>
 							   	<div class="col-sm-1" style="width:9%">
-							    	<select class="form-control">
+							    	<select class="form-control" id="slcEstadoEnd">
 							    		<option>AC</option>
 							    		<option>AL</option>
 							    		<option>AM</option>
