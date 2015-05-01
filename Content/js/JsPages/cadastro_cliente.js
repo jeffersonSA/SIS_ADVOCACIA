@@ -128,10 +128,15 @@ $(document).ready(function()
 				
 				$("#alertInfo").fadeIn('slow',function()
 				{
-					$("#lblMessage").val('CEP inexistente');
+					$("#lblMessage").html('CEP INEXISTENTE');
 				});
 
 		});
+	});
+
+	$(".remove-alert").click(function()
+	{
+		$("#alertInfo").slideUp();
 	});
 });
 
