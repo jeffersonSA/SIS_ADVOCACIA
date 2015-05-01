@@ -6,6 +6,7 @@ h4{
 }
 
 b{
+	text-align: center;
 	color:#ffffff;
 }
 
@@ -15,10 +16,28 @@ div>a:link {
 
 .thumbnail
 {
+	margin-top: 50%;
 	border: 0px !important;
 	background-color: #535353 !important;
 }
 
+
+
 .row-itens{
+	
 	background-color:#535353;
+	width: 100%;
+	
+	padding-left: 0.01%;
+}
+
+.col-md-1
+{
+	margin-left: 8% !important;
+}
+
+
+body
+{
+	width: 100% !important;
 }

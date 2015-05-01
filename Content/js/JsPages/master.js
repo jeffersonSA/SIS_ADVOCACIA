@@ -1,13 +1,13 @@
+var _content;
 $(document).ready(function(){
-	var content = $('#content');
-	//pre carregando o gif
-	loading = new Image(); loading.src = '../Content/img/loading.gif';
+ 	_content = $('#content');
+	initConfig();
 	
 	$('#menu div>a').on('click', function( e ){
-		
 		e.preventDefault();
-		content.html( '<div class="col-sm-5"></div><img class="loading" src="../Content/img/loading.gif" />' );
- 
+
+		_content.html( '<div class="col-sm-5"></div><img class="loading" src="../Content/img/loading.gif" />' );
+ 		_content.fadeIn();
 		var href = $( this ).attr('href');
 		$.ajax({
 			url: href,
@@ -17,8 +17,8 @@ $(document).ready(function(){
  
 				//apenas atrasando a troca, para mostrarmos o loading
 				 window.setTimeout( function(){
-				 	content.fadeOut('slow', function(){
-					 	content.html( data ).fadeIn();
+				 	_content.fadeOut('slow', function(){
+					 	_content.html( data ).fadeIn();
 					 });
 					}, 500 );
 				}
@@ -26,3 +26,24 @@ $(document).ready(function(){
  
 		});
 });
+
+function initConfig()
+{
+	//pre carregando o gif
+	loading = new Image(); loading.src = '../Content/img/loading.gif';
+	_content.html( '<div class="col-sm-5"></div><img class="loading" src="../Content/img/loading.gif" />' );
+	
+	window.setTimeout(function(){
+		_content.fadeOut('slow', function(){
+			
+		});
+	},500);
+
+	var id = document.location.search.substr(1);
+
+	if(id == 1)
+	{
+		$("#item2").collapse();
+	}
+
+}
