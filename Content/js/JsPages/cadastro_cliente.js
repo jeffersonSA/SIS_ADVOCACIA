@@ -97,6 +97,7 @@ $(document).ready(function()
 	*/
 	$("#btnSeachCEP").click(function()
 	{
+		loadingModal();
 		var url = 'http://cep.correiocontrol.com.br/'+$("#txtCEP").val().replace("-","")+'.json'
 		$.getJSON(url,function(json)
 		{
@@ -106,31 +107,31 @@ $(document).ready(function()
 			$("#slcEstadoEnd").val(json.uf);
 		}).fail(function()
 		{
-			
-				var easing, e, pos;
-				
-				
-				pos= $(window).scrollTop();
-		        
-		        $("body").css({
-		          "margin-top": -pos+"px",
-		          "overflow-y": "scroll", 
-		        });
+			$("#txtRua").val('');
+			$("#txtBairro").val('');
+			$("#txtCidade").val('');
+			$("#slcEstadoEnd").val('');
 
-		        $(window).scrollTop(0);
-		        
-		        $("body").css("transition", "all 1s ease");
-		        $("body").css("margin-top", "0");
-		        $("body").on("webkitTransitionEnd transitionend msTransitionEnd oTransitionEnd", function()
-		        {
-		          $("body").css("transition", "none");
-		        });
-				
-				$("#alertInfo").fadeIn('slow',function()
-				{
-					$("#lblMessage").html('CEP INEXISTENTE');
-				});
+			var pos = $(window).scrollTop();
+			    
+		    $("body").css({
+		    	"margin-top": -pos+"px",
+		        "overflow-y": "scroll", 
+		    });
 
+		    $(window).scrollTop(0);
+		        
+		    $("body").css("transition", "all 1s ease");
+		    $("body").css("margin-top", "0");
+		    $("body").on("webkitTransitionEnd transitionend msTransitionEnd oTransitionEnd", function()
+		    {
+		    	$("body").css("transition", "none");
+			});
+				
+			$("#alertInfo").fadeIn('slow',function()
+			{
+				$("#lblMessage").html('CEP INEXISTENTE');
+			});
 		});
 	});
 
@@ -139,7 +140,7 @@ $(document).ready(function()
 		$("#alertInfo").slideUp();
 	});
 });
-
+var _loading;
 var _parent;
 var _nomeDependente;
 var _dtNascDependente;
@@ -186,6 +187,28 @@ function configInit()
 	$("#alertInfo").css('display','none');
 
 }
+
+// Setup
+this.$('.js-loading-bar').modal({
+  backdrop: 'static',
+  show: false
+});
+
+//Exibe o loading quando acionado algum evento
+function loadingModal()
+{
+	var $modal = $('.js-loading-bar'),
+      	$bar = $modal.find('.progress-bar');
+  
+	  	$modal.modal('show');
+	  	$bar.addClass('animate');
+
+	  	setTimeout(function() {
+	    	$bar.removeClass('animate');
+	    	$modal.modal('hide');
+	      }, 1500);
+}
+
 
 /*
 *  Aplica mascas para os campos do formulário
