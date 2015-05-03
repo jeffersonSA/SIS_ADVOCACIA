@@ -30,7 +30,8 @@ $(document).ready(function(){
 function initConfig()
 {
 	//pre carregando o gif
-	loading = new Image(); loading.src = '../Content/img/loading.gif';
+	loading = new Image(); 
+	loading.src = '../Content/img/loading.gif';
 	_content.html( '<div class="col-sm-5"></div><img class="loading" src="../Content/img/loading.gif" />' );
 	
 	window.setTimeout(function(){
