@@ -140,8 +140,7 @@ $(document).ready(function()
 					hideLoadingModal();
 					window.setTimeout(function(){
 						$("#modalDependente").modal('show');
-					},520)
-				
+					},520);
 				},
 				error:function(err)
 				{
@@ -150,6 +149,14 @@ $(document).ready(function()
 				}
 			});
 		return false;
+	});
+
+	/*
+	* 	Habilita campos dependentes para cadastrar
+	*/
+	$("#btnSimDependente").click(function()
+	{
+		enableDisableInputs(false);
 	});
 });
 
@@ -261,13 +268,15 @@ function aplyMasks()
 */
 function enableDisableInputs(option)
 {
-	$("#txtNomeDependente").prop("disabled",option);
-	$("#txtDtNascimentoDependente").prop("disabled",option);
-	$("#txtRGDependente").prop("disabled",option);
-	$("#txtCPFDependente").prop("disabled",option);
-	$("#slcParentesco").prop("disabled",option);
-	$("#btnAddDependent").prop("disabled",option);
-	$("#btnEditDependent").prop("disabled",option);
+	//Inputs Dependentes
+	$("#pnlDependentes :input").prop('disabled', option);
+
+	//inputs Cliente
+	$("#pnlFisica 			:input").prop('disabled', !option);
+	$("#pnlJuridica 		:input").prop('disabled', !option);
+	$("#pnlContato 			:input").prop('disabled', !option);
+	$("#pnlDatadosBasicos 	:input").prop('disabled', !option);
+	$("#pnlEndereco 		:input").prop('disabled', !option);
 }
 
 function showMessage(msg,error)
