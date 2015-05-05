@@ -138,6 +138,10 @@ $(document).ready(function()
 				{
 					alert("sucesso");
 					hideLoadingModal();
+					window.setTimeout(function(){
+						$("#modalDependente").modal('show');
+					},520)
+				
 				},
 				error:function(err)
 				{
@@ -195,13 +199,20 @@ function configInit()
 	$("#pnlJuridica").css('display',"none");
 	$("#alertInfo").css('display','none');
 
+	// Setup
+	this.$('.js-loading-bar').modal({
+	  backdrop: 'static',
+	  show: false
+	});
+
+	$("#modalDependente").modal({
+		backdrop:'static',
+		show:false
+	});
+
 }
 
-// Setup
-this.$('.js-loading-bar').modal({
-  backdrop: 'static',
-  show: false
-});
+
 
 //Exibe o loading quando acionado algum evento
 function showLoadingModal()
