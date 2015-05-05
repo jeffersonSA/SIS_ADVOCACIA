@@ -1,8 +1,20 @@
-<!DOCTYPE>
+<!DOCTYPE html>
 <html>
 	<head>
 		<title></title>
+		<!-- SCRIPTS -->
+		<script type="text/javascript" src="../Content/js/jquery-1.11.2.min.js"> 							</script>
+		<script type="text/javascript" src="../Content/js/bootstrap.js"> 		 							</script>
+		<script type="text/javascript" src="../Content/js/bootstrap.min.js"> 								</script>
+		<script type="text/javascript" src="../Content/js/JsPages/mascara/jquery.maskedinput-1.3.1.min.js"> </script>
+			<script type="text/javascript" src="../Content/js/JsPages/cadastro_cliente.js"> 					</script>
 
+		<!-- CSS -->
+		<link rel="stylesheet" media="screen" href="../Content/css/bootstrap.css" />
+		<link rel="stylesheet" media="screen" href="../Content/css/bootstrap.min.css" />
+		<link rel="stylesheet" media="screen" href="../Content/css/bootstrap-responsive.css" />
+		<link rel="stylesheet" media="screen" href="../Content/css/bootstrap-responsive.min.css" />
+		<link rel="stylesheet" media="screen" href="../Content/css/CssPages/cadastro_cliente.css" />
 		
 	</head>
 
@@ -10,7 +22,7 @@
 	
 	<div class="container" >
 		<div class="row" >
-			<div class="col-md-9" id="content" >
+			<div class="" id="content" >
 				
 				<!--SCRIPTS -->
 				<script type="text/javascript" src="../Content/js/JsPages/mascara/jquery.maskedinput-1.3.1.min.js"> </script>
@@ -36,7 +48,7 @@
 				</div>
 
 				<!-- FORM -->
-				<form class="form-horizontal" id="frmCadCliente" required="false">
+				<form class="form-horizontal" action="" method="post" id="frmCadCliente" enctype='multipart/form-data' novalidate>
 					<div class="form-group" >
 						<div class="col-sm-4"></div>
 						<label class="control-label">TIPO DE CADASTRO:</label>
@@ -81,22 +93,22 @@
 						  	<div class="form-group" >
 								<label class="col-sm-2  control-label">Razão social:</label>
 							    <div class="col-sm-4" >
-							    	<input type="input" class="form-control" id="txtRazaoSocial" placeholder="Razão social" required>
+							    	<input type="input" class="form-control" id="txtRazaoSocial" placeholder="Razão social" >
 							    </div>
 							    <label class="col-sm-2 control-label label-data" >Nome fantasia:</label>
 							    <div class="col-sm-4">
-							    	<input type="Data" class="form-control" id="txtNomeFantasia" placeholder="Nome fantasia" required>
+							    	<input type="Data" class="form-control" id="txtNomeFantasia" placeholder="Nome fantasia" >
 							    </div>
 							</div>
 							<div class="form-group" >
 								<label class="col-sm-2  control-label">CNPJ:</label>
 							    <div class="col-sm-2">
-							    	<input type="Data" class="form-control" id="txtCNPJ" placeholder="CNPJ" required>
+							    	<input type="Data" class="form-control" id="txtCNPJ" placeholder="CNPJ" >
 							    </div>
 							    <div class="col-sm-2" ></div>
 							    <label class="col-md-2 control-label" >Inscrição estadual:</label>
 							    <div class="col-sm-2">
-							    	<input type="Data" class="form-control" id="txtInscEstadual" placeholder="Inscrição estadual" required>
+							    	<input type="Data" class="form-control" id="txtInscEstadual" placeholder="Inscrição estadual" >
 							    </div>
 							</div>
 					  	</div>
@@ -120,9 +132,9 @@
 							    </div>
 							</div>
 							<div class="form-group" >
-								<label class="col-sm-2  control-label">E-Mail:</label>
+								<label class="col-sm-2  control-label">Email:</label>
 							    <div class="col-sm-6">
-							    	<input type="input" class="form-control" id="txtCNPJ" placeholder="exemplo@exemplo.com.br">
+							    	<input type="input" class="form-control"  id="txtCNPJ" placeholder="exemplo@exemplo.com.br" data-error="Bruh, that email address is invalid">
 							    </div>
 							</div>
 					  	</div>
@@ -281,19 +293,9 @@
 							</div>
 					  	</div>
 					</div><!-- END PANEL ENDEREÇO -->
-					<!-- PANEL DEPENDENTES -->
-								
+					<!-- PANEL DEPENDENTES -->		
 					<div class="panel panel-primary" id="pnlDependentes">
-						<div class="panel-heading"><b>DEPENDENTES</b>
-							<div class="btn-group" data-toggle="buttons">
-								<label class="btn btn-default" id="rdnSimDependente">
-									<input type="radio" name="options" autocomplete="off" > <b>Sim</b>
-								</label>
-								<label class="btn btn-default active" id="rdnNaoDependente">
-									<input type="radio" name="options"  autocomplete="off" checked > <b>Não</b>
-								</label>
-							</div>
-						</div>
+						<div class="panel-heading"><b>DEPENDENTES</b></div>
 						<div class="panel-body" id="pnlBodyDependente">
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Nome:</label>
@@ -317,7 +319,7 @@
 							    <div class="col-sm-1">&nbsp</div>
 							    <label class="col-sm-2 control-label">Parentesco:</label>
 							    <div class="col-sm-2" >
-							    	<select class="form-control">
+							    	<select class="form-control" id="slcParentesco">
 							    		<option>Filho(a)</option>
 							    	</select>
 							    </div>
@@ -355,8 +357,8 @@
 					<div class="form-group">
 							<div class="col-sm-5">&nbsp</div>
 							<div class="col-sm-1">
-								<button type="submit" class="btn btn-lg btn-primary">
-								  <i class="glyphicon glyphicon-floppy-save icon-white"></i> Salvar
+								<button type="submit" id="btnSalvar" class="btn btn-lg btn-primary">
+								  <span class="glyphicon glyphicon-floppy-save icon-white"></span> Salvar
 								</button>
 							</div>
 					</div><!-- PANEL SALVAR -->

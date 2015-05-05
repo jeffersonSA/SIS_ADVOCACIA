@@ -1,0 +1,20 @@
+.container
+{
+	margin-left:1.1% !important; 
+	width:98% !important;
+}
+
+#content
+{
+	margin-top: 4%;
+}
+
+#txtSearchCNPJ
+{
+	display: none;
+}
+
+#pnlDependentes input:disabled
+{
+	 background: #dddddd;
+}

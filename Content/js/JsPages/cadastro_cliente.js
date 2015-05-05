@@ -75,29 +75,11 @@ $(document).ready(function()
 	});
 
 	/*
-	* Habilita a visualização dos campos para cadastrar os dependentes
-	*/
-	$("#rdnSimDependente").click(function()
-	{
-		$("#pnlBodyDependente").slideDown();
-	});
-
-	/*
-	* Desabilita a visualização dos campos de cadastro de dependente
-	*/
-	$("#rdnNaoDependente").click(function()
-	{
-	
-		$("#pnlBodyDependente").slideUp();
-
-	});
-
-	/*
 	* Busca o endereço pelo cep no webservice dos correios
 	*/
 	$("#btnSeachCEP").click(function()
 	{
-		loadingModal();
+		showLoadingModal();
 		var url = 'http://cep.correiocontrol.com.br/'+$("#txtCEP").val().replace("-","")+'.json'
 		$.getJSON(url,function(json)
 		{
@@ -105,6 +87,7 @@ $(document).ready(function()
 			$("#txtBairro").val(json.bairro);
 			$("#txtCidade").val(json.localidade);
 			$("#slcEstadoEnd").val(json.uf);
+			hideLoadingModal();
 		}).fail(function()
 		{
 			$("#txtRua").val('');
@@ -128,18 +111,44 @@ $(document).ready(function()
 		    	$("body").css("transition", "none");
 			});
 				
-			$("#alertInfo").fadeIn('slow',function()
-			{
-				$("#lblMessage").html('CEP INEXISTENTE');
-			});
+			 showMessage('CEP INEXISTENTE',true);
+			 hideLoadingModal();
 		});
 	});
 
+	/*
+	* Remove alert do tela ao clicar no botão "x" 
+	*/
 	$(".remove-alert").click(function()
 	{
 		$("#alertInfo").slideUp();
 	});
+
+	/*
+	* Executa request para salvar os dados do formulário
+	*/
+	$("#frmCadCliente").submit(function(evt)
+	{
+		showLoadingModal();
+		$.ajax(
+			{
+				type:"POST",
+				url:"../controller/ClienteController.php",
+				success:function(data)
+				{
+					alert("sucesso");
+					hideLoadingModal();
+				},
+				error:function(err)
+				{
+					alert('erro!');
+					hideLoadingModal();
+				}
+			});
+		return false;
+	});
 });
+
 var _loading;
 var _parent;
 var _nomeDependente;
@@ -182,8 +191,8 @@ function removeDependente(evt)
 function configInit()
 {
 	aplyMasks();
+	enableDisableInputs(true);
 	$("#pnlJuridica").css('display',"none");
-	$("#pnlBodyDependente").css('display','none');
 	$("#alertInfo").css('display','none');
 
 }
@@ -195,18 +204,28 @@ this.$('.js-loading-bar').modal({
 });
 
 //Exibe o loading quando acionado algum evento
-function loadingModal()
+function showLoadingModal()
 {
 	var $modal = $('.js-loading-bar'),
-      	$bar = $modal.find('.progress-bar');
-  
-	  	$modal.modal('show');
-	  	$bar.addClass('animate');
+    $bar = $modal.find('.progress-bar');
+  	
+  	$modal.fadeIn('slow')
+	//$modal.modal('show');
+	$bar.addClass('animate');
 
-	  	setTimeout(function() {
-	    	$bar.removeClass('animate');
-	    	$modal.modal('hide');
-	      }, 1500);
+}
+
+//Esconde o loading quando acionado algum evento
+function hideLoadingModal()
+{
+	var $modal = $('.js-loading-bar'),
+    $bar = $modal.find('.progress-bar');
+	
+	window.setTimeout(function() {
+		$bar.removeClass('animate');
+		$modal.fadeOut('slow');
+	}, 500);
+      
 }
 
 
@@ -217,10 +236,47 @@ function aplyMasks()
 {
 	$("#txtRG").mask("99.999.999-*");
 	$("#txtCPF").mask("999.999.999-99");
+	$("#txtCNPJ").mask("99.999.999/9999-99");
 	$("#txtCEP").mask("99999-999");
 	$("#txtTel1").mask("(99)9999-9999");
-	$("#txtTe2").mask("(99)9999-9999");
+	$("#txtTel2").mask("(99)9999-9999");
 	$("#txtCel").mask("(99)99999-9999");
 	$("#txtRGDependente").mask("99.999.999-*");
 	$("#txtCPFDependente").mask("999.999.999-99");
+}
+
+/*
+* Habilitar ou desablitar campos de dependente
+*/
+function enableDisableInputs(option)
+{
+	$("#txtNomeDependente").prop("disabled",option);
+	$("#txtDtNascimentoDependente").prop("disabled",option);
+	$("#txtRGDependente").prop("disabled",option);
+	$("#txtCPFDependente").prop("disabled",option);
+	$("#slcParentesco").prop("disabled",option);
+	$("#btnAddDependent").prop("disabled",option);
+	$("#btnEditDependent").prop("disabled",option);
+}
+
+function showMessage(msg,error)
+{
+	if(error)
+	{
+		$("#alertInfo").removeClass('alert-success');
+		$("#alertInfo").addClass('alert-danger');
+		$("#alertInfo").fadeIn('slow',function()
+		{
+			$("#lblMessage").html(msg);
+		});
+	}
+	else
+	{
+		$("#alertInfo").removeClass('alert-danger');
+		$("#alertInfo").addClass('alert-success');
+		$("#alertInfo").fadeIn('slow',function()
+		{
+			$("#lblMessage").html(msg);
+		});
+	}
 }
