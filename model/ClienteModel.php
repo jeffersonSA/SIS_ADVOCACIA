@@ -326,42 +326,51 @@ class Cliente
    /* INSERE UM NOVO CLIENTE */
 	function save()
 	{
-		$connection = new Connection();
-		$this->pdo = $connection->connect();
 
-		$insertCliente = $this->pdo->prepare(
-			"INSERT INTO CLIENTE (".
-									"TELEFONE1,".
-			 						"TELEFONE2,". 
-			 						"CELULAR,". 
-			 						"EMAIL,".
-			 						"LOGRADOURO,".
-			 						"CEP,".
-			 						"NUM,".
-			 						"BAIRRO,".
-			 						"CIDADE,".
-			 						"UF,".
-			 						"COMPLEMENTO) VALUES(?,?,?,?,?,?,?,?,?,?,?)"); 
+		try
+		{
+			$connection = new Connection();
+			$this->pdo = $connection->connect();
 
-		$insertCliente->bindValue(1,$this->tel1);
-		$insertCliente->bindValue(2,$this->tel2);
-		$insertCliente->bindValue(3,$this->cel);
-		$insertCliente->bindValue(4,$this->email);
-		$insertCliente->bindValue(5,$this->logradouro);
-		$insertCliente->bindValue(6,$this->endCep);
-		$insertCliente->bindValue(7,$this->endNum);
-		$insertCliente->bindValue(8,$this->endBairro);
-		$insertCliente->bindValue(9,$this->endCidade);
-		$insertCliente->bindValue(10,$this->endUf);
-		$insertCliente->bindValue(11,$this->endComple);
-		
-		$insertCliente->execute();
-		$lastIdCliente = $this->pdo->lastInsertId();
-		
-		if($this->isJuridico)
-			saveJuridicalPerson($lastIdCliente);
-		else 
-			savePhysicalPerson($lastIdCliente);
+			$insertCliente = $this->pdo->prepare(
+				"INSERT INTO CLIENTE (".
+										"TELEFONE1,".
+				 						"TELEFONE2,". 
+				 						"CELULAR,". 
+				 						"EMAIL,".
+				 						"LOGRADOURO,".
+				 						"CEP,".
+				 						"NUM,".
+				 						"BAIRRO,".
+				 						"CIDADE,".
+				 						"UF,".
+				 						"COMPLEMENTO) VALUES(?,?,?,?,?,?,?,?,?,?,?)"); 
+
+			$insertCliente->bindValue(1,$this->tel1);
+			$insertCliente->bindValue(2,$this->tel2);
+			$insertCliente->bindValue(3,$this->cel);
+			$insertCliente->bindValue(4,$this->email);
+			$insertCliente->bindValue(5,$this->logradouro);
+			$insertCliente->bindValue(6,$this->endCep);
+			$insertCliente->bindValue(7,$this->endNum);
+			$insertCliente->bindValue(8,$this->endBairro);
+			$insertCliente->bindValue(9,$this->endCidade);
+			$insertCliente->bindValue(10,$this->endUf);
+			$insertCliente->bindValue(11,$this->endComple);
+			
+			$insertCliente->execute();
+			$lastIdCliente = $this->pdo->lastInsertId();
+			
+			if($this->isJuridico)
+				saveJuridicalPerson($lastIdCliente);
+			else 
+				savePhysicalPerson($lastIdCliente);
+
+		} 
+		catch (Exception $e) 
+		{
+ 			echo 'Erro ao salvar o cliente:'.$e->getMessage();
+		}
 }
 
 	/* ATUALIZA CLIENTE */
@@ -391,7 +400,9 @@ class Cliente
 
 	private function saveJuridicalPerson($idLastClient)
 	{
-		$insertJuridico = $this->pdo->prepare(
+		try 
+		{
+			$insertJuridico = $this->pdo->prepare(
 			"INSERT INTO JURIDICA (".
 									"RAZAO_SOCIAL,".
 			 						"NOME_FANTASIA,". 
@@ -399,19 +410,27 @@ class Cliente
 			 						"INSCRICAO_ESTADUAL,".
 			 						"FK_CLIENTE) VALUES(?,?,?,?,?)"); 
 
-		$insertJuridico->bindValue(1,$this->razSocial);
-		$insertJuridico->bindValue(2,$this->nomeFant);
-		$insertJuridico->bindValue(3,$this->cnpj);
-		$insertJuridico->bindValue(4,$this->inscEstadual);
-		$insertJuridico->bindValue(5,$idLastClient);
+			$insertJuridico->bindValue(1,$this->razSocial);
+			$insertJuridico->bindValue(2,$this->nomeFant);
+			$insertJuridico->bindValue(3,$this->cnpj);
+			$insertJuridico->bindValue(4,$this->inscEstadual);
+			$insertJuridico->bindValue(5,$idLastClient);
 
-		$insertJuridico->execute();
+			$insertJuridico->execute();
+		} 
+		catch (Exception $e) 
+		{
+			echo 'Erro ao salvar cliente como pessoa juridica:'.$e->getMessage();
+		}
+	
 	}
 
 	private function savePhysicalPerson($idlastClient)
 	{
 
-		$insertPhysical = $this->pdo->prepare(
+		try 
+		{
+			$insertPhysical = $this->pdo->prepare(
 			"INSERT INTO CLIENTE (".
 									"NOME,".
 			 						"DT_NASCIMENTO,". 
@@ -427,21 +446,27 @@ class Cliente
 			 						"CATEGORIA,".
 			 						"FK_CLIENTE) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)"); 
 
-		$insertPhysical->bindValue(1,$this->nome);
-		$insertPhysical->bindValue(2,$this->dtNasc);
-		$insertPhysical->bindValue(3,$this->sexo);
-		$insertPhysical->bindValue(4,$this->cpf);
-		$insertPhysical->bindValue(5,$this->rgNum);
-		$insertPhysical->bindValue(6,$this->rgUfEmis);
-		$insertPhysical->bindValue(7,$this->rgDtEmis);
-		$insertPhysical->bindValue(8,$this->ctpsNum);
-		$insertPhysical->bindValue(9,$this->ctpsSerie);
-		$insertPhysical->bindValue(10,$this->ctpsDtEmis);
-		$insertPhysical->bindValue(11,$this->cnh);
-		$insertPhysical->bindValue(12,$this->cnhCat);
-		$insertPhysical->bindValue(13,$idlastClient);
+			$insertPhysical->bindValue(1,$this->nome);
+			$insertPhysical->bindValue(2,$this->dtNasc);
+			$insertPhysical->bindValue(3,$this->sexo);
+			$insertPhysical->bindValue(4,$this->cpf);
+			$insertPhysical->bindValue(5,$this->rgNum);
+			$insertPhysical->bindValue(6,$this->rgUfEmis);
+			$insertPhysical->bindValue(7,$this->rgDtEmis);
+			$insertPhysical->bindValue(8,$this->ctpsNum);
+			$insertPhysical->bindValue(9,$this->ctpsSerie);
+			$insertPhysical->bindValue(10,$this->ctpsDtEmis);
+			$insertPhysical->bindValue(11,$this->cnh);
+			$insertPhysical->bindValue(12,$this->cnhCat);
+			$insertPhysical->bindValue(13,$idlastClient);
 
-		$insertJuridico->execute();
+			$insertJuridico->execute();
+		} 
+		catch (Exception $e) 
+		{
+			echo 'Erro ao salvar cliente como pessoa física:'.$e->getMessage();
+		}
+		
 	}
 }
 

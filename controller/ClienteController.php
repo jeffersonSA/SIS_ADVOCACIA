@@ -4,10 +4,11 @@
  	$action = $_POST['action'];
   	switch ($action) 
   	{
-  		case $action: 
-  	
-  			save(); 
-  		break;
+  		case $action: save();	 	break;
+  		case $action: update(); 	break;
+  		case $action: delete(); 	break;
+  		case $action: select(); 	break;
+  		case $action: selectAll() 	break;
   	}
  	
  	//echo 'count'.count($data);
@@ -49,10 +50,13 @@
 						case 'CLI_CNPJ'			: $CLI_CNPJ 			= $content[1]; break;
 						case 'CLI_RAZ_SOCIAL'	: $CLI_RAZ_SOCIAL 		= $content[1]; break;
 						case 'CLI_NOME_FANT'	: $CLI_NOME_FANT 		= $content[1]; break;
+						case 'CLI_INSC_ESTADUAL': $CLI_INSC_ESTADUAL	= $content[1]; break;
 						case 'CLI_TEL'			: $CLI_TEL 				= $content[1]; break;
 						case 'CLI_TEL2'			: $CLI_TEL2 			= $content[1]; break;
 						case 'CLI_CEL'			: $CLI_CEL		 		= $content[1]; break;
 						case 'CLI_EMAIL'		: $CLI_EMAIL 			= $content[1]; break;
+						case 'JURIDICA'			: $TIPO_PESSOA 			= $content[1]; break;
+
 					}
 				}
 
@@ -69,9 +73,43 @@
 					$clienteModel->setCidade($CLI_END_CIDADE);
 					$clienteModel->setEndUf($CLI_END_UF);
 					$clienteModel->setComplemento($CLI_END_COMPLE);
+					
+					if ($TIPO_PESSOA == "on") 
+					{
+						$clienteModel->setRazaoSocial($CLI_RAZ_SOCIAL);
+						$clienteModel->setNomeFantasia($CLI_NOME_FANT);
+						$clienteModel->setCnpj($CLI_CNPJ);
+						$clienteModel->setInscricaoEstadual($setInscricaoEstadual);
+					}
+					else
+					{
+						$clienteModel->setNome($CLI_NOME);
+						$clienteModel->setDataNascimento($CLI);
+						$clienteModel->setSexo($CLI_SEXO);
+						$clienteModel->setCpf($CLI_CPF);
+						$clienteModel->setRgNum($CLI_RG_NUM);
+						$clienteModel->setRgUfEmis($CLI_RG_LOC_EMIS);
+						$clienteModel->setRgDtEmis($CLI_RG_DT_EMIS);
+						$clienteModel->setCtpsNum($CLI_CTPS_NUM);
+						$clienteModel->setCtpsSerie($CLI_CTPS_SERIE);
+						$clienteModel->setCtpsDtEmis($CLI_CTPS_DT_EMIS);
+						$clienteModel->setCnh($CLI_CNH);
+						$clienteModel->setCnhCat($CLI_CNH_CAT);
+					}
 
 					$clienteModel->save();
 					
+			} 
+			catch (Exception $e) 
+			{
+ 				echo $e->getMessage();
+			}
+		}
+
+		function update()
+		{
+			try 
+			{
 			} 
 			catch (Exception $e) 
 			{
@@ -79,7 +117,29 @@
 			}
 		}
 
-		function update()
+		function delete()
+		{
+			try 
+			{
+			} 
+			catch (Exception $e) 
+			{
+ 				echo 'Erro:'.$e;
+			}
+		}
+
+		function select()
+		{
+			try 
+			{
+			} 
+			catch (Exception $e) 
+			{
+ 				echo 'Erro:'.$e;
+			}
+		}
+
+		function selectAll()
 		{
 			try 
 			{
