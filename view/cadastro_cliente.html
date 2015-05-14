@@ -54,10 +54,10 @@
 						<label class="control-label">TIPO DE CADASTRO:</label>
 						<div class="btn-group" data-toggle="buttons">
 							<label class="btn btn-primary active" id="rdnFisica">
-								<input type="radio" name="options" autocomplete="off" checked> <b>Física</b>
+								<input type="radio"  autocomplete="off" checked> <b>Física</b>
 							</label>
 							<label class="btn btn-primary" id="rdnJuridica">
-								<input type="radio" name="options"  autocomplete="off"> <b>Jurídica</b>
+								<input type="radio"   autocomplete="off"> <b>Jurídica</b>
 							</label>
 						</div>
 					</div>
@@ -68,17 +68,17 @@
 						  	<div class="form-group" >
 								<label class="col-sm-2  control-label col-sm-offset-0 ">Nome do cliente:</label>
 							    <div class="col-sm-6" >
-							    	<input type="input" class="form-control" id="txtClient" placeholder="Nome do cliente" required>
+							    	<input type="input" class="form-control" id="txtClient" placeholder="Nome do cliente" name="CLI_NOME" required>
 							    </div>
 							    <label class="col-sm-2 control-label label-data" >Data de nascimento:</label>
 							    <div class="col-sm-2">
-							    	<input type="Date" class="form-control" id="txtDataNascimento" placeholder="dd/mm/aaaa" required>
+							    	<input type="Date" class="form-control" id="txtDataNascimento" placeholder="dd/mm/aaaa" required name="CLI_DT_NASC">
 							    </div>
 							</div>
 							<div class="form-group" >
 								<label class="col-sm-2  control-label">Sexo:</label>
 							    <div class="col-sm-2">
-							    	<select class="form-control">
+							    	<select class="form-control" name="CLI_SEXO">
 							    		<option>Masculino</option>
 							    		<option>Feminino</option>
 							    	</select>
@@ -93,22 +93,22 @@
 						  	<div class="form-group" >
 								<label class="col-sm-2  control-label">Razão social:</label>
 							    <div class="col-sm-4" >
-							    	<input type="input" class="form-control" id="txtRazaoSocial" placeholder="Razão social" >
+							    	<input type="input" class="form-control" id="txtRazaoSocial" placeholder="Razão social" name="CLI_RAZ_SOCIAL" >
 							    </div>
 							    <label class="col-sm-2 control-label label-data" >Nome fantasia:</label>
 							    <div class="col-sm-4">
-							    	<input type="Data" class="form-control" id="txtNomeFantasia" placeholder="Nome fantasia" >
+							    	<input type="Data" class="form-control" id="txtNomeFantasia" placeholder="Nome fantasia" name="CLI_NOME_FANT" >
 							    </div>
 							</div>
 							<div class="form-group" >
 								<label class="col-sm-2  control-label">CNPJ:</label>
 							    <div class="col-sm-2">
-							    	<input type="Data" class="form-control" id="txtCNPJ" placeholder="CNPJ" >
+							    	<input type="Data" class="form-control" id="txtCNPJ" placeholder="CNPJ"  maxLength="17" name="CLI_CNPJ">
 							    </div>
 							    <div class="col-sm-2" ></div>
 							    <label class="col-md-2 control-label" >Inscrição estadual:</label>
 							    <div class="col-sm-2">
-							    	<input type="Data" class="form-control" id="txtInscEstadual" placeholder="Inscrição estadual" >
+							    	<input type="Data" class="form-control" id="txtInscEstadual" placeholder="Inscrição estadual"name="CLI_IE" >
 							    </div>
 							</div>
 					  	</div>
@@ -120,21 +120,21 @@
 						  	<div class="form-group" >
 								<label class="col-sm-2  control-label">Telefone 1:</label>
 							    <div class="col-sm-2" >
-							    	<input type="input" class="form-control" id="txtTel1" placeholder="(__)____-____" required>
+							    	<input type="input" class="form-control" id="txtTel1" placeholder="(__)____-____"  maxLength="14" required name="CLI_TEL">
 							    </div>
 							    <label class="col-sm-2 control-label label-data" >Telefone 2:</label>
 							    <div class="col-sm-2">
-							    	<input type="input" class="form-control" id="txtTel2" placeholder="(__)____-____">
+							    	<input type="input" class="form-control" id="txtTel2" placeholder="(__)____-____"  maxLength="14" name="CLI_TEL2">
 							    </div>
 							    <label class="col-sm-2  control-label">Celular:</label>
 							    <div class="col-sm-2">
-							    	<input type="input" class="form-control" id="txtCel" placeholder="(__)_____-____">
+							    	<input type="input" class="form-control" id="txtCel" placeholder="(__)_____-____"  maxLength="15" name="CLI_CEL">
 							    </div>
 							</div>
 							<div class="form-group" >
 								<label class="col-sm-2  control-label">Email:</label>
 							    <div class="col-sm-6">
-							    	<input type="input" class="form-control"  id="txtCNPJ" placeholder="exemplo@exemplo.com.br" data-error="Bruh, that email address is invalid">
+							    	<input type="input" class="form-control"  id="txtCNPJ" placeholder="exemplo@exemplo.com.br" name="CLI_EMAIL">
 							    </div>
 							</div>
 					  	</div>
@@ -146,21 +146,21 @@
 							<div class="form-group" >
 								<label class="col-sm-2  control-label">CPF:</label>
 							    <div class="col-sm-2">
-							    	<input type="input" class="form-control" id="txtCPF" placeholder="CPF" required>
+							    	<input type="input" class="form-control" id="txtCPF" placeholder="CPF"  maxLength="14" required name="CLI_CPF">
 							    </div>
 							</div>
 							<div class="form-group" >
 								<label class="col-sm-2 control-label">RG:</label>
 							    <div class="col-sm-2">
-							    	<input type="" class="form-control" id="txtRG" placeholder="RG" required>
+							    	<input type="" class="form-control" id="txtRG" placeholder="RG" maxLength="11" required name="CLI_RG">
 							    </div>
 							    <label class="col-sm-2 control-label" >Data de emissão:</label>
 							    <div class="col-sm-2" >
-							    	<input type="date" class="form-control" id="txtDtEmissaoRG" placeholder="dd/mm/aaaa" required>
+							    	<input type="date" class="form-control" id="txtDtEmissaoRG" placeholder="dd/mm/aaaa" required name="CLI_RG_DT_EMIS" >
 							    </div>
 							    <label class="col-sm-2 control-label">Local de emissão:</label>
 							    <div class="col-sm-1" style="width:9%">
-							    	<select class="form-control">
+							    	<select class="form-control" name="CLI_RG_LOC_EMIS">
 							    		<option>AC</option>
 							    		<option>AL</option>
 							    		<option>AM</option>
@@ -193,26 +193,26 @@
 							<div class="form-group" >
 								<label class="col-sm-2 control-label">Número CTPS:</label>
 							    <div class="col-sm-2">
-							    	<input type="input" class="form-control" id="txtCTPS" placeholder="CTPS" required>
+							    	<input type="input" class="form-control" id="txtCTPS" placeholder="CTPS" required name="CLI_CTPS_NUM">
 							    </div>
 							    <label class="col-sm-2 control-label">Série:</label>
 							    <div class="col-sm-1" >
-							    	<input type="input" class="form-control" id="txtSerie" placeholder="Série" required>
+							    	<input type="input" class="form-control" id="txtSerie" placeholder="Série" required name="CLI_CTPS_SERIE">
 							    </div>
 							    <div class="col-sm-1" ></div>
 							     <label class="col-sm-2 control-label">Data de emissão:</label>
 							    <div class="col-sm-2" >
-							    	<input type="Date" class="form-control" id="txtDtEmissaoCTPS" placeholder="dd/mm/aaaa" required>
+							    	<input type="Date" class="form-control" id="txtDtEmissaoCTPS" placeholder="dd/mm/aaaa" required  name="CLI_CTPS_DT_EMIS">
 							    </div>
 							</div>
 							<div class="form-group" >
 								<label class="col-sm-2 control-label">CNH:</label>
 							    <div class="col-sm-2">
-							    	<input type="input" class="form-control" id="txtCNH" placeholder="CNH" required>
+							    	<input type="input" class="form-control" id="txtCNH" placeholder="CNH" required name="CLI_CNH">
 							    </div>
 							    <label class="col-sm-2 control-label">Categoria:</label>
 							    <div class="col-sm-2" >
-							    	<input type="input" class="form-control" id="txtCategoria" placeholder="Categoria" required>
+							    	<input type="input" class="form-control" id="txtCategoria" placeholder="Categoria" required name="CLI_CNH_CAT">
 							    </div>
 							</div>
 						</div>
@@ -225,7 +225,7 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">CEP:</label>
 							    <div class="col-sm-2">
-							    	<input type="input" class="form-control" id="txtCEP" placeholder="CEP" required>
+							    	<input type="input" class="form-control" id="txtCEP" placeholder="CEP"  maxLength="9" required name="CLI_END_CEP">
 							    </div>
 							    <div class="col-xs-1">
 									<button type="button" class="btn btn-default" id="btnSeachCEP">
@@ -234,28 +234,28 @@
 								</div>
 							</div>
 					    	<div class="form-group" >
-								<label class="col-sm-2 control-label">Rua:</label>
+								<label class="col-sm-2 control-label">Logradouro:</label>
 							    <div class="col-sm-6">
-							    	<input type="input" class="form-control" id="txtRua" placeholder="Rua" required>
+							    	<input type="input" class="form-control" id="txtRua" placeholder="Rua" required name="CLI_LOGRADOURO">
 							    </div>
 							    <div class="col-sm-1"></div>
 							    <label class="col-sm-1 control-label">Número:</label>
 							    <div class="col-sm-1" style="width:9%" >
-							    	<input type="input" class="form-control" id="txtNumero" placeholder="" rquired>
+							    	<input type="input" class="form-control" id="txtNumero" placeholder="" rquired name="CLI_END_NUM">
 							    </div>
 							</div>
 							<div class="form-group" >
 								<label class="col-sm-2 control-label">Bairro:</label>
 							    <div class="col-sm-3">
-							    	<input type="input" class="form-control" id="txtBairro" placeholder="Bairro" required>
+							    	<input type="input" class="form-control" id="txtBairro" placeholder="Bairro" required name="CLI_END_BAIRRO">
 							    </div>
 							    <label class="col-sm-1 control-label">Cidade:</label>
 							    <div class="col-sm-3" >
-							    	<input type="input" class="form-control" id="txtCidade" placeholder="Cidade" required>
+							    	<input type="input" class="form-control" id="txtCidade" placeholder="Cidade" required name="CLI_END_CIDADE">
 							    </div>
 							    <label class="col-sm-1 control-label">Estado:</label>
 							   	<div class="col-sm-1" style="width:9%">
-							    	<select class="form-control" id="slcEstadoEnd">
+							    	<select class="form-control" id="slcEstadoEnd"  name="CLI_END_UF">
 							    		<option>AC</option>
 							    		<option>AL</option>
 							    		<option>AM</option>
@@ -288,7 +288,7 @@
 							<div class="form-group" >
 								<label class="col-sm-2 control-label">Complemento:</label>
 							    <div class="col-sm-3">
-							    	<input type="input" class="form-control" id="txtComplemento" placeholder="Complemento">
+							    	<input type="input" class="form-control" id="txtComplemento" placeholder="Complemento" name="CLI_END_COMPLE">
 							    </div>
 							</div>
 					  	</div>
@@ -300,7 +300,7 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">Nome:</label>
 							    <div class="col-sm-6">
-							    	<input type="input" class="form-control" id="txtNomeDependente" placeholder="Nome" required>
+							    	<input type="input" class="form-control" id="txtNomeDependente" placeholder="Nome" required >
 							    </div>
 							    <label class="col-sm-2 control-label">Data nascimento:</label>
 							    <div class="col-sm-2" >
@@ -310,11 +310,11 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">RG:</label>
 							    <div class="col-sm-2">
-							    	<input type="input" class="form-control" id="txtRGDependente" placeholder="RG" required>
+							    	<input type="input" class="form-control" id="txtRGDependente" placeholder="RG"  maxLength="11" required>
 							    </div>
 							    <label class="col-sm-1  control-label">CPF:</label>
 							    <div class="col-sm-2">
-							    	<input type="input" class="form-control" id="txtCPFDependente" placeholder="CPF" required>
+							    	<input type="input" class="form-control" id="txtCPFDependente" placeholder="CPF"  maxLength="14" required>
 							    </div>
 							    <div class="col-sm-1">&nbsp</div>
 							    <label class="col-sm-2 control-label">Parentesco:</label>

@@ -2,9 +2,6 @@ $(document).ready(function(){
     
 	initConfig();
 
-    $('#table_id').DataTable({
-    	 responsive: true
-    });
 
     /*
 	* Ativa pesquisa para pessoa juridica
@@ -43,7 +40,7 @@ function initConfig()
 *  Aplica mascas para os campos
 */
 function aplyMasks()
-{
+{/*
 	$("#txtSearchCPF").mask("999.999.999-99");
-	$("#txtSearchCNPJ").mask("99.999.999/9999-99");
+	$("#txtSearchCNPJ").mask("99.999.999/9999-99");*/
 }

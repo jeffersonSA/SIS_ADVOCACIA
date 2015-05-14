@@ -17,4 +17,32 @@
 #pnlDependentes input:disabled
 {
 	 background: #dddddd;
+
 }
+
+#tblResult
+{
+	width: 100%;
+}
+
+.column-formated-1 
+{
+	font-size: 14px !important;
+
+	text-align: center;
+	width:40%;
+}
+
+.column-formated-2 
+{
+	font-size: 14px !important;
+	text-align: center;
+	width:15%;
+}
+
+.column-formated-3
+{
+	font-size: 14px !important;
+	text-align: center;
+	width:7%;
+} 

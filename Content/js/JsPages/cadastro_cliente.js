@@ -130,11 +130,18 @@ $(document).ready(function()
 	$("#frmCadCliente").submit(function(evt)
 	{
 		showLoadingModal();
+		
+		var infos = $(this).serialize(); 
+		
 		$.ajax(
 			{
 				type:"POST",
 				url:"../controller/ClienteController.php",
-				success:function(data)
+				data:{
+					"action":"save",
+					"data":infos
+				},
+				success:function(response)
 				{
 					alert("sucesso");
 					hideLoadingModal();
@@ -252,15 +259,42 @@ function hideLoadingModal()
 */
 function aplyMasks()
 {
-	$("#txtRG").mask("99.999.999-*");
-	$("#txtCPF").mask("999.999.999-99");
-	$("#txtCNPJ").mask("99.999.999/9999-99");
-	$("#txtCEP").mask("99999-999");
-	$("#txtTel1").mask("(99)9999-9999");
-	$("#txtTel2").mask("(99)9999-9999");
-	$("#txtCel").mask("(99)99999-9999");
-	$("#txtRGDependente").mask("99.999.999-*");
-	$("#txtCPFDependente").mask("999.999.999-99");
+
+	$("#txtRG").keypress(function(){
+		mascara(this,rg);
+	});
+
+	$("#txtCPF").keypress(function(){
+		mascara(this,cpf);
+	});
+
+	$("#txtCNPJ").keypress(function(){
+		mascara(this,cnpj);
+	});
+
+	$("#txtCEP").keypress(function(){
+		mascara(this,cep);
+	});
+
+	$("#txtTel1").keypress(function(){
+		mascara(this,telefone);
+	});
+
+	$("#txtTel2").keypress(function(){
+		mascara(this,telefone);
+	});
+
+	$("#txtCel").keypress(function(){
+		mascara(this,celular);
+	});
+
+	$("#txtRGDependente").keypress(function(){
+		mascara(this,rg);
+	});
+
+	$("#txtCPFDependente").keypress(function(){
+		mascara($(this),cpf);
+	});
 }
 
 /*
