@@ -54,10 +54,10 @@
 						<label class="control-label">TIPO DE CADASTRO:</label>
 						<div class="btn-group" data-toggle="buttons">
 							<label class="btn btn-primary active" id="rdnFisica">
-								<input type="radio"  autocomplete="off" checked> <b>Física</b>
+								<input type="radio" name="FISICA" autocomplete="off" checked> <b>Física</b>
 							</label>
 							<label class="btn btn-primary" id="rdnJuridica">
-								<input type="radio"   autocomplete="off"> <b>Jurídica</b>
+								<input type="radio" name="JURIDICA"  autocomplete="off"> <b>Jurídica</b>
 							</label>
 						</div>
 					</div>
@@ -108,7 +108,7 @@
 							    <div class="col-sm-2" ></div>
 							    <label class="col-md-2 control-label" >Inscrição estadual:</label>
 							    <div class="col-sm-2">
-							    	<input type="Data" class="form-control" id="txtInscEstadual" placeholder="Inscrição estadual"name="CLI_IE" >
+							    	<input type="Data" class="form-control" id="txtInscEstadual" placeholder="Inscrição estadual"name="CLI_INSC_ESTADUAL" >
 							    </div>
 							</div>
 					  	</div>
@@ -372,11 +372,12 @@
 						        <h4 class="modal-title" id="myModalLabel">Aviso</h4>
 						   	</div>
 						   	<div class="modal-body">
-       							  Deseja cadastrar dependentes?
+       							 
 						    </div>
 						    <div class="modal-footer">
 						    	<button id="btnSimDependente" type="button" class="btn btn-primary" data-dismiss="modal" >Sim</button>
 						        <button id="btnNaoDependente" type="button" class="btn btn-primary" data-dismiss="modal">Não</button>
+						        <button id="btnOKDependente" type="button" class="btn btn-primary" data-dismiss="modal">OK</button>
 						    </div>
     					</div>
   					</div>

@@ -2,6 +2,7 @@
 require("../connection/con_mysql.php");
 class Cliente
 {
+	private $id;
 	private $dtCad;
 	private	$nome; 
 	private $dtNasc;		
@@ -30,10 +31,19 @@ class Cliente
 	private $tel2;
 	private $cel;
 	private $email;	
-	private $isJuridico = false;	
+	private $isJuridico;	
    	private $pdo;
 	
 	/* PROPRIEDADES */
+	public function setId($value)
+	{
+		$this->id = $value;
+	}
+
+	public function getId()
+	{
+		return $this->id;
+	}
 	public function setCliDtCad($value)
 	{
 		$this->dtCad = $value;
@@ -324,7 +334,7 @@ class Cliente
 
 
    /* INSERE UM NOVO CLIENTE */
-	function save()
+	public function save()
 	{
 
 		try
@@ -358,18 +368,26 @@ class Cliente
 			$insertCliente->bindValue(10,$this->endUf);
 			$insertCliente->bindValue(11,$this->endComple);
 			
-			$insertCliente->execute();
-			$lastIdCliente = $this->pdo->lastInsertId();
+			 $insertCliente->execute();
+			 $lastIdCliente = $this->pdo->lastInsertId();
 			
-			if($this->isJuridico)
-				saveJuridicalPerson($lastIdCliente);
+
+			if($lastIdCliente != 0)
+			{
+				if($this->isJuridico)
+					$this->saveJuridicalPerson($lastIdCliente);
+			 	else 
+			 		$this->savePhysicalPerson($lastIdCliente);
+			}
 			else 
-				savePhysicalPerson($lastIdCliente);
+			{
+				echo 'Erro';
+			}			
 
 		} 
 		catch (Exception $e) 
 		{
- 			echo 'Erro ao salvar o cliente:'.$e->getMessage();
+ 			echo 'Erro: '.$e->getMessage();
 		}
 }
 
@@ -382,6 +400,11 @@ class Cliente
 	/* DELETA CLIENTE */
 	function delete()
 	{
+		$connection = new Connection();
+		$this->pdo = $connection->connect();
+
+		$deleteCliente = $this->pdo->prepare("DELETE FROM CLIENTE WHERE ID=?");
+		$deleteCliente->bindValue(1,$this->id);
 
 	}
 
@@ -417,10 +440,16 @@ class Cliente
 			$insertJuridico->bindValue(5,$idLastClient);
 
 			$insertJuridico->execute();
+			$insertJuridico = $this->pdo->lastInsertId();
+
+			if($insertJuridico !=0)
+				echo 'success';
+			else
+				echo 'Erro';
 		} 
 		catch (Exception $e) 
 		{
-			echo 'Erro ao salvar cliente como pessoa juridica:'.$e->getMessage();
+			echo 'Erro: '.$e->getMessage();
 		}
 	
 	}
@@ -460,11 +489,17 @@ class Cliente
 			$insertPhysical->bindValue(12,$this->cnhCat);
 			$insertPhysical->bindValue(13,$idlastClient);
 
-			$insertJuridico->execute();
+			$insertPhysical->execute();
+			$insertPhysical = $this->pdo->lastInsertId();
+
+			if($insertPhysical !=0)
+				echo 'success';
+			else
+				echo 'Erro';
 		} 
 		catch (Exception $e) 
 		{
-			echo 'Erro ao salvar cliente como pessoa física:'.$e->getMessage();
+			echo 'Erro: '.$e->getMessage();
 		}
 		
 	}

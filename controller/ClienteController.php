@@ -8,7 +8,7 @@
   		case $action: update(); 	break;
   		case $action: delete(); 	break;
   		case $action: select(); 	break;
-  		case $action: selectAll() 	break;
+  		case $action: selectAll(); 	break;
   	}
  	
  	//echo 'count'.count($data);
@@ -74,17 +74,19 @@
 					$clienteModel->setEndUf($CLI_END_UF);
 					$clienteModel->setComplemento($CLI_END_COMPLE);
 					
-					if ($TIPO_PESSOA == "on") 
+					if($TIPO_PESSOA == "on") 
 					{
+						$clienteModel->setIsJuridico(true);
 						$clienteModel->setRazaoSocial($CLI_RAZ_SOCIAL);
 						$clienteModel->setNomeFantasia($CLI_NOME_FANT);
 						$clienteModel->setCnpj($CLI_CNPJ);
-						$clienteModel->setInscricaoEstadual($setInscricaoEstadual);
+						$clienteModel->setInscricaoEstadual($CLI_INSC_ESTADUAL);
 					}
 					else
 					{
+						$clienteModel->setIsJuridico(false);
 						$clienteModel->setNome($CLI_NOME);
-						$clienteModel->setDataNascimento($CLI);
+						$clienteModel->setDataNascimento($CLI_DT_NASC);
 						$clienteModel->setSexo($CLI_SEXO);
 						$clienteModel->setCpf($CLI_CPF);
 						$clienteModel->setRgNum($CLI_RG_NUM);
@@ -97,12 +99,13 @@
 						$clienteModel->setCnhCat($CLI_CNH_CAT);
 					}
 
+					
 					$clienteModel->save();
 					
 			} 
 			catch (Exception $e) 
 			{
- 				echo $e->getMessage();
+ 				echo $e;
 			}
 		}
 
@@ -110,6 +113,10 @@
 		{
 			try 
 			{
+				$Id = $_POST['Id'];
+				
+				$clienteModel = new Cliente();
+				$clienteModel->delete($id);
 			} 
 			catch (Exception $e) 
 			{
@@ -121,6 +128,7 @@
 		{
 			try 
 			{
+
 			} 
 			catch (Exception $e) 
 			{

@@ -143,15 +143,32 @@ $(document).ready(function()
 				},
 				success:function(response)
 				{
-					alert("sucesso");
 					hideLoadingModal();
 					window.setTimeout(function(){
+						if(response.trim()=="success")
+						{
+							$("#btnSimDependente").fadeIn();
+							$("#btnNaoDependente").fadeIn();
+							$("#btnOKDependente").fadeOut();
+							$('.modal-body').html('');
+							$('.modal-body').html('Cliente cadastrado com sucesso. Deseja cadastrar dependentes?');
+						}
+						else 
+						{
+							$("#btnSimDependente").fadeOut();
+							$("#btnNaoDependente").fadeOut();
+							$("#btnOKDependente").fadeIn();
+							
+							$('.modal-body').html('');
+							$('.modal-body').html('Ocorreu um erro ao realizar o cadastro de cliente, tente novamente.');
+						}
+						
 						$("#modalDependente").modal('show');
 					},520);
 				},
 				error:function(err)
 				{
-					alert('erro!');
+					showMessage("Erro ao realizar o cadastro de cliente",true);
 					hideLoadingModal();
 				}
 			});
@@ -212,7 +229,8 @@ function configInit()
 	enableDisableInputs(true);
 	$("#pnlJuridica").css('display',"none");
 	$("#alertInfo").css('display','none');
-
+	$("#btnOKDependente").css('display','none');
+	
 	// Setup
 	this.$('.js-loading-bar').modal({
 	  backdrop: 'static',
@@ -223,6 +241,9 @@ function configInit()
 		backdrop:'static',
 		show:false
 	});
+
+
+
 
 }
 
