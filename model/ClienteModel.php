@@ -8,6 +8,10 @@ class Cliente
 	private $dtNasc;		
 	private $rgNum;	 		
 	private $rgDtEmis;
+	private $nomeDependente;		
+	private $rgDependente;	 		
+	private $cpfDependente;
+	private $dtNascDependente;
 	private $rgUfEmis;
 	private $ctpsNum;
 	private $ctpsSerie;
@@ -33,6 +37,7 @@ class Cliente
 	private $email;	
 	private $isJuridico;	
    	private $pdo;
+   	private $dependenteArr;
 	
 	/* PROPRIEDADES */
 	public function setId($value)
@@ -102,6 +107,46 @@ class Cliente
 	public function getRgUfEmis()
 	{
 		return $this->rgUfEmis;
+	}
+
+	public function setNomeDependente($value)
+	{
+		$this->nomeDependente = $value;
+	}
+
+	public function getNomeDependente()
+	{
+		return $this->nomeDependente;
+	}
+
+	public function setRgDependente($value)
+	{
+		$this->rgDependente = $value;
+	}
+
+	public function getRgDependente()
+	{
+		return $this->rgDependente;
+	}
+
+	public function setCpfDependente($value)
+	{
+		$this->cpfDependente = $value;
+	}
+
+	public function getCpfDependente()
+	{
+		return $this->cpfDependente;
+	}
+
+	public function setDtNascDependente($value)
+	{
+		$this->dtNascDependente = $value;
+	}
+
+	public function getDtNascDependente()
+	{
+		return $this->dtNascDependente;
 	}
 
 	public function setCtpsNum($value)
@@ -330,6 +375,11 @@ class Cliente
 		$this->isJuridico = $value;
 	}
 
+	public function setDependente($value)
+	{
+		$this->dependenteArr = $value;
+	}
+
    /* END PROPRIEDADES */
 
 
@@ -397,27 +447,35 @@ class Cliente
 
 	}
 
-	/* DELETA CLIENTE */
-	function delete()
+	/* DELETA */
+	function delete($id)
 	{
-		$connection = new Connection();
-		$this->pdo = $connection->connect();
+		 $connection = new Connection();
+		 $this->pdo = $connection->connect();
 
-		$deleteCliente = $this->pdo->prepare("DELETE FROM CLIENTE WHERE ID=?");
-		$deleteCliente->bindValue(1,$this->id);
-
+		 $deleteCliente = $this->pdo->prepare("DELETE FROM CLIENTE WHERE ID=?");
+		 $deleteCliente->bindValue(1,$this->id);
+		 $deleteCliente->execute();
 	}
 
 	/* BUSCA TODOS OS CLIENTES */
 	function selectAll()
 	{
 
-	}
+		$connection = new Connection();
+		$this->pdo = $connection->connect();
+
+		$selectAllCliente = $this->pdo->prepare("SELECT * FROM vw_select_juridico");
+		$selectAllCliente->execute();
+	}		
 
 	/* BUSCA O CLIENTE DE ACORDO COM ID */
 	function select()
 	{
+		$connection = new Connection();
+		$this->pdo = $connection->connect();
 
+		$selectAllCliente = $this->pdo->prepare("SELECT * FROM CLIENTE");
 	}
 
 
@@ -440,12 +498,17 @@ class Cliente
 			$insertJuridico->bindValue(5,$idLastClient);
 
 			$insertJuridico->execute();
-			$insertJuridico = $this->pdo->lastInsertId();
+			$lastIdJurid = $this->pdo->lastInsertId();
 
-			if($insertJuridico !=0)
+			if($lastIdJurid !=0)
+			{
 				echo 'success';
+			}
 			else
+			{
+				$this->delete($idLastClient);
 				echo 'Erro';
+			}				
 		} 
 		catch (Exception $e) 
 		{
@@ -460,7 +523,7 @@ class Cliente
 		try 
 		{
 			$insertPhysical = $this->pdo->prepare(
-			"INSERT INTO CLIENTE (".
+			"INSERT INTO FISICA (".
 									"NOME,".
 			 						"DT_NASCIMENTO,". 
 			 						"SEXO,". 
@@ -490,12 +553,65 @@ class Cliente
 			$insertPhysical->bindValue(13,$idlastClient);
 
 			$insertPhysical->execute();
-			$insertPhysical = $this->pdo->lastInsertId();
+			$lastIdPhysic = $this->pdo->lastInsertId();
 
-			if($insertPhysical !=0)
+			if($lastIdPhysic != 0)
+			{
+				if(count($this->dependenteArr)>0)
+					$this->saveDependente($idlastClient);
+				else
+					echo 'success';
+			}
+			else
+			{
+				$this->delete($idLastClient);
+				echo 'Erro';
+			}
+				
+		} 
+		catch (Exception $e) 
+		{
+			echo 'Erro: '.$e->getMessage();
+		}
+		
+	}
+
+	private function saveDependente($idLastClient)
+	{
+		try 
+		{
+			
+			for($i = 0; $i < count($this->dependenteArr); $i++)
+			{
+				 $depDecode = json_decode($this->dependenteArr[$i]);
+				 $insertDependente = $this->pdo->prepare(
+				"INSERT INTO DEPENDENTE (".
+									"NOME,".
+			 						"DT_NASCIMENTO,". 
+			 						"GRAU_PARENTESCO,". 
+			 						"RG,".
+			 						"CPF,".
+			 						"COD_CLIENTE) VALUES(?,?,?,?,?,?)"); 
+
+				$insertDependente->bindValue(1,$depDecode->Nome);
+				$insertDependente->bindValue(2,$depDecode->Dt_Nasc);
+				$insertDependente->bindValue(3,$depDecode->Parentesco);
+				$insertDependente->bindValue(4,$depDecode->Rg);
+				$insertDependente->bindValue(5,$depDecode->Cpf);
+				$insertDependente->bindValue(6,$idLastClient);
+				$insertDependente->execute();	
+			}
+
+		
+			$lastIdDepend = $this->pdo->lastInsertId();
+
+			if($lastIdDepend !=0)
 				echo 'success';
 			else
+			{
+				$this->delete($idLastClient);
 				echo 'Erro';
+			}
 		} 
 		catch (Exception $e) 
 		{

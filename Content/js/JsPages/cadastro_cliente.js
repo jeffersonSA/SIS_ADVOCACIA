@@ -15,6 +15,7 @@ $(document).ready(function()
 		});
 		$("#pnlDatadosBasicos").fadeOut('slow');
 		$("#pnlDependentes").fadeOut('slow');
+		requiredEnabled(false);
 
 	});
 	/*
@@ -28,6 +29,7 @@ $(document).ready(function()
 				$("#pnlDatadosBasicos").fadeIn('slow');
 				$("#pnlDependentes").fadeIn('slow');
 		});
+		requiredEnabled(true);
 	});
 
 	/*
@@ -40,6 +42,7 @@ $(document).ready(function()
 		"<td align='center'>"+$("#txtDtNascimentoDependente").val()+"</td>"+
 		"<td align='center'>"+$("#txtRGDependente").val()+"</td>"+
 		"<td align='center'>"+$("#txtCPFDependente").val()+"</td>"+
+		"<td align='center'>"+$("#slcParentesco").val()+"</td>"+
 		"<td align='center'>"+
 				"<button type='button' class='btn btn-default btn-responsive' onClick='editDependente(event)' >"+
 					"<span class='glyphicon glyphicon-edit' aria-hidden='true'></span>"+
@@ -94,22 +97,6 @@ $(document).ready(function()
 			$("#txtBairro").val('');
 			$("#txtCidade").val('');
 			$("#slcEstadoEnd").val('');
-
-			var pos = $(window).scrollTop();
-			    
-		    $("body").css({
-		    	"margin-top": -pos+"px",
-		        "overflow-y": "scroll", 
-		    });
-
-		    $(window).scrollTop(0);
-		        
-		    $("body").css("transition", "all 1s ease");
-		    $("body").css("margin-top", "0");
-		    $("body").on("webkitTransitionEnd transitionend msTransitionEnd oTransitionEnd", function()
-		    {
-		    	$("body").css("transition", "none");
-			});
 				
 			 showMessage('CEP INEXISTENTE',true);
 			 hideLoadingModal();
@@ -130,16 +117,43 @@ $(document).ready(function()
 	$("#frmCadCliente").submit(function(evt)
 	{
 		showLoadingModal();
-		
+		var dependArr =[];
+		var tbArr={};
+		var str;
+		var i = 0;
 		var infos = $(this).serialize(); 
+		$("#tblDependente td").each(function(k,v)
+		{
+
+			if($(v)[0].childNodes[0].type != "button")
+			{
+				switch(i)
+				{
+					case 0:tbArr["Nome"] = $(this).html(); break;
+					case 1:tbArr["Rg"]  = $(this).html(); break;
+					case 2:tbArr["Cpf"] = $(this).html(); break;
+					case 3:tbArr["Parentesco"] = $(this).html(); break;
+					case 4:tbArr["Dt_Nasc"] = $(this).html(); break;
+				}
+				i++;
+			}
+			
+			if(i==5)
+			{
+				i=0;
+				dependArr.push(JSON.stringify(tbArr));
+			}	
+		});
 		
+		var dependJSON = JSON.stringify(dependArr);
 		$.ajax(
 			{
 				type:"POST",
 				url:"../controller/ClienteController.php",
 				data:{
 					"action":"save",
-					"data":infos
+					"data":infos,
+					"dependentes[]":dependArr
 				},
 				success:function(response)
 				{
@@ -147,23 +161,25 @@ $(document).ready(function()
 					window.setTimeout(function(){
 						if(response.trim()=="success")
 						{
-							$("#btnSimDependente").fadeIn();
-							$("#btnNaoDependente").fadeIn();
-							$("#btnOKDependente").fadeOut();
-							$('.modal-body').html('');
-							$('.modal-body').html('Cliente cadastrado com sucesso. Deseja cadastrar dependentes?');
+							// $("#btnSimDependente").fadeIn();
+							// $("#btnNaoDependente").fadeIn();
+							// $("#btnOKDependente").fadeOut();
+							// $('.modal-body').html('');
+							//$('.modal-body').html('Cliente cadastrado com sucesso. Deseja cadastrar dependentes?');
+							showMessage("Cliente cadastrado com sucesso",false);
 						}
 						else 
 						{
-							$("#btnSimDependente").fadeOut();
-							$("#btnNaoDependente").fadeOut();
-							$("#btnOKDependente").fadeIn();
+							// $("#btnSimDependente").fadeOut();
+							// $("#btnNaoDependente").fadeOut();
+							// $("#btnOKDependente").fadeIn();
 							
-							$('.modal-body').html('');
-							$('.modal-body').html('Ocorreu um erro ao realizar o cadastro de cliente, tente novamente.');
+							// $('.modal-body').html('');
+							showMessage("Ocorreu um erro ao realizar o cadastro de cliente, tente novamente.",true);
+							//$('.modal-body').html('Ocorreu um erro ao realizar o cadastro de cliente, tente novamente.');
 						}
 						
-						$("#modalDependente").modal('show');
+						//$("#modalDependente").modal('show');
 					},520);
 				},
 				error:function(err)
@@ -175,13 +191,19 @@ $(document).ready(function()
 		return false;
 	});
 
-	/*
-	* 	Habilita campos dependentes para cadastrar
-	*/
-	$("#btnSimDependente").click(function()
+	$("#btnDependSim").click(function()
 	{
-		enableDisableInputs(false);
+		$("#pnlBodyDependente").slideDown('slow');
+		requiredDependente(true);
+
 	});
+
+	$("#btnDependNao").click(function()
+	{
+		$("#pnlBodyDependente").slideUp('slow');
+		requiredDependente(true);
+	});
+
 });
 
 var _loading;
@@ -230,7 +252,11 @@ function configInit()
 	$("#pnlJuridica").css('display',"none");
 	$("#alertInfo").css('display','none');
 	$("#btnOKDependente").css('display','none');
+
+	$("#pnlBodyDependente").css('display','none');
 	
+	requiredEnabled(true);
+
 	// Setup
 	this.$('.js-loading-bar').modal({
 	  backdrop: 'static',
@@ -241,13 +267,7 @@ function configInit()
 		backdrop:'static',
 		show:false
 	});
-
-
-
-
 }
-
-
 
 //Exibe o loading quando acionado algum evento
 function showLoadingModal()
@@ -258,7 +278,6 @@ function showLoadingModal()
   	$modal.fadeIn('slow')
 	//$modal.modal('show');
 	$bar.addClass('animate');
-
 }
 
 //Esconde o loading quando acionado algum evento
@@ -270,8 +289,7 @@ function hideLoadingModal()
 	window.setTimeout(function() {
 		$bar.removeClass('animate');
 		$modal.fadeOut('slow');
-	}, 500);
-      
+	}, 500);    
 }
 
 
@@ -314,7 +332,23 @@ function aplyMasks()
 	});
 
 	$("#txtCPFDependente").keypress(function(){
-		mascara($(this),cpf);
+		mascara(this,cpf);
+	});
+
+	$("#txtCTPS").keypress(function(){
+		mascara(this,soNumeros);
+	});
+
+	$("#txtCNH").keypress(function(){
+		mascara(this,soNumeros);
+	});
+
+	$("#txtSerie").keypress(function(){
+		mascara(this,soNumeros);
+	});
+
+	$("#txtNumero").keypress(function(){
+		mascara(this,soNumeros);
 	});
 }
 
@@ -324,7 +358,7 @@ function aplyMasks()
 function enableDisableInputs(option)
 {
 	//Inputs Dependentes
-	$("#pnlDependentes :input").prop('disabled', option);
+	//$("#pnlDependentes :input").prop('disabled', option);
 
 	//inputs Cliente
 	$("#pnlFisica 			:input").prop('disabled', !option);
@@ -334,8 +368,27 @@ function enableDisableInputs(option)
 	$("#pnlEndereco 		:input").prop('disabled', !option);
 }
 
+/*
+* Exibe todas as mensagens do sistema
+* <error>indica que o alert apresentado será vermelho</error>
+*/
 function showMessage(msg,error)
 {
+	var pos = $(window).scrollTop();
+			    
+	$("body").css({
+		"margin-top": -pos+"px",
+		"overflow-y": "scroll", 
+    });
+
+	$(window).scrollTop(0);
+	$("body").css("transition", "all 1s ease");
+	$("body").css("margin-top", "0");
+	$("body").on("webkitTransitionEnd transitionend msTransitionEnd oTransitionEnd", function()
+	{
+		$("body").css("transition", "none");
+	});
+	
 	if(error)
 	{
 		$("#alertInfo").removeClass('alert-success');
@@ -354,4 +407,60 @@ function showMessage(msg,error)
 			$("#lblMessage").html(msg);
 		});
 	}
+}
+
+/*
+* Remove e atribui campo obrigatório quando pessoa física ou juridica
+* <pFisica>indica se a tela apresentada é de pessoa física ou jurídica para então aplicar o required</pFisica>
+*/
+function requiredEnabled(pFisica)
+{
+	if(pFisica)
+	{
+		//Ativa required
+		$("#txtClient").attr("required",pFisica);
+		$("#txtDataNascimento").attr("required",pFisica);
+		$("#txtCPF").attr("required",pFisica);
+		$("#txtRG").attr("required",pFisica);
+		$("#txtDtEmissaoRG").attr("required",pFisica);
+		$("#txtCTPS").attr("required",pFisica);
+		$("#txtSerie").attr("required",pFisica);
+		$("#txtDtEmissaoCTPS").attr("required",pFisica);
+		$("#txtCNH").attr("required",pFisica);
+		$("#txtCategoria").attr("required",pFisica);
+
+		//desativa required
+		$("#txtRazaoSocial").attr("required", !pFisica);
+		$("#txtNomeFantasia").attr("required", !pFisica);
+		$("#txtCNPJ").attr("required", !pFisica);
+		$("#txtInscEstadual").attr("required", !pFisica);
+	}
+	else
+	{
+		//desativa required
+		$("#txtClient").attr("required",!pFisica);
+		$("#txtDataNascimento").attr("required",!pFisica);
+		$("#txtCPF").attr("required",!pFisica);
+		$("#txtRG").attr("required",!pFisica);
+		$("#txtDtEmissaoRG").attr("required",!pFisica);
+		$("#txtCTPS").attr("required",!pFisica);
+		$("#txtSerie").attr("required",!pFisica);
+		$("#txtDtEmissaoCTPS").attr("required",!pFisica);
+		$("#txtCNH").attr("required",!pFisica);
+		$("#txtCategoria").attr("required",!pFisica);
+
+		//Ativa required
+		$("#txtRazaoSocial").attr("required",pFisica);
+		$("#txtNomeFantasia").attr("required",pFisica);
+		$("#txtCNPJ").attr("required",pFisica);
+		$("#txtInscEstadual").attr("required",pFisica);
+	}
+}
+
+function requiredDependente(truOrFalse)
+{
+		$("#txtNomeDependente").attr("required", truOrFalse);
+		$("#txtDtNascimentoDependente").attr("required",truOrFalse);
+		$("#txtRGDependente").attr("required",truOrFalse);
+		$("#txtCPFDependente").attr("required",truOrFalse);
 }

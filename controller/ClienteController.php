@@ -19,7 +19,7 @@
 			{
 				$form = $_POST['data'];
 				$data = split("&", $form);
-				
+
 				for($i = 0; $i < count($data); $i++)
 				{
 					$content = split("=", $data[$i]);
@@ -57,6 +57,7 @@
 						case 'CLI_EMAIL'		: $CLI_EMAIL 			= $content[1]; break;
 						case 'JURIDICA'			: $TIPO_PESSOA 			= $content[1]; break;
 
+
 					}
 				}
 
@@ -67,7 +68,7 @@
 					$clienteModel->setCelular($CLI_CEL);
 					$clienteModel->setEmail($CLI_EMAIL);
 					$clienteModel->setLogradouro($CLI_END_LOGRADOURO);
-					$clienteModel->setCep($CLI_END_CEP);
+					$clienteModel->setCep(str_replace("-", "", $CLI_END_CEP));
 					$clienteModel->setEndNum($CLI_END_NUM);
 					$clienteModel->setBairro($CLI_END_BAIRRO);
 					$clienteModel->setCidade($CLI_END_CIDADE);
@@ -79,17 +80,19 @@
 						$clienteModel->setIsJuridico(true);
 						$clienteModel->setRazaoSocial($CLI_RAZ_SOCIAL);
 						$clienteModel->setNomeFantasia($CLI_NOME_FANT);
-						$clienteModel->setCnpj($CLI_CNPJ);
+						$clienteModel->setCnpj(preg_replace("[^0-9]", "",$CLI_CNPJ));
 						$clienteModel->setInscricaoEstadual($CLI_INSC_ESTADUAL);
 					}
 					else
 					{
+						$dependenteArr = $_POST['dependentes'];
+						$clienteModel->setDependente($dependenteArr);
 						$clienteModel->setIsJuridico(false);
 						$clienteModel->setNome($CLI_NOME);
 						$clienteModel->setDataNascimento($CLI_DT_NASC);
 						$clienteModel->setSexo($CLI_SEXO);
-						$clienteModel->setCpf($CLI_CPF);
-						$clienteModel->setRgNum($CLI_RG_NUM);
+						$clienteModel->setCpf(preg_replace("[^0-9]", "", $CLI_CPF));
+						$clienteModel->setRgNum(preg_replace("[^0-9]", "",$CLI_RG_NUM));
 						$clienteModel->setRgUfEmis($CLI_RG_LOC_EMIS);
 						$clienteModel->setRgDtEmis($CLI_RG_DT_EMIS);
 						$clienteModel->setCtpsNum($CLI_CTPS_NUM);
@@ -99,7 +102,6 @@
 						$clienteModel->setCnhCat($CLI_CNH_CAT);
 					}
 
-					
 					$clienteModel->save();
 					
 			} 
@@ -113,10 +115,10 @@
 		{
 			try 
 			{
-				$Id = $_POST['Id'];
+				// $Id = $_POST['Id'];
 				
-				$clienteModel = new Cliente();
-				$clienteModel->delete($id);
+				// $clienteModel = new Cliente();
+				// $clienteModel->delete($id);
 			} 
 			catch (Exception $e) 
 			{
