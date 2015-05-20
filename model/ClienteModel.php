@@ -580,11 +580,7 @@ class Cliente
 	{
 		try 
 		{
-			
-			for($i = 0; $i < count($this->dependenteArr); $i++)
-			{
-				 $depDecode = json_decode($this->dependenteArr[$i]);
-				 $insertDependente = $this->pdo->prepare(
+			$insertDependente = $this->pdo->prepare(
 				"INSERT INTO DEPENDENTE (".
 									"NOME,".
 			 						"DT_NASCIMENTO,". 
@@ -592,6 +588,11 @@ class Cliente
 			 						"RG,".
 			 						"CPF,".
 			 						"COD_CLIENTE) VALUES(?,?,?,?,?,?)"); 
+			
+			for($i = 0; $i < count($this->dependenteArr); $i++)
+			{
+				 $depDecode = json_decode($this->dependenteArr[$i]);
+				 
 
 				$insertDependente->bindValue(1,$depDecode->Nome);
 				$insertDependente->bindValue(2,$depDecode->Dt_Nasc);

@@ -82,6 +82,7 @@ $(document).ready(function()
 	*/
 	$("#btnSeachCEP").click(function()
 	{
+		removeAlert();
 		showLoadingModal();
 		var url = 'http://cep.correiocontrol.com.br/'+$("#txtCEP").val().replace("-","")+'.json'
 		$.getJSON(url,function(json)
@@ -108,7 +109,7 @@ $(document).ready(function()
 	*/
 	$(".remove-alert").click(function()
 	{
-		$("#alertInfo").slideUp();
+		removeAlert();
 	});
 
 	/*
@@ -116,12 +117,15 @@ $(document).ready(function()
 	*/
 	$("#frmCadCliente").submit(function(evt)
 	{
+		removeAlert();
 		showLoadingModal();
+		
 		var dependArr =[];
 		var tbArr={};
 		var str;
 		var i = 0;
 		var infos = $(this).serialize(); 
+		
 		$("#tblDependente td").each(function(k,v)
 		{
 
@@ -292,6 +296,11 @@ function hideLoadingModal()
 	}, 500);    
 }
 
+
+function removeAlert()
+{
+	$("#alertInfo").slideUp();
+}
 
 /*
 *  Aplica mascas para os campos do formulário
