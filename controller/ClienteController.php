@@ -60,6 +60,7 @@
 
 					}
 				}
+					$pontoTraco = array(".","-");
 
 					$clienteModel = new Cliente();
 
@@ -80,7 +81,7 @@
 						$clienteModel->setIsJuridico(true);
 						$clienteModel->setRazaoSocial($CLI_RAZ_SOCIAL);
 						$clienteModel->setNomeFantasia($CLI_NOME_FANT);
-						$clienteModel->setCnpj(preg_replace("[^0-9]", "",$CLI_CNPJ));
+						$clienteModel->setCnpj(str_replace($pontoTraco, "",$CLI_CNPJ));
 						$clienteModel->setInscricaoEstadual($CLI_INSC_ESTADUAL);
 					}
 					else
@@ -91,8 +92,8 @@
 						$clienteModel->setNome($CLI_NOME);
 						$clienteModel->setDataNascimento($CLI_DT_NASC);
 						$clienteModel->setSexo($CLI_SEXO);
-						$clienteModel->setCpf(preg_replace("[^0-9]", "", $CLI_CPF));
-						$clienteModel->setRgNum(preg_replace("[^0-9]", "",$CLI_RG_NUM));
+						$clienteModel->setCpf(str_replace($pontoTraco, "", $CLI_CPF));
+						$clienteModel->setRgNum(str_replace($pontoTraco, "",$CLI_RG_NUM));
 						$clienteModel->setRgUfEmis($CLI_RG_LOC_EMIS);
 						$clienteModel->setRgDtEmis($CLI_RG_DT_EMIS);
 						$clienteModel->setCtpsNum($CLI_CTPS_NUM);
@@ -101,7 +102,7 @@
 						$clienteModel->setCnh($CLI_CNH);
 						$clienteModel->setCnhCat($CLI_CNH_CAT);
 					}
-
+					
 					$clienteModel->save();
 					
 			} 

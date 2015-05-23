@@ -2,7 +2,7 @@
 require("../connection/con_mysql.php");
 class Cliente
 {
-	private $id;
+	private $idCliente;
 	private $dtCad;
 	private	$nome; 
 	private $dtNasc;		
@@ -42,12 +42,12 @@ class Cliente
 	/* PROPRIEDADES */
 	public function setId($value)
 	{
-		$this->id = $value;
+		$this->idCliente = $value;
 	}
 
 	public function getId()
 	{
-		return $this->id;
+		return $this->idCliente;
 	}
 	public function setCliDtCad($value)
 	{
@@ -384,7 +384,7 @@ class Cliente
 
 
    /* INSERE UM NOVO CLIENTE */
-	public function save()
+	public function saveOrUpdate()
 	{
 
 		try
@@ -453,8 +453,9 @@ class Cliente
 		 $connection = new Connection();
 		 $this->pdo = $connection->connect();
 
-		 $deleteCliente = $this->pdo->prepare("DELETE FROM CLIENTE WHERE ID=?");
-		 $deleteCliente->bindValue(1,$this->id);
+		 $deleteCliente = $this->pdo->prepare("DELETE FROM CLIENTE WHERE ID = :idCliente");
+	
+		 $deleteCliente->bindValue(':idCliente',$id);
 		 $deleteCliente->execute();
 	}
 
@@ -517,7 +518,7 @@ class Cliente
 	
 	}
 
-	private function savePhysicalPerson($idlastClient)
+	private function savePhysicalPerson($idLastClient)
 	{
 
 		try 
@@ -565,7 +566,7 @@ class Cliente
 			else
 			{
 				$this->delete($idLastClient);
-				echo 'Erro';
+				//echo 'Erro';
 			}
 				
 		} 
@@ -580,6 +581,7 @@ class Cliente
 	{
 		try 
 		{
+			$pontoTranco = array('.' ,'-');
 			$insertDependente = $this->pdo->prepare(
 				"INSERT INTO DEPENDENTE (".
 									"NOME,".
@@ -597,8 +599,8 @@ class Cliente
 				$insertDependente->bindValue(1,$depDecode->Nome);
 				$insertDependente->bindValue(2,$depDecode->Dt_Nasc);
 				$insertDependente->bindValue(3,$depDecode->Parentesco);
-				$insertDependente->bindValue(4,$depDecode->Rg);
-				$insertDependente->bindValue(5,$depDecode->Cpf);
+				$insertDependente->bindValue(4,str_replace($pontoTranco,"", $depDecode->Rg));
+				$insertDependente->bindValue(5,str_replace($pontoTranco,"",$depDecode->Cpf));
 				$insertDependente->bindValue(6,$idLastClient);
 				$insertDependente->execute();	
 			}

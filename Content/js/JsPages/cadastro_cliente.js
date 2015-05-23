@@ -130,18 +130,18 @@ $(document).ready(function()
 		{
 
 			if($(v)[0].childNodes[0].type != "button")
-			{
+			{	
 				switch(i)
 				{
-					case 0:tbArr["Nome"] = $(this).html(); break;
-					case 1:tbArr["Rg"]  = $(this).html(); break;
-					case 2:tbArr["Cpf"] = $(this).html(); break;
-					case 3:tbArr["Parentesco"] = $(this).html(); break;
-					case 4:tbArr["Dt_Nasc"] = $(this).html(); break;
+					case 0:tbArr["Nome"] 		= $(this).html(); break;
+					case 1:tbArr["Dt_Nasc"] 	= $(this).html(); break;
+					case 2:tbArr["Rg"] 			= $(this).html(); break;
+					case 3:tbArr["Cpf"] 		= $(this).html(); break;
+					case 4:tbArr["Parentesco"] 	= $(this).html(); break;
 				}
 				i++;
 			}
-			
+						
 			if(i==5)
 			{
 				i=0;
@@ -171,6 +171,9 @@ $(document).ready(function()
 							// $('.modal-body').html('');
 							//$('.modal-body').html('Cliente cadastrado com sucesso. Deseja cadastrar dependentes?');
 							showMessage("Cliente cadastrado com sucesso",false);
+							enableDisableInputs(true);
+							$("#btnAtualizar").prop("disabled",false);
+							$("#btnSalvar").prop("disabled",true);
 						}
 						else 
 						{
@@ -252,7 +255,7 @@ function removeDependente(evt)
 function configInit()
 {
 	aplyMasks();
-	enableDisableInputs(true);
+	enableDisableInputs(false);
 	$("#pnlJuridica").css('display',"none");
 	$("#alertInfo").css('display','none');
 	$("#btnOKDependente").css('display','none');
@@ -367,14 +370,12 @@ function aplyMasks()
 function enableDisableInputs(option)
 {
 	//Inputs Dependentes
-	//$("#pnlDependentes :input").prop('disabled', option);
-
-	//inputs Cliente
-	$("#pnlFisica 			:input").prop('disabled', !option);
-	$("#pnlJuridica 		:input").prop('disabled', !option);
-	$("#pnlContato 			:input").prop('disabled', !option);
-	$("#pnlDatadosBasicos 	:input").prop('disabled', !option);
-	$("#pnlEndereco 		:input").prop('disabled', !option);
+	$("#pnlDependentes :input").prop('disabled', option);
+	$("#pnlFisica 			:input").prop('disabled', option);
+	$("#pnlContato 			:input").prop('disabled', option);
+	$("#pnlDatadosBasicos 	:input").prop('disabled', option);
+	$("#pnlEndereco 		:input").prop('disabled', option);
+	$("#pnlJuridica 		:input").prop('disabled', option);
 }
 
 /*
