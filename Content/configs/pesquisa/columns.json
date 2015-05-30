@@ -1,0 +1,210 @@
+[
+    {
+        "colfisica": [ 
+            {
+                "field": "ID",
+                "title": "ID",
+                "sortable": "true"
+            },
+            {
+                "field": "NOME",
+                "title": "Nome",
+                "sortable": "true"
+            },
+            {
+                "field": "DT_NASCIMENTO",
+                "title": "Data nasc.",
+                "sortable": "true"
+            },
+            {
+                "field": "CPF",
+                "title": "CPF",
+                "sortable": "true"
+            },
+            {
+                "field": "RG",
+                "title": "RG",
+                "sortable": "true"
+            },
+            {
+                "field": "DT_EMIS_RG",
+                "title": "Data emis. RG",
+                "sortable": "true"
+            },
+            {
+                "field": "UF_EMIS_RG",
+                "title": "UF emiss. RG",
+                "sortable": "true"
+            },
+            {
+                "field": "NUM_CTPS",
+                "title": "Num. CTPS",
+                "sortable": "true"
+            },
+            {
+                "field": "SERIE_CTPS",
+                "title": "Série CTPS",
+                "sortable": "true"
+            },
+            {
+                "field": "DT_EMIS_CTPS",
+                "title": "Data emiss. CTPS",
+                "sortable": "true"
+            },
+            {
+                "field": "CNH",
+                "title": "CNH",
+                "sortable": "true"
+            },
+            {
+                "field": "CATEGORIA",
+                "title": "Categoria",
+                "sortable": "true"
+            },
+            {
+                "field": "TELEFONE1",
+                "title": "Telefone 1",
+                "sortable": "true"
+            },
+            {
+                "field": "TELEFONE2",
+                "title": "Telefone 2",
+                "sortable": "true"
+            },
+            {
+                "field": "CELULAR",
+                "title": "Celular",
+                "sortable": "true"
+            },
+            {
+                "field": "EMAIL",
+                "title": "Email",
+                "sortable": "true"
+            },
+            {
+                "field": "CEP",
+                "title": "CEP",
+                "sortable": "true"
+            },
+            {
+                "field": "LOGRADOURO",
+                "title": "Logradouro",
+                "sortable": "true"
+            },
+            {
+                "field": "NUM",
+                "title": "Numero",
+                "sortable": "true"
+            },
+            {
+                "field": "BAIRRO",
+                "title": "Bairro",
+                "sortable": "true"
+            },
+            {
+                "field": "CIDADE",
+                "title": "Cidade",
+                "sortable": "true"
+            },
+            {
+                "field": "UF",
+                "title": "UF",
+                "sortable": "true"
+            },
+            {
+                "field": "COMPLEMENTO",
+                "title": "Complemento",
+                "sortable": "true"
+            },
+            {
+                "field": "DEPENDENTES",
+                "title": "Dependentes",
+                "sortable": "true"
+            }
+        ]
+    },
+    {
+        "coljuridica": [
+            {
+                "field": "ID",
+                "title": "ID",
+                "sortable": "true"
+            },
+            {
+                "field": "RAZAO_SOCIAL",
+                "title": "Razão social",
+                "sortable": "true"
+            },
+            {
+                "field": "NOME_FANTASIA",
+                "title": "Nome fantasia",
+                "sortable": "true"
+            },
+            {
+                "field": "INSCRICAO_ESTADUAL",
+                "title": "Inscrição estadual",
+                "sortable": "true"
+            },
+            {
+                "field": "CNPJ",
+                "title": "CNPJ",
+                "sortable": "true"
+            },
+            {
+                "field": "LOGRADOURO",
+                "title": "Logradouro",
+                "sortable": "true"
+            },
+            {
+                "field": "NUM",
+                "title": "Numero",
+                "sortable": "true"
+            },
+            {
+                "field": "CEP",
+                "title": "CEP",
+                "sortable": "true"
+            },
+            {
+                "field": "BAIRRO",
+                "title": "Bairro",
+                "sortable": "true"
+            },
+            {
+                "field": "CIDADE",
+                "title": "Cidade",
+                "sortable": "true"
+            },
+            {
+                "field": "UF",
+                "title": "UF",
+                "sortable": "true"
+            },
+            {
+                "field": "COMPLEMENTO",
+                "title": "Complemento",
+                "sortable": "true"
+            },
+            {
+                "field": "TELEFONE1",
+                "title": "Telefone 1",
+                "sortable": "true"
+            },
+            {
+                "field": "TELEFONE2",
+                "title": "Telefone 2",
+                "sortable": "true"
+            },
+            {
+                "field": "CELULAR",
+                "title": "Celular",
+                "sortable": "true"
+            },
+            {
+                "field": "EMAIL",
+                "title": "Email",
+                "sortable": "true"
+            }
+        ]
+    }
+]

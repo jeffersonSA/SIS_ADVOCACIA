@@ -2,6 +2,7 @@
 require("../connection/con_mysql.php");
 class Cliente
 {
+	private $idDependente;
 	private $idCliente;
 	private $dtCad;
 	private	$nome; 
@@ -107,6 +108,16 @@ class Cliente
 	public function getRgUfEmis()
 	{
 		return $this->rgUfEmis;
+	}
+
+	public function setIdDependente($value)
+	{
+		$this->idDependente = $value;
+	}
+
+	public function getIdDependente()
+	{
+		return $this->idDependente;
 	}
 
 	public function setNomeDependente($value)
@@ -392,8 +403,29 @@ class Cliente
 			$connection = new Connection();
 			$this->pdo = $connection->connect();
 
-			$insertCliente = $this->pdo->prepare(
-				"INSERT INTO CLIENTE (".
+		
+			if($this->idCliente > 0)
+			{
+				
+				$sql = "UPDATE CLIENTE  SET ".
+										"TELEFONE1 	= ?,".
+				 						"TELEFONE2 	= ?,". 
+				 						"CELULAR 	= ?,". 
+				 						"EMAIL 		= ?,".
+				 						"LOGRADOURO = ?,".
+				 						"CEP 		= ?,".
+				 						"NUM 		= ?,".
+				 						"CIDADE 	= ?,".
+				 						"BAIRRO		= ?,".
+				 						"UF			= ?,".
+				 						"COMPLEMENTO = ? WHERE ID=".$this->idCliente;
+
+				
+			}
+			else
+			{
+				
+				$sql = "INSERT INTO CLIENTE (".
 										"TELEFONE1,".
 				 						"TELEFONE2,". 
 				 						"CELULAR,". 
@@ -404,42 +436,54 @@ class Cliente
 				 						"BAIRRO,".
 				 						"CIDADE,".
 				 						"UF,".
-				 						"COMPLEMENTO) VALUES(?,?,?,?,?,?,?,?,?,?,?)"); 
-
-			$insertCliente->bindValue(1,$this->tel1);
-			$insertCliente->bindValue(2,$this->tel2);
-			$insertCliente->bindValue(3,$this->cel);
-			$insertCliente->bindValue(4,$this->email);
-			$insertCliente->bindValue(5,$this->logradouro);
-			$insertCliente->bindValue(6,$this->endCep);
-			$insertCliente->bindValue(7,$this->endNum);
-			$insertCliente->bindValue(8,$this->endBairro);
-			$insertCliente->bindValue(9,$this->endCidade);
-			$insertCliente->bindValue(10,$this->endUf);
-			$insertCliente->bindValue(11,$this->endComple);
+				 						"COMPLEMENTO) VALUES(?,?,?,?,?,?,?,?,?,?,?)";
+			}
 			
-			 $insertCliente->execute();
-			 $lastIdCliente = $this->pdo->lastInsertId();
-			
+			$insertOrUpCliente = $this->pdo->prepare($sql); 
 
-			if($lastIdCliente != 0)
+			$insertOrUpCliente->bindValue(1,$this->tel1);
+			$insertOrUpCliente->bindValue(2,$this->tel2);
+			$insertOrUpCliente->bindValue(3,$this->cel);
+			$insertOrUpCliente->bindValue(4,$this->email);
+			$insertOrUpCliente->bindValue(5,$this->logradouro);
+			$insertOrUpCliente->bindValue(6,$this->endCep);
+			$insertOrUpCliente->bindValue(7,$this->endNum);
+			$insertOrUpCliente->bindValue(8,$this->endBairro);
+			$insertOrUpCliente->bindValue(9,$this->endCidade);
+			$insertOrUpCliente->bindValue(10,$this->endUf);
+			$insertOrUpCliente->bindValue(11,$this->endComple);
+			
+			$insertOrUpCliente->execute();
+			$errorInfo = $insertOrUpCliente->errorInfo();
+
+			if($errorInfo[2] == "")
 			{
+
+				if($this->idCliente > 0 )
+				{
+					$lastIdCliente = $this->idCliente;
+				}
+				else
+				{
+					$lastIdCliente = $this->pdo->lastInsertId();
+				}
+
 				if($this->isJuridico)
-					$this->saveJuridicalPerson($lastIdCliente);
+					$this->saveOrUpdateJuridicalPerson($lastIdCliente);
 			 	else 
-			 		$this->savePhysicalPerson($lastIdCliente);
+			 		$this->saveOrUpdatePhysicalPerson($lastIdCliente);
 			}
 			else 
 			{
-				echo 'Erro';
-			}			
 
+				echo '{"message":"Erro","details":'.$errorInfo[2].'}';
+			}			
 		} 
 		catch (Exception $e) 
 		{
- 			echo 'Erro: '.$e->getMessage();
+ 			echo '{"message":"Erro","details":'.$e->getMessage().'}';
 		}
-}
+	}
 
 	/* ATUALIZA CLIENTE */
 	function update()
@@ -468,63 +512,316 @@ class Cliente
 
 		$selectAllCliente = $this->pdo->prepare("SELECT * FROM vw_select_juridico");
 		$selectAllCliente->execute();
-	}		
-
-	/* BUSCA O CLIENTE DE ACORDO COM ID */
-	function select()
-	{
-		$connection = new Connection();
-		$this->pdo = $connection->connect();
-
-		$selectAllCliente = $this->pdo->prepare("SELECT * FROM CLIENTE");
 	}
 
-
-	private function saveJuridicalPerson($idLastClient)
+	public function selectById($id,$type)
 	{
 		try 
 		{
-			$insertJuridico = $this->pdo->prepare(
-			"INSERT INTO JURIDICA (".
+			
+			$connection = new Connection();
+			$this->pdo = $connection->connect();
+			$dependArr = array();
+			$info= array();
+			
+			if($type == 'F' )
+			{
+				$typeView = "VW_CLIENTE_FISICA";
+			}
+			else
+			{
+				$typeView = "VW_CLIENTE_JURIDICA";
+			}
+			
+			
+			$selectCliente = $this->pdo->query("SELECT * FROM advocaciabd.".$typeView." WHERE ID = ".$id)->fetchAll();
+
+		    foreach($selectCliente as $row) 
+		    {
+
+		       if($type == 'F' )
+		       {
+			       	$data = 	array(
+			       	"ID" 			=> 	$row['ID'], 
+			       	"NOME" 			=>	$row["NOME"],
+			       	"DT_NASCIMENTO" => 	$row["DT_NASCIMENTO"],
+			       	"SEXO" 			=>	$row["SEXO"],
+			       	"RG" 			=>	$row["RG"],
+			       	"DT_EMIS_RG" 	=> 	$row["DT_EMIS_RG"],
+			       	"UF_EMIS_RG" 	=> 	$row["UF_EMIS_RG"],
+			       	"CPF" 			=> 	$row["CPF"],
+			       	"CNH" 			=>	$row["CNH"],
+			       	"CATEGORIA" 	=>	$row["CATEGORIA"],
+			       	"NUM_CTPS" 		=>	$row["NUM_CTPS"],
+			       	"DT_EMIS_CTPS" 	=> 	$row["DT_EMIS_CTPS"],
+			       	"SERIE_CTPS" 	=> 	$row["SERIE_CTPS"],
+			       	"LOGRADOURO" 	=> 	$row["LOGRADOURO"],
+			       	"NUM" 			=> 	$row["NUM"],
+			       	"CEP" 			=>	$row["CEP"],
+			       	"BAIRRO" 		=>	$row["BAIRRO"],
+			       	"CIDADE" 		=> 	$row["CIDADE"],
+			       	"UF" 			=>	$row["UF"],
+			       	"COMPLEMENTO" 	=> 	$row["COMPLEMENTO"],
+			       	"TELEFONE1" 	=>	$row["TELEFONE1"],
+			       	"TELEFONE2" 	=> 	$row["TELEFONE2"],
+			       	"CELULAR" 		=> 	$row["CELULAR"],
+			       	"EMAIL" 		=> 	$row["EMAIL"]);
+		       }	
+		       else
+		       {
+		       		$data = 	array(
+			       	"ID" 					=> 	$row['ID'], 
+			       	"RAZAO_SOCIAL" 			=>	$row["RAZAO_SOCIAL"],
+			       	"NOME_FANTASIA" 		=> 	$row["NOME_FANTASIA"],
+			       	"INSCRICAO_ESTADUAL" 	=>	$row["INSCRICAO_ESTADUAL"],
+			       	"CNPJ" 					=>	$row["CNPJ"],
+			       	"LOGRADOURO" 			=> 	$row["LOGRADOURO"],
+			       	"NUM" 					=> 	$row["NUM"],
+			       	"CEP" 					=> 	$row["CEP"],
+			       	"BAIRRO" 				=>	$row["BAIRRO"],
+			       	"CIDADE" 				=>	$row["CIDADE"],
+			       	"UF" 					=>	$row["UF"],
+			       	"TELEFONE1" 			=> 	$row["TELEFONE1"],
+			       	"TELEFONE2" 			=> 	$row["TELEFONE2"],
+			       	"LOGRADOURO" 			=> 	$row["LOGRADOURO"],
+			       	"CELULAR" 				=>	$row["CELULAR"],
+			       	"EMAIL" 				=>	$row["EMAIL"]);
+		       }
+
+		       array_push($info, $data);
+		    }
+
+		    if($type == "F")
+		    {
+		    	$i = 0;
+		    	foreach ($info as $item) 
+		    	{
+			    	$selectDependente = $this->pdo->query("SELECT * FROM VW_DEPENDENTES WHERE COD_CLIENTE=".$item["ID"])->fetchAll();
+					 foreach($selectDependente as $row) 
+					 {
+					 	$dataDepend = array(
+					 		"ID"				=>	$row["ID"],
+					 		"COD_CLIENTE" 		=> 	$row["COD_CLIENTE"],
+					 		"NOME" 				=> 	$row["NOME"],
+					 		"RG" 				=> 	$row["RG"],
+					 		"CPF" 				=> 	$row["CPF"],
+					 		"DT_NASCIMENTO" 	=> 	$row["DT_NASCIMENTO"],
+					 		"GRAU_PARENTESCO" 	=> 	$row["GRAU_PARENTESCO"]
+
+					 		);
+					 	array_push($dependArr, $dataDepend);	
+					 }
+					
+					 $info[$i]["DEPENDENTES"] = $dependArr;
+					 $i++;
+		    	}
+		    }
+				
+				echo '{"message":"success","details":"Operação realizada com sucesso","operation":"save","data":'.json_encode($info).'}';	
+		} 
+		catch (Exception $e) 
+		{
+			echo '{"message":"Erro","details":'.$e->getMessage().'}';
+		}
+	}		
+
+	/* BUSCA O CLIENTE DE ACORDO COM ID */
+	public function select($field,$value)
+	{
+		try
+		{
+			$connection = new Connection();
+			$this->pdo = $connection->connect();
+			$dependArr = array();
+			$info= array();
+			
+			if($field == "CPF")
+			{
+				$typeView = "VW_CLIENTE_FISICA";
+			}
+			else
+			{
+				$typeView = "VW_CLIENTE_JURIDICA";
+			}
+			
+			
+			$selectCliente = $this->pdo->query("SELECT * FROM advocaciabd.".$typeView." WHERE ".$field."=".$value)->fetchAll();
+
+		    foreach($selectCliente as $row) 
+		    {
+
+		       if($field == "CPF" )
+		       {
+			       	$data = 	array(
+			       	"ID" 			=> 	$row['ID'], 
+			       	"NOME" 			=>	$row["NOME"],
+			       	"DT_NASCIMENTO" => 	$row["DT_NASCIMENTO"],
+			       	"SEXO" 			=>	$row["SEXO"],
+			       	"RG" 			=>	$row["RG"],
+			       	"DT_EMIS_RG" 	=> 	$row["DT_EMIS_RG"],
+			       	"UF_EMIS_RG" 	=> 	$row["UF_EMIS_RG"],
+			       	"CPF" 			=> 	$row["CPF"],
+			       	"CNH" 			=>	$row["CNH"],
+			       	"CATEGORIA" 	=>	$row["CATEGORIA"],
+			       	"NUM_CTPS" 		=>	$row["NUM_CTPS"],
+			       	"DT_EMIS_CTPS" 	=> 	$row["DT_EMIS_CTPS"],
+			       	"SERIE_CTPS" 	=> 	$row["SERIE_CTPS"],
+			       	"LOGRADOURO" 	=> 	$row["LOGRADOURO"],
+			       	"NUM" 			=> 	$row["NUM"],
+			       	"CEP" 			=>	$row["CEP"],
+			       	"BAIRRO" 		=>	$row["BAIRRO"],
+			       	"CIDADE" 		=> 	$row["CIDADE"],
+			       	"UF" 			=>	$row["UF"],
+			       	"COMPLEMENTO" 	=> 	$row["COMPLEMENTO"],
+			       	"TELEFONE1" 	=>	$row["TELEFONE1"],
+			       	"TELEFONE2" 	=> 	$row["TELEFONE2"],
+			       	"CELULAR" 		=> 	$row["CELULAR"],
+			       	"EMAIL" 		=> 	$row["EMAIL"]);
+		       }	
+		       else
+		       {
+		       		$data = 	array(
+			       	"ID" 					=> 	$row['ID'], 
+			       	"RAZAO_SOCIAL" 			=>	$row["RAZAO_SOCIAL"],
+			       	"NOME_FANTASIA" 		=> 	$row["NOME_FANTASIA"],
+			       	"INSCRICAO_ESTADUAL" 	=>	$row["INSCRICAO_ESTADUAL"],
+			       	"CNPJ" 					=>	$row["CNPJ"],
+			       	"LOGRADOURO" 			=> 	$row["LOGRADOURO"],
+			       	"NUM" 					=> 	$row["NUM"],
+			       	"CEP" 					=> 	$row["CEP"],
+			       	"BAIRRO" 				=>	$row["BAIRRO"],
+			       	"CIDADE" 				=>	$row["CIDADE"],
+			       	"UF" 					=>	$row["UF"],
+			       	"TELEFONE1" 			=> 	$row["TELEFONE1"],
+			       	"TELEFONE2" 			=> 	$row["TELEFONE2"],
+			       	"LOGRADOURO" 			=> 	$row["LOGRADOURO"],
+			       	"CELULAR" 				=>	$row["CELULAR"],
+			       	"EMAIL" 				=>	$row["EMAIL"]);
+		       }
+
+		       array_push($info, $data);
+		    }
+
+		    if($field == "CPF")
+		    {
+		    	$i = 0;
+		    	foreach ($info as $item) 
+		    	{
+			    	$selectDependente = $this->pdo->query("SELECT * FROM VW_DEPENDENTES WHERE COD_CLIENTE=".$item["ID"])->fetchAll();
+					 foreach($selectDependente as $row) 
+					 {
+					 	$dataDepend = array(
+					 		"ID"				=>	$row["ID"],
+					 		"COD_CLIENTE" 		=> 	$row["COD_CLIENTE"],
+					 		"NOME" 				=> 	$row["NOME"],
+					 		"RG" 				=> 	$row["RG"],
+					 		"CPF" 				=> 	$row["CPF"],
+					 		"DT_NASCIMENTO" 	=> 	$row["DT_NASCIMENTO"],
+					 		"GRAU_PARENTESCO" 	=> 	$row["GRAU_PARENTESCO"]
+
+					 		);
+					 	array_push($dependArr, $dataDepend);	
+					 }
+					
+					 $info[$i]["DEPENDENTES"] = $dependArr;
+					 $i++;
+		    	}
+		    }
+				
+				echo '{"message":"success","details":"Operação realizada com sucesso","operation":"save","data":'.json_encode($info).'}';	
+		} 
+		catch (Exception $e) 
+		{
+			echo '{"message":"Erro","details":'.$e->getMessage().'}';
+		}	
+	}
+
+
+	private function saveOrUpdateJuridicalPerson($idLastClient)
+	{
+		try 
+		{
+
+			if($this->idCliente > 0)
+			{
+				$sql = "UPDATE JURIDICA SET ".
+									"RAZAO_SOCIAL		= ?,".
+			 						"NOME_FANTASIA		= ?,". 
+			 						"CNPJ				= ?,". 
+			 						"INSCRICAO_ESTADUAL	= ?,".
+			 						"FK_CLIENTE			= ? WHERE FK_CLIENTE=".$idLastClient;
+			}
+			else
+			{
+
+				$sql = "INSERT INTO JURIDICA (".
 									"RAZAO_SOCIAL,".
 			 						"NOME_FANTASIA,". 
 			 						"CNPJ,". 
 			 						"INSCRICAO_ESTADUAL,".
-			 						"FK_CLIENTE) VALUES(?,?,?,?,?)"); 
+			 						"FK_CLIENTE) VALUES(?,?,?,?,?)";
+			}
 
-			$insertJuridico->bindValue(1,$this->razSocial);
-			$insertJuridico->bindValue(2,$this->nomeFant);
-			$insertJuridico->bindValue(3,$this->cnpj);
-			$insertJuridico->bindValue(4,$this->inscEstadual);
-			$insertJuridico->bindValue(5,$idLastClient);
+			$insertOrUpJuridico = $this->pdo->prepare($sql); 
 
-			$insertJuridico->execute();
-			$lastIdJurid = $this->pdo->lastInsertId();
+			$insertOrUpJuridico->bindValue(1,$this->razSocial);
+			$insertOrUpJuridico->bindValue(2,$this->nomeFant);
+			$insertOrUpJuridico->bindValue(3,$this->cnpj);
+			$insertOrUpJuridico->bindValue(4,$this->inscEstadual);
+			
 
-			if($lastIdJurid !=0)
+			$insertOrUpJuridico->bindValue(5,$idLastClient);
+
+			$insertOrUpJuridico->execute();
+			
+			$errorInfo = $insertOrUpJuridico->errorInfo();
+
+			if($errorInfo[2] == "")
 			{
-				echo 'success';
+				
+				$this->selectById($idLastClient,"J");
 			}
 			else
 			{
-				$this->delete($idLastClient);
-				echo 'Erro';
+				if($this->idCliente == 0)
+				{
+					$this->delete($idLastClient);
+				}
+				echo '{"message":"Erro","details":'.$errorInfo[2].'}';
 			}				
 		} 
 		catch (Exception $e) 
 		{
-			echo 'Erro: '.$e->getMessage();
+			echo '{"message":"Erro","details":'.$e->getMessage().'}';
 		}
 	
 	}
 
-	private function savePhysicalPerson($idLastClient)
+	private function saveOrUpdatePhysicalPerson($idLastClient)
 	{
 
 		try 
 		{
-			$insertPhysical = $this->pdo->prepare(
-			"INSERT INTO FISICA (".
+			if($this->idCliente>0)
+			{
+				$sql = "UPDATE FISICA SET ".
+									"NOME 			= ?,".
+			 						"DT_NASCIMENTO	= ?,". 
+			 						"SEXO			= ?,". 
+			 						"CPF			= ?,".
+			 						"RG				= ?,".
+			 						"DT_EMIS_RG		= ?,".
+			 						"UF_EMIS_RG		= ?,".
+			 						"NUM_CTPS		= ?,".
+			 						"SERIE_CTPS		= ?,".
+			 						"DT_EMIS_CTPS	= ?,".
+			 						"CNH			= ?,".
+			 						"CATEGORIA		= ?,".
+			 						"FK_CLIENTE		= ? WHERE FK_CLIENTE=".$idLastClient;  
+			}
+			else
+			{
+				$sql = "INSERT INTO FISICA (".
 									"NOME,".
 			 						"DT_NASCIMENTO,". 
 			 						"SEXO,". 
@@ -537,42 +834,53 @@ class Cliente
 			 						"DT_EMIS_CTPS,".
 			 						"CNH,".
 			 						"CATEGORIA,".
-			 						"FK_CLIENTE) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)"); 
+			 						"FK_CLIENTE) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+			}
 
-			$insertPhysical->bindValue(1,$this->nome);
-			$insertPhysical->bindValue(2,$this->dtNasc);
-			$insertPhysical->bindValue(3,$this->sexo);
-			$insertPhysical->bindValue(4,$this->cpf);
-			$insertPhysical->bindValue(5,$this->rgNum);
-			$insertPhysical->bindValue(6,$this->rgUfEmis);
-			$insertPhysical->bindValue(7,$this->rgDtEmis);
-			$insertPhysical->bindValue(8,$this->ctpsNum);
-			$insertPhysical->bindValue(9,$this->ctpsSerie);
-			$insertPhysical->bindValue(10,$this->ctpsDtEmis);
-			$insertPhysical->bindValue(11,$this->cnh);
-			$insertPhysical->bindValue(12,$this->cnhCat);
-			$insertPhysical->bindValue(13,$idlastClient);
+			$insertOrUpPhysical = $this->pdo->prepare($sql);
+			
+			$insertOrUpPhysical->bindValue(1,$this->nome);
+			$insertOrUpPhysical->bindValue(2,$this->dtNasc);
+			$insertOrUpPhysical->bindValue(3,$this->sexo);
+			$insertOrUpPhysical->bindValue(4,$this->cpf);
+			$insertOrUpPhysical->bindValue(5,$this->rgNum);
+			$insertOrUpPhysical->bindValue(6,$this->rgUfEmis);
+			$insertOrUpPhysical->bindValue(7,$this->rgDtEmis);
+			$insertOrUpPhysical->bindValue(8,$this->ctpsNum);
+			$insertOrUpPhysical->bindValue(9,$this->ctpsSerie);
+			$insertOrUpPhysical->bindValue(10,$this->ctpsDtEmis);
+			$insertOrUpPhysical->bindValue(11,$this->cnh);
+			$insertOrUpPhysical->bindValue(12,$this->cnhCat);
+			$insertOrUpPhysical->bindValue(13,$idLastClient);
 
-			$insertPhysical->execute();
-			$lastIdPhysic = $this->pdo->lastInsertId();
+			$insertOrUpPhysical->execute();
+			
+			$errorInfo = $insertOrUpPhysical->errorInfo();
 
-			if($lastIdPhysic != 0)
+			if($errorInfo[2] == "")
 			{
 				if(count($this->dependenteArr)>0)
-					$this->saveDependente($idlastClient);
+				{
+					$this->saveDependente($idLastClient);
+				}
 				else
-					echo 'success';
+				{
+					$this->selectById($idLastClient,"F");
+				}
+					
 			}
 			else
 			{
-				$this->delete($idLastClient);
-				//echo 'Erro';
+				if($this->idCliente == 0)
+					$this->delete($idLastClient);
+				
+				echo '{"message":"Erro","details":'.$errorInfo[2].'}';
 			}
 				
 		} 
 		catch (Exception $e) 
 		{
-			echo 'Erro: '.$e->getMessage();
+			echo '{"message":"Erro","details":'.$e->getMessage().'}';;
 		}
 		
 	}
@@ -582,14 +890,28 @@ class Cliente
 		try 
 		{
 			$pontoTranco = array('.' ,'-');
-			$insertDependente = $this->pdo->prepare(
-				"INSERT INTO DEPENDENTE (".
+			
+			if($this->idCliente > 0)
+			{
+				$sql = "UPDATE DEPENDENTE SET ".
+									"NOME 			= ?,".
+			 						"DT_NASCIMENTO	= ?,". 
+			 						"GRAU_PARENTESCO= ?,". 
+			 						"RG				= ?,".
+			 						"CPF			= ?,".
+			 						"COD_CLIENTE	= ? WHERE ID=?";
+			}
+			else
+			{
+				$sql = "INSERT INTO DEPENDENTE (".
 									"NOME,".
 			 						"DT_NASCIMENTO,". 
 			 						"GRAU_PARENTESCO,". 
 			 						"RG,".
 			 						"CPF,".
-			 						"COD_CLIENTE) VALUES(?,?,?,?,?,?)"); 
+			 						"COD_CLIENTE) VALUES(?,?,?,?,?,?)";
+			}
+			$insertDependente = $this->pdo->prepare($sql); 
 			
 			for($i = 0; $i < count($this->dependenteArr); $i++)
 			{
@@ -602,23 +924,30 @@ class Cliente
 				$insertDependente->bindValue(4,str_replace($pontoTranco,"", $depDecode->Rg));
 				$insertDependente->bindValue(5,str_replace($pontoTranco,"",$depDecode->Cpf));
 				$insertDependente->bindValue(6,$idLastClient);
+				
+				if($depDecode->Id > 0)
+					$insertDependente->bindValue(7,$depDecode->Id);
+				
 				$insertDependente->execute();	
 			}
 
-		
-			$lastIdDepend = $this->pdo->lastInsertId();
+			$errorInfo = $insertDependente->errorInfo();
 
-			if($lastIdDepend !=0)
-				echo 'success';
+			if($errorInfo[2] == "")
+			{
+				$this->selectById($idLastClient,"F");
+			}
 			else
 			{
-				$this->delete($idLastClient);
-				echo 'Erro';
+				if($this->idCliente == 0)
+					$this->delete($idLastClient);
+				
+				echo '{"message":"Erro","details":'.$errorInfo[2].'}';
 			}
 		} 
 		catch (Exception $e) 
 		{
-			echo 'Erro: '.$e->getMessage();
+			echo '{"message":"Erro","details":'.$e->getMessage().'}';
 		}
 		
 	}

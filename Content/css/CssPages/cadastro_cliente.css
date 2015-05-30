@@ -44,6 +44,13 @@
 	width:7%;
 } 
 
+.column-formated-4
+{
+	font-size: 14px !important;
+	width:7%;
+	display: none;
+}
+
 .menu
 {
 	margin-top:3.7% !important;
@@ -88,3 +95,7 @@
 	margin-top: 20%;
 }
 
+#idCliente
+{
+	display: none;
+}

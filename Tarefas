@@ -1,0 +1,13 @@
+Tarefas
+	Cadastro cliente
+		- Desativa save quando finalizar o evento e habilitar botão update - 20min
+		- Adicionar mais opções de parentesco - 10min
+		- Enviar informações para update - 2hrs
+		- Testes e validações - 3hrs
+		- Teste e validação update 2hrs
+	Pesquisa
+	 	- Fazer a ação de pesquisar pelo cpf e cnpj - 2hrs
+	 	- Colocar a informação na grid e ajustar a mesma - 2h
+	 	- Adicionar botões excluir e update na grid - 30 min
+	 	- Excluir pela grid - 1h
+	 	- Update (irá abrir a tela de cadastro para realizar update) - 1h

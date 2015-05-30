@@ -4,19 +4,19 @@
  	$action = $_POST['action'];
   	switch ($action) 
   	{
-  		case $action: save();	 	break;
-  		case $action: update(); 	break;
-  		case $action: delete(); 	break;
-  		case $action: select(); 	break;
-  		case $action: selectAll(); 	break;
+  		case "saveOrUpdate"	:	saveOrUpdate();	break;
+  		case "delete"		: 	delete(); 		break;
+  		case "select"		:	select(); 		break;
+  		case "selectAll"	:	selectAll();	break;
   	}
  	
  	//echo 'count'.count($data);
 
-	function save()
+	function saveOrUpdate()
 	{
 			try 
 			{
+			
 				$form = $_POST['data'];
 				$data = split("&", $form);
 
@@ -56,16 +56,17 @@
 						case 'CLI_CEL'			: $CLI_CEL		 		= $content[1]; break;
 						case 'CLI_EMAIL'		: $CLI_EMAIL 			= $content[1]; break;
 						case 'JURIDICA'			: $TIPO_PESSOA 			= $content[1]; break;
+						case 'ID_CLIENTE'		: $ID_CLIENTE 			= $content[1]; break;
 
 
 					}
 				}
-					$pontoTraco = array(".","-");
+					$pontoTraco = array(".","-","/");
 
 					$clienteModel = new Cliente();
-
+				
 					$clienteModel->setTel1($CLI_TEL);
-					$clienteModel->setTel2($CLI_TEL1);
+					$clienteModel->setTel2($CLI_TEL2);
 					$clienteModel->setCelular($CLI_CEL);
 					$clienteModel->setEmail($CLI_EMAIL);
 					$clienteModel->setLogradouro($CLI_END_LOGRADOURO);
@@ -102,8 +103,10 @@
 						$clienteModel->setCnh($CLI_CNH);
 						$clienteModel->setCnhCat($CLI_CNH_CAT);
 					}
-					
-					$clienteModel->save();
+
+					$clienteModel->setId($ID_CLIENTE);
+
+					$clienteModel->saveOrUpdate();
 					
 			} 
 			catch (Exception $e) 
@@ -143,6 +146,15 @@
 		{
 			try 
 			{
+				$form = $_POST['data'];
+
+				$dataArr = json_decode($form);
+				$info = json_decode($dataArr[0]);
+
+				$pontoTracoBar = array(".","-","/");
+
+				$clienteModel = new Cliente();
+				$clienteModel->select($info->campo,str_replace($pontoTracoBar,"", $info->valor));	
 			} 
 			catch (Exception $e) 
 			{
@@ -154,6 +166,8 @@
 		{
 			try 
 			{
+				
+
 			} 
 			catch (Exception $e) 
 			{

@@ -38,6 +38,7 @@ $(document).ready(function()
 	$("#btnAddDependent").click(function(){
 		
 		var item = "<tr>"+
+		"<td class='column-formated-4' align='center'>&nbsp</td>"+
 		"<td>"+$("#txtNomeDependente").val()+"</td>"+
 		"<td align='center'>"+$("#txtDtNascimentoDependente").val()+"</td>"+
 		"<td align='center'>"+$("#txtRGDependente").val()+"</td>"+
@@ -50,7 +51,7 @@ $(document).ready(function()
 		"</td>"+
 		"<td align='center'>"+
 				"<button type='button' class='btn btn-default btn-responsive' onClick='removeDependente(event)'>"+
-					"<span class='glyphicon glyphicon-remove' aria-hidden='true'></span>"+
+					"<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>"+
 				"</button>"+
 		"</td>"+
 		"</tr>";
@@ -117,15 +118,17 @@ $(document).ready(function()
 	*/
 	$("#frmCadCliente").submit(function(evt)
 	{
+
 		removeAlert();
 		showLoadingModal();
-		
+		var id =0 ;
 		var dependArr =[];
 		var tbArr={};
 		var str;
 		var i = 0;
 		var infos = $(this).serialize(); 
 		
+
 		$("#tblDependente td").each(function(k,v)
 		{
 
@@ -133,16 +136,17 @@ $(document).ready(function()
 			{	
 				switch(i)
 				{
-					case 0:tbArr["Nome"] 		= $(this).html(); break;
-					case 1:tbArr["Dt_Nasc"] 	= $(this).html(); break;
-					case 2:tbArr["Rg"] 			= $(this).html(); break;
-					case 3:tbArr["Cpf"] 		= $(this).html(); break;
-					case 4:tbArr["Parentesco"] 	= $(this).html(); break;
+					case 0:tbArr["Id"] 			= $(this).html() == "&nbsp;" ? 0 : $(this).html(); break;
+					case 1:tbArr["Nome"] 		= $(this).html(); break;
+					case 2:tbArr["Dt_Nasc"] 	= $(this).html(); break;
+					case 3:tbArr["Rg"] 			= $(this).html(); break;
+					case 4:tbArr["Cpf"] 		= $(this).html(); break;
+					case 5:tbArr["Parentesco"] 	= $(this).html(); break;
 				}
 				i++;
 			}
 						
-			if(i==5)
+			if(i==6)
 			{
 				i=0;
 				dependArr.push(JSON.stringify(tbArr));
@@ -154,45 +158,45 @@ $(document).ready(function()
 			{
 				type:"POST",
 				url:"../controller/ClienteController.php",
+				contentType: "application/x-www-form-urlencoded;charset=utf-8",
 				data:{
-					"action":"save",
+					"action":"saveOrUpdate",
 					"data":infos,
 					"dependentes[]":dependArr
 				},
+				
 				success:function(response)
-				{
+				{	
 					hideLoadingModal();
+					var oCliente = $.parseJSON(response);
+					var msg = oCliente.message;
+					
 					window.setTimeout(function(){
-						if(response.trim()=="success")
+						if(msg == "success" && oCliente.data.length > 0 )
 						{
-							// $("#btnSimDependente").fadeIn();
-							// $("#btnNaoDependente").fadeIn();
-							// $("#btnOKDependente").fadeOut();
-							// $('.modal-body').html('');
-							//$('.modal-body').html('Cliente cadastrado com sucesso. Deseja cadastrar dependentes?');
-							showMessage("Cliente cadastrado com sucesso",false);
-							enableDisableInputs(true);
+							
+							$("#idCliente").val(oCliente.data[0]["ID"]);
+							$("#tbItens tr").children("td:nth-child(1)").each(function(i,v){
+								$(v).children("td").context.innerText = oCliente.data[0]["DEPENDENTES"][i]["ID"];
+							});
+							
+							showMessage(oCliente.details,false);
+							
 							$("#btnAtualizar").prop("disabled",false);
 							$("#btnSalvar").prop("disabled",true);
 						}
 						else 
 						{
-							// $("#btnSimDependente").fadeOut();
-							// $("#btnNaoDependente").fadeOut();
-							// $("#btnOKDependente").fadeIn();
-							
-							// $('.modal-body').html('');
 							showMessage("Ocorreu um erro ao realizar o cadastro de cliente, tente novamente.",true);
-							//$('.modal-body').html('Ocorreu um erro ao realizar o cadastro de cliente, tente novamente.');
 						}
 						
-						//$("#modalDependente").modal('show');
 					},520);
 				},
 				error:function(err)
 				{
 					showMessage("Erro ao realizar o cadastro de cliente",true);
 					hideLoadingModal();
+					
 				}
 			});
 		return false;
@@ -211,6 +215,19 @@ $(document).ready(function()
 		requiredDependente(true);
 	});
 
+	$("#btnPreencher").click(function(){
+		preencherCampos();
+	});
+
+	$("#btnNovo").click(function()
+	{
+		$("#btnAtualizar").prop("disabled",true);
+		$("#btnSalvar").prop("disabled",false);
+
+		clearFields();
+	});
+
+
 });
 
 var _loading;
@@ -227,10 +244,10 @@ function editDependente(evt)
 {
 	 _parent = $(evt.currentTarget).parent().parent();
 
-	 _nomeDependente = _parent.children("td:nth-child(1)");
-	 _dtNascDependente = _parent.children("td:nth-child(2)");
-	 _rgDependente = _parent.children("td:nth-child(3)");
-	 _cpfDependente = _parent.children("td:nth-child(4)");
+	 _nomeDependente = _parent.children("td:nth-child(2)");
+	 _dtNascDependente = _parent.children("td:nth-child(3)");
+	 _rgDependente = _parent.children("td:nth-child(4)");
+	 _cpfDependente = _parent.children("td:nth-child(5)");
 
 	$("#txtNomeDependente")[0].value = _nomeDependente[0].textContent;
 	$("#txtDtNascimentoDependente")[0].value = _dtNascDependente[0].textContent;
@@ -473,4 +490,33 @@ function requiredDependente(truOrFalse)
 		$("#txtDtNascimentoDependente").attr("required",truOrFalse);
 		$("#txtRGDependente").attr("required",truOrFalse);
 		$("#txtCPFDependente").attr("required",truOrFalse);
+}
+
+function preencherCampos()
+{
+	$("#txtClient").val("Jefferson Silva Araujo");
+	$("#txtDataNascimento").val("30/01/1991");
+	$("#txtCPF").val("33333333333");
+	$("#txtRG").val("44444444444");
+	$("#txtCTPS").val("333654477");
+	$("#txtSerie").val("554785");
+	$("#txtCNH").val("123456789");
+	$("#txtCategoria").val("A/B");
+	$("#txtTel1").val("(11) 3333-3333");
+	$("#txtCel").val("(12) 98888-8888");
+	$("#txtDtEmissaoRG").val("30/01/1991");
+	$("#txtDtEmissaoCTPS").val("30/01/1991");
+
+		$("#txtNomeDependente").val("Isabela");
+		$("#txtDtNascimentoDependente").val("15/03/2015");
+		$("#txtRGDependente").val("4788899987");
+		$("#txtCPFDependente").val("33332555478");
+}
+
+function clearFields()
+{
+	$("input[type=input]").val('');
+	$("input[type=date]").val('');
+
+	$("#tbItens").children("tr").remove();
 }
