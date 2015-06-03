@@ -616,7 +616,7 @@ class Cliente
 					 $i++;
 		    	}
 		    }
-				
+		    	
 				echo '{"message":"success","details":"Operação realizada com sucesso","operation":"save","data":'.json_encode($info).'}';	
 		} 
 		catch (Exception $e) 
@@ -727,7 +727,8 @@ class Cliente
 					 $i++;
 		    	}
 		    }
-				
+				session_start();
+				$_SESSION['cliente'] = json_encode($info);
 				echo '{"message":"success","details":"Operação realizada com sucesso","operation":"save","data":'.json_encode($info).'}';	
 		} 
 		catch (Exception $e) 

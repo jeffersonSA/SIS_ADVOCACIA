@@ -37,28 +37,26 @@ $(document).ready(function()
 	*/
 	$("#btnAddDependent").click(function(){
 		
-		var item = "<tr>"+
-		"<td class='column-formated-4' align='center'>&nbsp</td>"+
-		"<td>"+$("#txtNomeDependente").val()+"</td>"+
-		"<td align='center'>"+$("#txtDtNascimentoDependente").val()+"</td>"+
-		"<td align='center'>"+$("#txtRGDependente").val()+"</td>"+
-		"<td align='center'>"+$("#txtCPFDependente").val()+"</td>"+
-		"<td align='center'>"+$("#slcParentesco").val()+"</td>"+
-		"<td align='center'>"+
-				"<button type='button' class='btn btn-default btn-responsive' onClick='editDependente(event)' >"+
-					"<span class='glyphicon glyphicon-edit' aria-hidden='true'></span>"+
-				"</button>"+
-		"</td>"+
-		"<td align='center'>"+
-				"<button type='button' class='btn btn-default btn-responsive' onClick='removeDependente(event)'>"+
-					"<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>"+
-				"</button>"+
-		"</td>"+
-		"</tr>";
+		var id = $table.bootstrapTable("getData");
+		
+		getRows = function () 
+		{
 
-		$("#tbItens").append($(item).fadeIn('slow'));
+			var row = [{
+			ID: id.length + 1,		
+			NOME: 		$("#txtNomeDependente").val(),
+			DT_NASC: 	$("#txtDtNascimentoDependente").val(),
+			RG: 		$("#txtRGDependente").val(),
+			CPF: 		$("#txtCPFDependente").val(),
+			PARENTESCO: $("#slcParentesco").val()
+			}];
 
+			return row;
+		}
+		
+		$table.bootstrapTable("append",getRows());
 	});
+	
 
 	/*
 	* Salva o dependente editado na grid
@@ -66,10 +64,10 @@ $(document).ready(function()
 	$("#btnEditDependent").click(function()
 	{
 
-		_nomeDependente[0].textContent = $("#txtNomeDependente").val();
-		_dtNascDependente[0].textContent = $("#txtDtNascimentoDependente").val();
-		_rgDependente[0].textContent = $("#txtRGDependente").val();
-		_cpfDependente[0].textContent = $("#txtCPFDependente").val();
+		_nomeDependente[0].textContent 		= $("#txtNomeDependente").val();
+		_dtNascDependente[0].textContent 	= $("#txtDtNascimentoDependente").val();
+		_rgDependente[0].textContent 		= $("#txtRGDependente").val();
+		_cpfDependente[0].textContent 		= $("#txtCPFDependente").val();
 
 		$("#btnEditDependent").fadeOut('slow',function(){
 			$("#btnAddDependent").fadeIn('slow');
@@ -127,33 +125,34 @@ $(document).ready(function()
 		var str;
 		var i = 0;
 		var infos = $(this).serialize(); 
-		
+		var enc = encodeURIComponent(infos);
+		var dc = decodeURIComponent(enc);
 
-		$("#tblDependente td").each(function(k,v)
-		{
+		// $("#tblDependente td").each(function(k,v)
+		// {
 
-			if($(v)[0].childNodes[0].type != "button")
-			{	
-				switch(i)
-				{
-					case 0:tbArr["Id"] 			= $(this).html() == "&nbsp;" ? 0 : $(this).html(); break;
-					case 1:tbArr["Nome"] 		= $(this).html(); break;
-					case 2:tbArr["Dt_Nasc"] 	= $(this).html(); break;
-					case 3:tbArr["Rg"] 			= $(this).html(); break;
-					case 4:tbArr["Cpf"] 		= $(this).html(); break;
-					case 5:tbArr["Parentesco"] 	= $(this).html(); break;
-				}
-				i++;
-			}
+		// 	if($(v)[0].childNodes[0].type != "button")
+		// 	{	
+		// 		switch(i)
+		// 		{
+		// 			case 0:tbArr["Id"] 			= $(this).html() == "&nbsp;" ? 0 : $(this).html(); break;
+		// 			case 1:tbArr["Nome"] 		= $(this).html(); break;
+		// 			case 2:tbArr["Dt_Nasc"] 	= $(this).html(); break;
+		// 			case 3:tbArr["Rg"] 			= $(this).html(); break;
+		// 			case 4:tbArr["Cpf"] 		= $(this).html(); break;
+		// 			case 5:tbArr["Parentesco"] 	= $(this).html(); break;
+		// 		}
+		// 		i++;
+		// 	}
 						
-			if(i==6)
-			{
-				i=0;
-				dependArr.push(JSON.stringify(tbArr));
-			}	
-		});
+		// 	if(i==6)
+		// 	{
+		// 		i=0;
+		// 		dependArr.push(JSON.stringify(tbArr));
+		// 	}	
+		// });
 		
-		var dependJSON = JSON.stringify(dependArr);
+		//JSON.stringify(dependArr);
 		$.ajax(
 			{
 				type:"POST",
@@ -162,7 +161,7 @@ $(document).ready(function()
 				data:{
 					"action":"saveOrUpdate",
 					"data":infos,
-					"dependentes[]":dependArr
+					"dependentes":$table.bootstrapTable("getData")
 				},
 				
 				success:function(response)
@@ -240,19 +239,14 @@ var _cpfDependente;
 /*
 *  Envia as informações do dependente para os textsbox para serem editadas
 */
-function editDependente(evt)
+function editDependente(row)
 {
-	 _parent = $(evt.currentTarget).parent().parent();
-
-	 _nomeDependente = _parent.children("td:nth-child(2)");
-	 _dtNascDependente = _parent.children("td:nth-child(3)");
-	 _rgDependente = _parent.children("td:nth-child(4)");
-	 _cpfDependente = _parent.children("td:nth-child(5)");
-
-	$("#txtNomeDependente")[0].value = _nomeDependente[0].textContent;
-	$("#txtDtNascimentoDependente")[0].value = _dtNascDependente[0].textContent;
-	$("#txtRGDependente")[0].value = _rgDependente[0].textContent;
-	$("#txtCPFDependente")[0].value = _cpfDependente[0].textContent;
+	
+	$("#txtNomeDependente")[0].value = row["NOME"];
+	$("#txtDtNascimentoDependente")[0].value = row["DT_NASC"];
+	$("#txtRGDependente")[0].value = row["RG"];
+	$("#txtCPFDependente")[0].value = row["CPF"];
+	$("#txtParentesco")[0].value = row["PARENTESCO"];
 
 	$("#btnAddDependent").fadeOut('slow',function(){
 		$("#btnEditDependent").fadeIn('slow');
@@ -262,11 +256,12 @@ function editDependente(evt)
 /*
 *  Remove os dependentes adicionados na grid
 */
-function removeDependente(evt)
+function removeDependente(row)
 {
-	$(evt.currentTarget).parent().parent().fadeOut('slow',function(){
-		$(this).remove();
-	});
+	  $table.bootstrapTable('remove', {
+                    field: 'ID',
+                    values: [row["ID"]]
+        	});
 }
 
 function configInit()
@@ -291,6 +286,20 @@ function configInit()
 		backdrop:'static',
 		show:false
 	});
+
+	$table = $("#tblDependente").bootstrapTable();
+
+	if($("#idCliente").val() > 0)
+	{
+		$("#btnAtualizar").prop("disabled",false);
+		$("#btnSalvar").prop("disabled",true);
+	}
+
+	if($table.bootstrapTable("getData").length > 0);
+	{
+		$("#pnlBodyDependente").slideDown('slow');
+		requiredDependente(true);
+	}
 }
 
 //Exibe o loading quando acionado algum evento
@@ -520,3 +529,31 @@ function clearFields()
 
 	$("#tbItens").children("tr").remove();
 }
+
+	function opEditDep(value, row, index)
+	{
+		return [
+				"<button type='button' class='btn btn-default btn-responsive edit' name='edit' >"+
+					"<span class='glyphicon glyphicon-edit' aria-hidden='true'></span>"+
+				"</button>"].join('');
+	}
+
+	function opDeleteDep(value, row, index)
+	{
+		return [
+				"<button type='button' class='btn btn-default btn-responsive delete' name='delete' >"+
+					"<span class='glyphicon glyphicon-trash' aria-hidden='true'></span>"+
+				"</button>"].join('');
+	}
+
+	/*
+	* disapara evento dos botõs na grid
+	*/
+	window.operateEvents = {
+		'click .edit':function(e, value, row, index){
+			editDependente(row);
+		},
+		'click .delete':function(e, value, row, index){
+			removeDependente(row);
+		}	
+	}

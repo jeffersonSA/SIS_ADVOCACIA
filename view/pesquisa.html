@@ -38,7 +38,12 @@
 				<script type="text/javascript" src="../Content/js/bootstrap-table/src/bootstrap-table.js">		</script>
 				<link rel="stylesheet" media="screen" href="../Content/css/CssPages/pesquisa-cliente.css" />
 				<link rel="stylesheet" media="screen" href="../Content/js/bootstrap-table/src/bootstrap-table.css" />
-
+				<!-- LOADING -->
+				<div class="modal js-loading-bar">
+					<div class="modal-dialog">   
+				    	<div class="col-sm-5"></div><img class="loading" src="../Content/img/loading.gif" />  
+				 	</div>
+				</div>
 				<!-- FORM -->
 				<form class="form-horizontal" id="frmCadCliente" required="false">
 					<!-- PANEL PESQUISA -->
@@ -46,7 +51,7 @@
 						<div class="panel-heading"><b>Pesquisa</b>
 							<div class="btn-group " data-toggle="buttons">
 									<label class="btn btn-primary active" id="rdnFisica">
-										<input type="radio" name="CPF" autocomplete="off" checked> <b>Física</b>
+										<input type="radio" name="CPF" autocomplete="off" checked > <b>Física</b>
 									</label>
 									<label class="btn btn-primary" id="rdnJuridica">
 										<input type="radio" name="CNPJ"  autocomplete="off"> <b>Jurídica</b>

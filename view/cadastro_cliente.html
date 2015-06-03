@@ -4,7 +4,7 @@
 		<title></title>
 
 		<!--META -->
-		<meta charset="utf-8">
+		 <meta http-equiv="content-type" content="text/html; charset=utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=8;FF=3;OtherUA=4" >
         <meta name="viewport" content="width=device-width, user-scalable=no">
 
@@ -13,7 +13,8 @@
 		<script type="text/javascript" src="../Content/js/bootstrap.js"> 		 							</script>
 		<script type="text/javascript" src="../Content/js/bootstrap.min.js"> 								</script>
 		<script type="text/javascript" src="../Content/js/JsPages/mascara/jquery.maskedinput-1.3.1.min.js"> </script>
-			<script type="text/javascript" src="../Content/js/JsPages/cadastro_cliente.js"> 					</script>
+		<script type="text/javascript" src="../Content/js/bootstrap-table/src/bootstrap-table.js">		</script>
+		<script type="text/javascript" src="../Content/js/JsPages/cadastro_cliente.js"> 					</script>
 
 		<!-- CSS -->
 		<link rel="stylesheet" media="screen" href="../Content/css/bootstrap.css" />
@@ -21,6 +22,7 @@
 		<link rel="stylesheet" media="screen" href="../Content/css/bootstrap-responsive.css" />
 		<link rel="stylesheet" media="screen" href="../Content/css/bootstrap-responsive.min.css" />
 		<link rel="stylesheet" media="screen" href="../Content/css/CssPages/cadastro_cliente.css" />
+		<link rel="stylesheet" media="screen" href="../Content/js/bootstrap-table/src/bootstrap-table.css" />
 		
 	</head>
 
@@ -30,14 +32,16 @@
 		<div class="row" >
 			<div class="" id="content" >
 				<!--META -->
-				<meta charset="utf-8">
+				<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		        <meta http-equiv="X-UA-Compatible" content="IE=8;FF=3;OtherUA=4" >
 		        <meta name="viewport" content="width=device-width, user-scalable=no">
 				<!--SCRIPTS -->
 				<script type="text/javascript" src="../Content/js/JsPages/mascara/jquery.maskedinput-1.3.1.min.js"> </script>
+				<script type="text/javascript" src="../Content/js/bootstrap-table/src/bootstrap-table.js">		</script>
 				<script type="text/javascript" src="../Content/js/JsPages/cadastro_cliente.js"> 					</script>
 				<!-- CSS -->
 				<link rel="stylesheet" media="screen" href="../Content/css/CssPages/cadastro_cliente.css" />
+				<link rel="stylesheet" media="screen" href="../Content/js/bootstrap-table/src/bootstrap-table.css" />
 
 				<div class="modal js-loading-bar">
 					<div class="modal-dialog">   
@@ -57,7 +61,7 @@
 				</div>
 
 				<!-- FORM -->
-				<form class="form-horizontal" action="" method="post" id="frmCadCliente" enctype='multipart/form-data' >
+				<form class="form-horizontal" action="" method="post" id="frmCadCliente" enctype="multipart/form-data" novalidate >
 					<div class="form-group" >
 						<div class="col-sm-4"></div>
 						<button type="button" id="btnPreencher" class="btn btn-lg btn-primary">
@@ -148,7 +152,7 @@
 							<div class="form-group" >
 								<label class="col-sm-2  control-label">Email:</label>
 							    <div class="col-sm-6">
-							    	<input type="input" class="form-control"  id="txtCNPJ" placeholder="exemplo@exemplo.com.br" name="CLI_EMAIL" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
+							    	<input type="input" class="form-control"  id="txtEmail" placeholder="exemplo@exemplo.com.br" name="CLI_EMAIL" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$">
 							    </div>
 							</div>
 					  	</div>
@@ -359,17 +363,17 @@
 								</div>
 							</div>
 							<div class="form-group">
-								<table id="tblDependente" class="table table-striped table-bordered">
+								<table id="tblDependente"   data-search="true" data-height="299"  data-show-toggle="true" data-pagination="true" >
 									<thead>
-										<tr bgcolor="dddddd" class="">
-											<th class="column-formated-4">ID</th>
-											<th class="column-formated-1">Nome</th>
-											<th class="column-formated-2">Data de nascimento</th>
-											<th class="column-formated-2">RG</th>
-											<th class="column-formated-2">CPF</th>
-											<th class="column-formated-2">Parentesco</th>
-											<th class="column-formated-3" >Editar</th>
-											<th class="column-formated-3">Remover</th>
+										<tr>
+											<th data-field="ID" 		class="column-formated-4">ID</th>
+											<th data-field="NOME" 		class="column-formated-1">Nome</th>
+											<th data-field="DT_NASC" 	class="column-formated-2">Data de nascimento</th>
+											<th data-field="RG" 		class="column-formated-2">RG</th>
+											<th data-field="CPF" 		class="column-formated-2">CPF</th>
+											<th data-field="PARENTESCO" class="column-formated-2">Parentesco</th>
+											<th data-field="EDIT" 		data-formatter="opEditDep" data-events="operateEvents"class="column-formated-3"  >Editar</th>
+											<th data-field="DELETE" 	data-formatter="opDeleteDep" data-events="operateEvents" 			   class="column-formated-3">Remover</th>
 										</tr>
 									</thead>
 									<tbody id="tbItens">

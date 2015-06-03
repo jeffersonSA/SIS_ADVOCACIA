@@ -2,6 +2,18 @@
     {
         "colfisica": [ 
             {
+                "field": "EDIT",
+                "title": "Editar",
+                "formatter":"operateFormatterEdit",
+                "events":"operationCliente"
+            },
+            {
+                "field": "DELETE",
+                "title": "Excluir",
+                "formatter":"operateFormatterDelete",
+                "events":"operationCliente"
+            },
+            {
                 "field": "ID",
                 "title": "ID",
                 "sortable": "true"

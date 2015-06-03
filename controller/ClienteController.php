@@ -4,10 +4,13 @@
  	$action = $_POST['action'];
   	switch ($action) 
   	{
+
   		case "saveOrUpdate"	:	saveOrUpdate();	break;
   		case "delete"		: 	delete(); 		break;
   		case "select"		:	select(); 		break;
   		case "selectAll"	:	selectAll();	break;
+  		case "selectById"	: 	selectById();	break;
+  		case "getSession"	: 	getSession();	break;
   	}
  	
  	//echo 'count'.count($data);
@@ -119,7 +122,7 @@
 		{
 			try 
 			{
-				// $Id = $_POST['Id'];
+				 $Id = $_POST['Id'];
 				
 				// $clienteModel = new Cliente();
 				// $clienteModel->delete($id);
@@ -162,6 +165,22 @@
 			}
 		}
 
+		function selectById()
+		{
+			try 
+			{
+				$id = $_POST['data'];
+				
+				$clienteModel = new Cliente();
+				$clienteModel->selectById($id,"F");
+
+			} 
+			catch (Exception $e) 
+			{
+				
+			}
+		}
+
 		function selectAll()
 		{
 			try 
@@ -172,6 +191,21 @@
 			catch (Exception $e) 
 			{
  				echo 'Erro:'.$e;
+			}
+		}
+
+		function getSession()
+		{
+			try 
+			{
+				session_start();
+				echo '{"message":"success","data":'.$_SESSION["cliente"].'}';
+				// $clienteModel = new Cliente();
+				 //$clienteModel->getSession("cliente");
+
+			} catch (Exception $e) 
+			{
+				
 			}
 		}
 
