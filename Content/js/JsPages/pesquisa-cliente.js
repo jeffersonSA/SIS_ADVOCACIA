@@ -67,6 +67,7 @@ $(document).ready(function(){
 
 					if(msg=="success" && oCliente.data.length > 0)
 					{
+						removeAllRegisters();
 		                $table.bootstrapTable('append',getRows(oCliente));
 		                hideLoadingModal();
 					}	
@@ -97,6 +98,21 @@ $(document).ready(function(){
 
 });
 
+function removeAllRegisters()
+{
+	var data = $table.bootstrapTable('getData');
+	var ids = [];
+
+	$.each(data,function(i,v)
+	{
+		ids.push( v["ID"]);
+	});
+
+	$("#tblResult").bootstrapTable('remove',{
+		field:'ID',
+		values:ids
+	});
+}
 function getRows(oCliente)
 {
 

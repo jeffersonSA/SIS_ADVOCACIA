@@ -125,39 +125,12 @@ $(document).ready(function()
 		var str;
 		var i = 0;
 		var infos = $(this).serialize(); 
-		var enc = encodeURIComponent(infos);
-		var dc = decodeURIComponent(enc);
-
-		// $("#tblDependente td").each(function(k,v)
-		// {
-
-		// 	if($(v)[0].childNodes[0].type != "button")
-		// 	{	
-		// 		switch(i)
-		// 		{
-		// 			case 0:tbArr["Id"] 			= $(this).html() == "&nbsp;" ? 0 : $(this).html(); break;
-		// 			case 1:tbArr["Nome"] 		= $(this).html(); break;
-		// 			case 2:tbArr["Dt_Nasc"] 	= $(this).html(); break;
-		// 			case 3:tbArr["Rg"] 			= $(this).html(); break;
-		// 			case 4:tbArr["Cpf"] 		= $(this).html(); break;
-		// 			case 5:tbArr["Parentesco"] 	= $(this).html(); break;
-		// 		}
-		// 		i++;
-		// 	}
-						
-		// 	if(i==6)
-		// 	{
-		// 		i=0;
-		// 		dependArr.push(JSON.stringify(tbArr));
-		// 	}	
-		// });
 		
-		//JSON.stringify(dependArr);
 		$.ajax(
 			{
 				type:"POST",
 				url:"../controller/ClienteController.php",
-				contentType: "application/x-www-form-urlencoded;charset=utf-8",
+				contentType: "application/x-www-form-urlencoded; charset=UTF-8",
 				data:{
 					"action":"saveOrUpdate",
 					"data":infos,
@@ -176,7 +149,8 @@ $(document).ready(function()
 							
 							$("#idCliente").val(oCliente.data[0]["ID"]);
 							$("#tbItens tr").children("td:nth-child(1)").each(function(i,v){
-								$(v).children("td").context.innerText = oCliente.data[0]["DEPENDENTES"][i]["ID"];
+								if(oCliente.data[0]["DEPENDENTES"].length>0)
+									$(v).children("td").context.innerText = oCliente.data[0]["DEPENDENTES"][i]["ID"];
 							});
 							
 							showMessage(oCliente.details,false);
@@ -295,7 +269,7 @@ function configInit()
 		$("#btnSalvar").prop("disabled",true);
 	}
 
-	if($table.bootstrapTable("getData").length > 0);
+	if($table.bootstrapTable("getData").length > 0)
 	{
 		$("#pnlBodyDependente").slideDown('slow');
 		requiredDependente(true);

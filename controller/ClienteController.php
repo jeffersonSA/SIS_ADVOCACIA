@@ -1,8 +1,8 @@
 <?php
 	require("../model/ClienteModel.php");
  	
- 	$action = $_POST['action'];
-  	switch ($action) 
+ 	$actionOp = $_POST["action"];
+  	switch ($actionOp) 
   	{
 
   		case "saveOrUpdate"	:	saveOrUpdate();	break;
@@ -21,8 +21,9 @@
 			{
 			
 				$form = $_POST['data'];
-				$data = split("&", $form);
-
+				
+				$data = split("&", urldecode($form));
+		
 				for($i = 0; $i < count($data); $i++)
 				{
 					$content = split("=", $data[$i]);
@@ -64,6 +65,7 @@
 
 					}
 				}
+			
 					$pontoTraco = array(".","-","/");
 
 					$clienteModel = new Cliente();
@@ -91,6 +93,7 @@
 					else
 					{
 						$dependenteArr = $_POST['dependentes'];
+				
 						$clienteModel->setDependente($dependenteArr);
 						$clienteModel->setIsJuridico(false);
 						$clienteModel->setNome($CLI_NOME);
@@ -200,8 +203,6 @@
 			{
 				session_start();
 				echo '{"message":"success","data":'.$_SESSION["cliente"].'}';
-				// $clienteModel = new Cliente();
-				 //$clienteModel->getSession("cliente");
 
 			} catch (Exception $e) 
 			{

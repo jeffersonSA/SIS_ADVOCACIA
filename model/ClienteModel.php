@@ -1,4 +1,4 @@
-<?php
+ <?php
 require("../connection/con_mysql.php");
 class Cliente
 {
@@ -534,7 +534,8 @@ class Cliente
 			}
 			
 			
-			$selectCliente = $this->pdo->query("SELECT * FROM advocaciabd.".$typeView." WHERE ID = ".$id)->fetchAll();
+			$selectCliente = $this->pdo->query("SELECT * FROM advocaciabd.".$typeView." WHERE ID = ".$id);
+		
 
 		    foreach($selectCliente as $row) 
 		    {
@@ -617,7 +618,7 @@ class Cliente
 		    	}
 		    }
 		    	
-				echo '{"message":"success","details":"Operação realizada com sucesso","operation":"save","data":'.json_encode($info).'}';	
+				echo '{"message":"success","details":"Operação realizada com sucesso","operation":"save","data":'.urldecode(json_encode($info)).'}';	
 		} 
 		catch (Exception $e) 
 		{
@@ -729,7 +730,7 @@ class Cliente
 		    }
 				session_start();
 				$_SESSION['cliente'] = json_encode($info);
-				echo '{"message":"success","details":"Operação realizada com sucesso","operation":"save","data":'.json_encode($info).'}';	
+				echo '{"message":"success","details":"Operação realizada com sucesso","operation":"save","data":'.urldecode(json_encode($info)).'}';	
 		} 
 		catch (Exception $e) 
 		{
@@ -916,14 +917,12 @@ class Cliente
 			
 			for($i = 0; $i < count($this->dependenteArr); $i++)
 			{
-				 $depDecode = json_decode($this->dependenteArr[$i]);
 				 
-
-				$insertDependente->bindValue(1,$depDecode->Nome);
-				$insertDependente->bindValue(2,$depDecode->Dt_Nasc);
-				$insertDependente->bindValue(3,$depDecode->Parentesco);
-				$insertDependente->bindValue(4,str_replace($pontoTranco,"", $depDecode->Rg));
-				$insertDependente->bindValue(5,str_replace($pontoTranco,"",$depDecode->Cpf));
+				$insertDependente->bindValue(1,urldecode(($this->dependenteArr[$i]["NOME"])));
+				$insertDependente->bindValue(2,urldecode(($this->dependenteArr[$i]["DT_NASC"])));
+				$insertDependente->bindValue(3,urldecode(($this->dependenteArr[$i]["PARENTESCO"])));
+				$insertDependente->bindValue(4,str_replace($pontoTranco,"", urldecode(($this->dependenteArr[$i]["RG"]))));
+				$insertDependente->bindValue(5,str_replace($pontoTranco,"",urldecode(($this->dependenteArr[$i]["CPF"]))));
 				$insertDependente->bindValue(6,$idLastClient);
 				
 				if($depDecode->Id > 0)
