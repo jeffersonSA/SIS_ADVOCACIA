@@ -493,14 +493,33 @@ class Cliente
 
 	/* DELETA */
 	function delete($id)
-	{
-		 $connection = new Connection();
-		 $this->pdo = $connection->connect();
-
-		 $deleteCliente = $this->pdo->prepare("DELETE FROM CLIENTE WHERE ID = :idCliente");
+	{ 
+		try 
+		{
+			 $connection = new Connection();
+			 $this->pdo = $connection->connect();
+		
+		 	 $deleteCliente = $this->pdo->prepare("DELETE FROM CLIENTE WHERE ID = :idCliente");
 	
-		 $deleteCliente->bindValue(':idCliente',$id);
-		 $deleteCliente->execute();
+			 $deleteCliente->bindValue(':idCliente',$id);
+			 $deleteCliente->execute();
+
+			 $errorInfo = $deleteCliente->errorInfo();
+
+			if($errorInfo[2] == "")
+			{
+				echo '{"message":"success","details":"Operação realizada com sucesso","data":'.$id.'}';
+			}
+			else
+			{
+				echo '{"message":"Erro","details":'.$errorInfo[2].'}'; 
+			}
+		 } 
+		 catch (Exception $e) 
+		 {
+		 	echo '{"message":"Erro","details":'.$e->getMessage().'}';
+		 }
+		
 	}
 
 	/* BUSCA TODOS OS CLIENTES */

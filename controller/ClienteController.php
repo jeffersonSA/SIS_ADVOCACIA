@@ -67,12 +67,12 @@
 				}
 			
 					$pontoTraco = array(".","-","/");
-
+					$tracoParent= array("-","(",")");
 					$clienteModel = new Cliente();
 				
-					$clienteModel->setTel1($CLI_TEL);
-					$clienteModel->setTel2($CLI_TEL2);
-					$clienteModel->setCelular($CLI_CEL);
+					$clienteModel->setTel1(str_replace($tracoParent,"",str_replace(" ","",$CLI_TEL)));
+					$clienteModel->setTel2(str_replace($tracoParent,"",str_replace(" ","",$CLI_TEL2)));
+					$clienteModel->setCelular(str_replace($tracoParent,"",str_replace(" ","",$CLI_CEL)));
 					$clienteModel->setEmail($CLI_EMAIL);
 					$clienteModel->setLogradouro($CLI_END_LOGRADOURO);
 					$clienteModel->setCep(str_replace("-", "", $CLI_END_CEP));
@@ -140,7 +140,10 @@
 		{
 			try 
 			{
+				$id = $_POST['data'];
+				$clienteModel = new Cliente();
 
+				$clienteModel->delete($id);
 			} 
 			catch (Exception $e) 
 			{

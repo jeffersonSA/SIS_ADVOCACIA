@@ -14,7 +14,7 @@
 		<script type="text/javascript" src="../Content/js/bootstrap.min.js"> 								</script>
 		<script type="text/javascript" src="../Content/js/JsPages/mascara/jquery.maskedinput-1.3.1.min.js"> </script>
 		<script type="text/javascript" src="../Content/js/bootstrap-table/src/bootstrap-table.js">		</script>
-		<script type="text/javascript" src="../Content/js/JsPages/cadastro_cliente.js"> 					</script>
+		 <!-- // <script type="text/javascript" src="../Content/js/JsPages/cadastro_cliente.js"> 					</script> -->
 
 		<!-- CSS -->
 		<link rel="stylesheet" media="screen" href="../Content/css/bootstrap.css" />
@@ -170,7 +170,7 @@
 							<div class="form-group" >
 								<label class="col-sm-2 control-label">RG:</label>
 							    <div class="col-sm-2">
-							    	<input type="input" class="form-control" id="txtRG" placeholder="RG" maxLength="11"  name="CLI_RG_NUM" pattern="\d{2}\.\d{3}\.\d{3}-\d{1}">
+							    	<input type="input" class="form-control" id="txtRG" placeholder="RG" minLength="8"  name="CLI_RG_NUM" >
 							    </div>
 							    <label class="col-sm-2 control-label" >Data de emissão:</label>
 							    <div class="col-sm-2" >
@@ -337,7 +337,7 @@
 							<div class="form-group">
 								<label class="col-sm-2 control-label">RG:</label>
 							    <div class="col-sm-2">
-							    	<input type="input" class="form-control" id="txtRGDependente" placeholder="RG"  maxLength="11" pattern="\d{2}\.\d{3}\.\d{3}-\d{1}">
+							    	<input type="input" class="form-control" id="txtRGDependente" placeholder="RG"  minLength="8" >
 							    </div>
 							    <label class="col-sm-1  control-label">CPF:</label>
 							    <div class="col-sm-2">
@@ -366,6 +366,7 @@
 								<table id="tblDependente"   data-search="true" data-height="299"  data-show-toggle="true" data-pagination="true" >
 									<thead>
 										<tr>
+											<th data-field="INDEX" 		class="column-formated-4">INDEX</th>
 											<th data-field="ID" 		class="column-formated-4">ID</th>
 											<th data-field="NOME" 		class="column-formated-1">Nome</th>
 											<th data-field="DT_NASC" 	class="column-formated-2">Data de nascimento</th>

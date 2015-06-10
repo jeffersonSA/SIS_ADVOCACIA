@@ -42,6 +42,7 @@ $(document).ready(function(){
 	*/
 	$("#btnSeach").click(function()
 	{	
+		removeAlert();
 		showLoadingModal();
 		var data={};
 		var dataArr=[];
@@ -61,39 +62,61 @@ $(document).ready(function(){
 				},
 				success:function(response)
 				{
-					var oCliente = $.parseJSON(response);
-					var msg = oCliente.message;
-					var columns;
-
-					if(msg=="success" && oCliente.data.length > 0)
+					hideLoadingModal();
+					
+					try	
 					{
-						removeAllRegisters();
-		                $table.bootstrapTable('append',getRows(oCliente));
-		                hideLoadingModal();
+						var oCliente = $.parseJSON(response);
+						var msg = oCliente.message;
+						var columns;
+
+						if(msg=="success" && oCliente.data.length > 0)
+						{
+							removeAllRegisters();
+			                $table.bootstrapTable('append',getRows(oCliente));
+			                hideLoadingModal();
+						}	
+						else if(oCliente.data.length <= 0)
+						{
+							 var data = $table.bootstrapTable('getData');
+							 var ids = [];
+
+							 $.each(data,function(i,v)
+							 {
+							 	ids.push( v["ID"]);
+							 });
+
+							 $("#tblResult").bootstrapTable('remove',{
+							 	field:'ID',
+							 	values:ids
+							 });
+
+							hideLoadingModal();
+						}
+						else 
+						{
+							showMessage("Ocorreu um erro ao realizar a pesquisa, tente novamente.",true);
+						}
 					}	
-					else
+					catch (e)
 					{
-						 var data = $table.bootstrapTable('getData');
-						 var ids = [];
-
-						 $.each(data,function(i,v)
-						 {
-						 	ids.push( v["ID"]);
-						 });
-
-						 $("#tblResult").bootstrapTable('remove',{
-						 	field:'ID',
-						 	values:ids
-						 });
-
-						hideLoadingModal();
-					}									
+						showMessage("Erro de comunicação com o banco de dados.",true);
+					}										
 				},
 				error:function(err)
 				{
+					showMessage("Ocorreu um erro ao realizar a pesquisa.",true);
 					hideLoadingModal();
 				}
 			});
+	});
+
+	/*
+	* Remove alert do tela ao clicar no botão "x" 
+	*/
+	$(".remove-alert").click(function()
+	{
+		removeAlert();
 	});
 
 });
@@ -184,6 +207,8 @@ function initConfig()
 	aplyMasks();
 
 	getSession();	
+
+	$("#alertInfo").css('display','none');
 }
 
 function getSession()
@@ -275,4 +300,55 @@ function hideLoadingModal()
 		$bar.removeClass('animate');
 		$modal.fadeOut('slow');
 	}, 500);    
+}
+
+/*
+* Exibe todas as mensagens do sistema
+* <error>indica que o alert apresentado será vermelho</error>
+*/
+function showMessage(msg,error)
+{
+	var pos = $(window).scrollTop();
+			    
+	$("body").css({
+		"margin-top": -pos+"px",
+		"overflow-y": "scroll", 
+    });
+
+	$(window).scrollTop(0);
+	$("body").css("transition", "all 1s ease");
+	$("body").css("margin-top", "0");
+	$("body").on("webkitTransitionEnd transitionend msTransitionEnd oTransitionEnd", function()
+	{
+		$("body").css("transition", "none");
+	});
+	
+	if(error)
+	{
+		$("#alertInfo").removeClass('alert-success');
+		$("#alertInfo").addClass('alert-danger');
+		$("#alertInfo").fadeIn('slow',function()
+		{
+			$("#lblMessage").html(msg);
+		});
+	}
+	else
+	{
+		$("#alertInfo").removeClass('alert-danger');
+		$("#alertInfo").addClass('alert-success');
+		$("#alertInfo").fadeIn('slow',function()
+		{
+			$("#lblMessage").html(msg);
+		});
+	}
+}
+
+
+
+/*
+* Remove alerta
+*/
+function removeAlert()
+{
+	$("#alertInfo").slideUp();
 }

@@ -76,6 +76,7 @@ function operateFormatterDelete(value, row, index)
 function fillCliente(row)
 {
 	
+	
 	$("#idCliente").val(row["ID"]);
 	$("#txtClient").val(row["NOME"]);
 	$("#txtDataNascimento").val(row["DT_NASCIMENTO"]);
@@ -144,6 +145,7 @@ function getRowsDep(depArr)
 	$.each(depArr,function(i,value)
 	{
 		 row.push({
+		 	INDEX:i,
 		 	ID:value["ID"],
 		 	NOME:value["NOME"],
 		 	DT_NASC:value["DT_NASCIMENTO"],
@@ -161,7 +163,7 @@ function getRowsDep(depArr)
 */
 function failDependente(err)
 {
-	var t = "";
+	
 }
 
 /*
@@ -175,6 +177,54 @@ function loadCadCliente(row)
 	});
 }
 
+function deleteCliente(id)
+{
+	$.ajax(
+		{
+			type:"POST",
+				url:"../controller/ClienteController.php",
+				contentType: "application/x-www-form-urlencoded;charset=utf-8",
+				data:{
+					"action":"delete",
+					"data":id
+				},
+				success:successDeleteCliente,
+				error:failDeleteCliente
+		});
+}
+
+function successDeleteCliente(response)
+{
+	try
+	{
+		var oCliente = $.parseJSON(response);
+		if(oCliente.message == 'success')
+		{
+			$table.bootstrapTable('remove',{field:"ID",values:[oCliente.data]});
+		}
+		else
+		{
+
+		}
+	}
+	catch(e)
+	{
+
+	}
+}
+
+function failDeleteCliente(err)
+{
+	try
+	{
+
+	}
+	catch(e)
+	{
+
+	}
+}
+
 /*
 * disapara evento dos botõs na grid
 */
@@ -185,6 +235,6 @@ window.operationCliente = {
 		});
 	},
 	'click .delete':function(e, value, row, index){
-		
+		deleteCliente(row["ID"]);
 	}
 }

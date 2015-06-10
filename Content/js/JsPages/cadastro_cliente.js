@@ -43,6 +43,7 @@ $(document).ready(function()
 		{
 
 			var row = [{
+			INDEX:id.length,
 			ID: id.length + 1,		
 			NOME: 		$("#txtNomeDependente").val(),
 			DT_NASC: 	$("#txtDtNascimentoDependente").val(),
@@ -64,16 +65,20 @@ $(document).ready(function()
 	$("#btnEditDependent").click(function()
 	{
 
-		_nomeDependente[0].textContent 		= $("#txtNomeDependente").val();
-		_dtNascDependente[0].textContent 	= $("#txtDtNascimentoDependente").val();
-		_rgDependente[0].textContent 		= $("#txtRGDependente").val();
-		_cpfDependente[0].textContent 		= $("#txtCPFDependente").val();
+		$table.bootstrapTable('updateRow',{
+			index:_indexDependente,
+			row:{
+				NOME:$("#txtNomeDependente").val(),
+				DT_NASC:$("#txtDtNascimentoDependente").val(),
+				RG:$("#txtRGDependente").val(),
+				CPF:$("#txtCPFDependente").val(),
+				PARENTESCO:$("#slcParentesco").val()
+			}
+		});
 
 		$("#btnEditDependent").fadeOut('slow',function(){
 			$("#btnAddDependent").fadeIn('slow');
 		});
-
-		_parent.fadeIn('slow');
 	});
 
 	/*
@@ -140,30 +145,37 @@ $(document).ready(function()
 				success:function(response)
 				{	
 					hideLoadingModal();
-					var oCliente = $.parseJSON(response);
-					var msg = oCliente.message;
-					
-					window.setTimeout(function(){
-						if(msg == "success" && oCliente.data.length > 0 )
-						{
-							
-							$("#idCliente").val(oCliente.data[0]["ID"]);
-							$("#tbItens tr").children("td:nth-child(1)").each(function(i,v){
-								if(oCliente.data[0]["DEPENDENTES"].length>0)
-									$(v).children("td").context.innerText = oCliente.data[0]["DEPENDENTES"][i]["ID"];
-							});
-							
-							showMessage(oCliente.details,false);
-							
-							$("#btnAtualizar").prop("disabled",false);
-							$("#btnSalvar").prop("disabled",true);
-						}
-						else 
-						{
-							showMessage("Ocorreu um erro ao realizar o cadastro de cliente, tente novamente.",true);
-						}
+					try
+					{
+						var oCliente = $.parseJSON(response);
+						var msg = oCliente.message;
 						
-					},520);
+						window.setTimeout(function(){
+							if(msg == "success" && oCliente.data.length > 0 )
+							{
+								
+								$("#idCliente").val(oCliente.data[0]["ID"]);
+								$("#tbItens tr").children("td:nth-child(1)").each(function(i,v){
+									if(oCliente.data[0]["DEPENDENTES"].length>0)
+										$(v).children("td").context.innerText = oCliente.data[0]["DEPENDENTES"][i]["ID"];
+								});
+								
+								showMessage(oCliente.details,false);
+								
+								$("#btnAtualizar").prop("disabled",false);
+								$("#btnSalvar").prop("disabled",true);
+							}
+							else 
+							{
+								showMessage("Ocorreu um erro ao realizar o cadastro de cliente, tente novamente.",true);
+							}
+							
+						},520);
+					}
+					catch (e)
+					{
+						showMessage("Erro de comunicação com o banco de dados",true);
+					}
 				},
 				error:function(err)
 				{
@@ -205,7 +217,7 @@ $(document).ready(function()
 
 var _loading;
 var _parent;
-var _nomeDependente;
+var _indexDependente;
 var _dtNascDependente;
 var _rgDependente;
 var _cpfDependente;
@@ -215,12 +227,12 @@ var _cpfDependente;
 */
 function editDependente(row)
 {
-	
+	_indexDependente = row["INDEX"];
 	$("#txtNomeDependente")[0].value = row["NOME"];
 	$("#txtDtNascimentoDependente")[0].value = row["DT_NASC"];
 	$("#txtRGDependente")[0].value = row["RG"];
 	$("#txtCPFDependente")[0].value = row["CPF"];
-	$("#txtParentesco")[0].value = row["PARENTESCO"];
+	$("#slcParentesco")[0].value = row["PARENTESCO"];
 
 	$("#btnAddDependent").fadeOut('slow',function(){
 		$("#btnEditDependent").fadeIn('slow');
@@ -267,13 +279,18 @@ function configInit()
 	{
 		$("#btnAtualizar").prop("disabled",false);
 		$("#btnSalvar").prop("disabled",true);
+
+		aplyModeEditMasks();
 	}
 
-	if($table.bootstrapTable("getData").length > 0)
-	{
-		$("#pnlBodyDependente").slideDown('slow');
-		requiredDependente(true);
-	}
+	setTimeout(function(){
+		if($table.bootstrapTable("getData").length > 0)
+		{
+			$("#pnlBodyDependente").slideDown('slow');
+			requiredDependente(true);
+		}
+	},500);
+	
 }
 
 //Exibe o loading quando acionado algum evento
@@ -311,10 +328,7 @@ function removeAlert()
 function aplyMasks()
 {
 
-	$("#txtRG").keypress(function(){
-		mascara(this,rg);
-	});
-
+	
 	$("#txtCPF").keypress(function(){
 		mascara(this,cpf);
 	});
@@ -339,10 +353,6 @@ function aplyMasks()
 		mascara(this,celular);
 	});
 
-	$("#txtRGDependente").keypress(function(){
-		mascara(this,rg);
-	});
-
 	$("#txtCPFDependente").keypress(function(){
 		mascara(this,cpf);
 	});
@@ -362,6 +372,30 @@ function aplyMasks()
 	$("#txtNumero").keypress(function(){
 		mascara(this,soNumeros);
 	});
+}
+
+function aplyModeEditMasks()
+{
+	var cpf  = $("#txtCPF").val();
+	var cnpj = $("#txtCNPJ").val();
+	var cep  = $("#txtCEP").val();
+	var tel1 = $("#txtTel1").val();
+	var tel2 = $("#txtTel2").val();
+	var cel  = $("#txtCel").val();
+
+	cpf  = cpf.substring(0,3)+"."+cpf.substring(3,6)+"."+cpf.substring(6,9)+"-"+cpf.substring(9,11);
+	cnpj = cnpj.length>0 ? cnpj.substring(0,2)+"."+cnpj.substring(2,5)+"."+cnpj.substring(5,8)+"/"+cnpj.substring(8,12)+"-"+cnpj.substring(12,14):"";
+	cep  = cep.substring(0,5)+"-"+cep.substring(5,8);
+	tel1 = tel1.length > 0 ?"("+tel1.substring(0,2)+") "+tel1.substring(2,6)+"-"+tel1.substring(6,10) :"";
+	tel2 = tel2.length > 0 ? "("+tel2.substring(0,2)+") "+tel2.substring(2,6)+"-"+tel2.substring(6,10) :"";
+	cel = cel.length < 11 ? "("+cel.substring(0,2)+") "+cel.substring(2,6)+"-"+cel.substring(6,10) : "("+cel.substring(0,2)+") "+cel.substring(2,7)+"-"+cel.substring(7,11) ;
+
+	$("#txtCPF").val(cpf);
+	$("#txtCNPJ").val(cnpj);
+	$("#txtCEP").val(cep);
+	$("#txtTel1").val(tel1);
+	$("#txtTel2").val(tel2);
+	$("#txtCel").val(cel);
 }
 
 /*
