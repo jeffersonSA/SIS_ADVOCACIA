@@ -665,7 +665,7 @@ class Cliente
 			}
 			
 			
-			$selectCliente = $this->pdo->query("SELECT * FROM advocaciabd.".$typeView." WHERE ".$field."=".$value)->fetchAll();
+			$selectCliente = $this->pdo->query("SELECT * FROM advocaciabd.".$typeView." WHERE ".$field." like '%".$value."%'")->fetchAll();
 
 		    foreach($selectCliente as $row) 
 		    {

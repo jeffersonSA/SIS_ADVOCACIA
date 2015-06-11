@@ -39,7 +39,7 @@ $(document).ready(function()
 		
 		var id = $table.bootstrapTable("getData");
 		
-		getRows = function () 
+		getRows = function() 
 		{
 
 			var row = [{
