@@ -73,7 +73,9 @@ $(document).ready(function(){
 						if(msg=="success" && oCliente.data.length > 0)
 						{
 							removeAllRegisters();
+
 			                $table.bootstrapTable('append',getRows(oCliente));
+
 			                hideLoadingModal();
 						}	
 						else if(oCliente.data.length <= 0)
@@ -271,6 +273,10 @@ function addHeadPhysic(data)
 			columns: data[0].colfisica
 	});
 
+	$("#tblResult thead :nth(11)").css('width','350');
+	$("#tblResult thead :nth(60)").css('width','350');
+	$("#tblResult thead :nth(66)").css('width','250');
+	$("#tblResult thead :nth(68)").css('width','250');
 }
 
 function addHeadJuri(data)

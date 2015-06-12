@@ -19,7 +19,6 @@
                 "sortable": "true"
             },
             {
-                "width":500,
                 "field": "NOME",
                 "title": "Nome",
                 "sortable": "true"
