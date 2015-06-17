@@ -37,14 +37,16 @@ $(document).ready(function()
 	*/
 	$("#btnAddDependent").click(function(){
 		
-		var id = $table.bootstrapTable("getData");
-		
+		var data = $table.bootstrapTable("getData");
+		var indx = 0; 
+		if(data.length > 0)
+		 indx = data[data.length-1]["INDEX"];
 		getRows = function() 
 		{
 
 			var row = [{
-			INDEX:id.length,
-			ID: id.length + 1,		
+			INDEX:indx+1,
+			ID: 0,		
 			NOME: 		$("#txtNomeDependente").val(),
 			DT_NASC: 	$("#txtDtNascimentoDependente").val(),
 			RG: 		$("#txtRGDependente").val(),
@@ -174,6 +176,7 @@ $(document).ready(function()
 					}
 					catch (e)
 					{
+						console.log(response);
 						showMessage("Erro de comunicação com o banco de dados",true);
 					}
 				},
@@ -225,9 +228,9 @@ var _cpfDependente;
 /*
 *  Envia as informações do dependente para os textsbox para serem editadas
 */
-function editDependente(row)
+function editDependente(row,index)
 {
-	_indexDependente = row["INDEX"];
+	_indexDependente = index;
 	$("#txtNomeDependente")[0].value = row["NOME"];
 	$("#txtDtNascimentoDependente")[0].value = row["DT_NASC"];
 	$("#txtRGDependente")[0].value = row["RG"];
@@ -245,8 +248,8 @@ function editDependente(row)
 function removeDependente(row)
 {
 	  $table.bootstrapTable('remove', {
-                    field: 'ID',
-                    values: [row["ID"]]
+                    field: 'INDEX',
+                    values: [row["INDEX"]]
         	});
 }
 
@@ -559,7 +562,7 @@ function clearFields()
 	*/
 	window.operateEvents = {
 		'click .edit':function(e, value, row, index){
-			editDependente(row);
+			editDependente(row,index);
 		},
 		'click .delete':function(e, value, row, index){
 			removeDependente(row);

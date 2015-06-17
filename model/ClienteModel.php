@@ -823,7 +823,7 @@ class Cliente
 
 		try 
 		{
-			if($this->idCliente>0)
+			if($idLastClient>0)
 			{
 				$sql = "UPDATE FISICA SET ".
 									"NOME 			= ?,".
@@ -910,32 +910,31 @@ class Cliente
 	{
 		try 
 		{
-			$pontoTranco = array('.' ,'-');
 			
-			if($this->idCliente > 0)
-			{
-				$sql = "UPDATE DEPENDENTE SET ".
-									"NOME 			= ?,".
-			 						"DT_NASCIMENTO	= ?,". 
-			 						"GRAU_PARENTESCO= ?,". 
-			 						"RG				= ?,".
-			 						"CPF			= ?,".
-			 						"COD_CLIENTE	= ? WHERE ID=?";
-			}
-			else
-			{
-				$sql = "INSERT INTO DEPENDENTE (".
-									"NOME,".
-			 						"DT_NASCIMENTO,". 
-			 						"GRAU_PARENTESCO,". 
-			 						"RG,".
-			 						"CPF,".
-			 						"COD_CLIENTE) VALUES(?,?,?,?,?,?)";
-			}
-			$insertDependente = $this->pdo->prepare($sql); 
 			
 			for($i = 0; $i < count($this->dependenteArr); $i++)
 			{
+				if($this->dependenteArr[$i]["ID"] > 0)
+				{
+					$sql = "UPDATE DEPENDENTE SET ".
+										"NOME 			= ?,".
+				 						"DT_NASCIMENTO	= ?,". 
+				 						"GRAU_PARENTESCO= ?,". 
+				 						"RG				= ?,".
+				 						"CPF			= ?,".
+				 						"COD_CLIENTE	= ? WHERE ID=?";
+				}
+				else
+				{
+					$sql = "INSERT INTO DEPENDENTE (".
+										"NOME,".
+				 						"DT_NASCIMENTO,". 
+				 						"GRAU_PARENTESCO,". 
+				 						"RG,".
+				 						"CPF,".
+				 						"COD_CLIENTE) VALUES(?,?,?,?,?,?)";
+				}
+			$insertDependente = $this->pdo->prepare($sql); 
 				 
 				$insertDependente->bindValue(1,urldecode(($this->dependenteArr[$i]["NOME"])));
 				$insertDependente->bindValue(2,urldecode(($this->dependenteArr[$i]["DT_NASC"])));
@@ -944,8 +943,8 @@ class Cliente
 				$insertDependente->bindValue(5,str_replace($pontoTranco,"",urldecode(($this->dependenteArr[$i]["CPF"]))));
 				$insertDependente->bindValue(6,$idLastClient);
 				
-				if($depDecode->Id > 0)
-					$insertDependente->bindValue(7,$depDecode->Id);
+				if($this->dependenteArr[$i]["ID"] > 0)
+					$insertDependente->bindValue(7,$this->dependenteArr[$i]["ID"]);
 				
 				$insertDependente->execute();	
 			}

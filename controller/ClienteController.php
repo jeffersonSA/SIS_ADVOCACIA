@@ -11,6 +11,7 @@
   		case "selectAll"	:	selectAll();	break;
   		case "selectById"	: 	selectById();	break;
   		case "getSession"	: 	getSession();	break;
+  		case "removeSession":	removeSession();break;
   	}
  	
  	//echo 'count'.count($data);
@@ -208,6 +209,18 @@
 				echo '{"message":"success","data":'.$_SESSION["cliente"].'}';
 
 			} catch (Exception $e) 
+			{
+				
+			}
+		}
+
+		function removeSession()
+		{
+			try 
+			{
+				session_destroy();	
+			} 
+			catch (Exception $e) 
 			{
 				
 			}

@@ -200,11 +200,16 @@ function successDeleteCliente(response)
 		var oCliente = $.parseJSON(response);
 		if(oCliente.message == 'success')
 		{
-			$table.bootstrapTable('remove',{field:"ID",values:[oCliente.data]});
+			$table.bootstrapTable('remove',{
+				field:"ID",
+				values:[oCliente.data]
+			});
+
+			removeSession();
 		}
 		else
 		{
-
+			
 		}
 	}
 	catch(e)
@@ -223,6 +228,28 @@ function failDeleteCliente(err)
 	{
 
 	}
+}
+
+function removeSession()
+{
+	$.ajax({
+		type:"POST",
+		url:"../controller/ClienteController.php",
+		contentType: "application/x-www-form-urlencoded;charset=utf-8",
+		data:{"action":"removeSession"},
+		success:resultRemoveSession,
+		error:failRemoveSession
+	})
+}
+
+function resultRemoveSession(response)
+{
+
+}
+
+function failRemoveSession(err)
+{
+
 }
 
 /*
